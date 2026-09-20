@@ -93,7 +93,7 @@ export function Footer() {
 
         {/* --- legal ------------------------------------------------------ */}
         <div className="flex flex-col gap-5 border-t border-ivory-100/10 py-8 text-xs text-ivory-200/50 md:flex-row md:items-center md:justify-between">
-          <p>© {new Date().getFullYear()} Sri Kanchi Silks. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Kanchi Vastra. All rights reserved.</p>
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {footerNav.legal.map((link) => (
               <li key={link.href}>
@@ -109,7 +109,7 @@ export function Footer() {
         <p className="border-t border-ivory-100/5 py-5 text-[11px] leading-relaxed text-ivory-200/35">
           Demonstration build. Product photography, names, prices, stock figures and contact
           details shown on this site are placeholder content and do not represent actual
-          Sri Kanchi Silks merchandise or business information.
+          Kanchi Vastra merchandise or business information.
         </p>
       </div>
     </footer>

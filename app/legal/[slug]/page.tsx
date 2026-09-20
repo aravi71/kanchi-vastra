@@ -57,7 +57,7 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
                 <p className="mt-2.5">
                   This page is a structural placeholder written to be replaced. It has not been
                   drafted or reviewed by a legal professional, it does not reflect finalised
-                  Sri Kanchi Silks policy, and it should not be relied upon. Replace the content
+                  Kanchi Vastra policy, and it should not be relied upon. Replace the content
                   in <code className="text-xs">data/legal.ts</code> with wording approved by your
                   own legal adviser before launch.
                 </p>

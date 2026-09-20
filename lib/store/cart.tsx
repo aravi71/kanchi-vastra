@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { getProductById } from '@/data/products';
+import { useCatalogue } from '@/lib/store/catalogue';
 import { shipping } from '@/data/site';
 import { readStorage, writeStorage } from '@/lib/utils';
 import type { CartLine, Product } from '@/lib/types';
@@ -40,11 +40,19 @@ interface CartContextValue {
 const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { byId } = useCatalogue();
   const [lines, setLines] = useState<CartLine[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
-  // Read persisted cart after mount so the server and client markup match.
+  // Read the persisted cart after mount so the server and client markup match.
+  //
+  // This is the one legitimate use of setState-in-effect: localStorage does
+  // not exist during server rendering, so the bag CANNOT be read until the
+  // component has mounted. Reading it during render would either crash on the
+  // server or produce markup that disagrees with the client and fails
+  // hydration. `hydrated` lets the UI show a neutral state until then.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see note above
     setLines(readStorage<CartLine[]>(STORAGE_KEY, []));
     setHydrated(true);
   }, []);
@@ -77,23 +85,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setLines((prev) => prev.filter((l) => l.productId !== productId));
   }, []);
 
-  const setQuantity = useCallback((productId: string, quantity: number) => {
-    setLines((prev) => {
-      if (quantity <= 0) return prev.filter((l) => l.productId !== productId);
-      const product = getProductById(productId);
-      const cap = product ? Math.max(product.stock, 0) : quantity;
-      return prev.map((l) =>
-        l.productId === productId ? { ...l, quantity: Math.min(quantity, cap) } : l,
-      );
-    });
-  }, []);
+  const setQuantity = useCallback(
+    (productId: string, quantity: number) => {
+      setLines((prev) => {
+        if (quantity <= 0) return prev.filter((l) => l.productId !== productId);
+        const product = byId(productId);
+        const cap = product ? Math.max(product.stock, 0) : quantity;
+        return prev.map((l) =>
+          l.productId === productId ? { ...l, quantity: Math.min(quantity, cap) } : l,
+        );
+      });
+    },
+    [byId],
+  );
 
   const clear = useCallback(() => setLines([]), []);
 
   const value = useMemo<CartContextValue>(() => {
     // Lines whose product has since been removed from the catalogue are dropped.
     const items: CartItem[] = lines.flatMap((line) => {
-      const product = getProductById(line.productId);
+      const product = byId(line.productId);
       if (!product) return [];
       return [{ ...line, product, lineTotal: product.price * line.quantity }];
     });
@@ -115,7 +126,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setQuantity,
       clear,
     };
-  }, [lines, hydrated, add, remove, setQuantity, clear]);
+  }, [lines, hydrated, byId, add, remove, setQuantity, clear]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

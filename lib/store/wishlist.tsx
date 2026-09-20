@@ -9,7 +9,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
-import { getProductById } from '@/data/products';
+import { useCatalogue } from '@/lib/store/catalogue';
 import { readStorage, writeStorage } from '@/lib/utils';
 import type { Product } from '@/lib/types';
 
@@ -29,10 +29,14 @@ interface WishlistContextValue {
 const WishlistContext = createContext<WishlistContextValue | null>(null);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
+  const { byId } = useCatalogue();
   const [ids, setIds] = useState<string[]>([]);
   const [hydrated, setHydrated] = useState(false);
 
+  // localStorage does not exist during server rendering, so the wishlist can
+  // only be read after mount — see the fuller note in cart.tsx.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see note above
     setIds(readStorage<string[]>(STORAGE_KEY, []));
     setHydrated(true);
   }, []);
@@ -55,7 +59,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<WishlistContextValue>(() => {
     const items = ids.flatMap((id) => {
-      const product = getProductById(id);
+      const product = byId(id);
       return product ? [product] : [];
     });
     return {
@@ -68,7 +72,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       remove,
       clear,
     };
-  }, [ids, hydrated, toggle, remove, clear]);
+  }, [ids, hydrated, byId, toggle, remove, clear]);
 
   return <WishlistContext.Provider value={value}>{children}</WishlistContext.Provider>;
 }

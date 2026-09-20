@@ -18,7 +18,7 @@ export function EditorialQuote() {
             Ancient craftsmanship, presented through modern luxury — nothing added to the weave,
             everything removed from around it.
           </blockquote>
-          <p className="eyebrow-sm mt-8 text-ink-400">The Sri Kanchi Silks approach</p>
+          <p className="eyebrow-sm mt-8 text-ink-400">The Kanchi Vastra approach</p>
         </Reveal>
       </div>
 

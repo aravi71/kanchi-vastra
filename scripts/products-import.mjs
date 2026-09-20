@@ -122,7 +122,7 @@ records.forEach((r) => {
   }
 
   products.push({
-    id: `sks-${String(products.length + 1).padStart(3, '0')}`,
+    id: `kv-${String(products.length + 1).padStart(3, '0')}`,
     slug, name: r.name, price, compareAtPrice: compareAt,
     category: r.category, collections,
     color: r.color, colorFamily: r.color_family, colorHex: hex,

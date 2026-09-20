@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 
 export const metadata: Metadata = {
   title: 'Checkout',
-  description: 'Complete your Sri Kanchi Silks order.',
+  description: 'Complete your Kanchi Vastra order.',
   robots: { index: false, follow: false },
 };
 

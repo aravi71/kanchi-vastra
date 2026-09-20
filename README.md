@@ -1,4 +1,4 @@
-# Sri Kanchi Silks
+# Kanchi Vastra
 
 A premium storefront for a Kanchipuram-inspired silk saree house, built with Next.js 15, React 19, TypeScript and Tailwind CSS v4.
 
@@ -8,7 +8,7 @@ A premium storefront for a Kanchipuram-inspired silk saree house, built with Nex
 
 **The current product catalogue, product imagery, prices, stock figures, SKUs, contact
 information and business details are demonstration content and must be replaced with official
-Sri Kanchi Silks information before production launch.**
+Kanchi Vastra information before production launch.**
 
 Specifically, none of the following is real:
 
@@ -200,7 +200,7 @@ so nothing in `components/` needs to change.
 
 ```ts
 {
-  id: 'sks-001',
+  id: 'kv-001',
   slug: 'kanchipuram-ruby-zari-silk-saree',  // the URL — keep stable once published
   name: 'Kanchipuram Ruby Zari Silk Saree',
   price: 18500,              // whole rupees
@@ -214,7 +214,7 @@ so nothing in `components/` needs to change.
   description: '…',          // one or two lines, shown on cards and quick view
   story: '…',                // longer copy for the product page
   specs: { length, width, blouse, zari, weight, weave, care },
-  sku: 'SKS-KAN-001',
+  sku: 'KV-KAN-001',
   stock: 4,                  // 0 renders "Sold out" and disables purchase
   images: ['/images/products/…-1.svg', /* …2, 3, 4 */],
   featured: true,            // appears in the homepage rail
@@ -353,16 +353,16 @@ permanent address.
    ```bash
    git init
    git add .
-   git commit -m "Initial commit: Sri Kanchi Silks storefront"
+   git commit -m "Initial commit: Kanchi Vastra storefront"
    git branch -M main
-   git remote add origin https://github.com/<your-username>/sri-kanchi-silks.git
+   git remote add origin https://github.com/<your-username>/kanchi-vastra.git
    git push -u origin main
    ```
 
 2. Go to <https://vercel.com/new>, sign in with GitHub, and import the repository.
 3. Vercel detects Next.js automatically — leave the build settings alone.
 4. Add one environment variable: `NEXT_PUBLIC_SITE_URL` = your production URL
-   (e.g. `https://sri-kanchi-silks.vercel.app`). This drives canonical URLs, the sitemap,
+   (e.g. `https://kanchi-vastra.vercel.app`). This drives canonical URLs, the sitemap,
    Open Graph tags and JSON-LD, so getting it right matters for SEO.
 5. Deploy. You get HTTPS and a free `*.vercel.app` URL.
 
@@ -383,7 +383,7 @@ Every later push to `main` redeploys automatically; pull requests get preview UR
 
 ## SEO
 
-- Per-page titles and descriptions with a `%s | Sri Kanchi Silks` template
+- Per-page titles and descriptions with a `%s | Kanchi Vastra` template
 - Open Graph and Twitter card metadata, including per-product images
 - JSON-LD: `Organization` + `WebSite` (with `SearchAction`) site-wide, `Product` with live
   price and stock on every product page, `FAQPage` on the FAQ
@@ -415,6 +415,6 @@ Every later push to `main` redeploys automatically; pull requests get preview UR
 
 ## Licence
 
-Source code © Sri Kanchi Silks. The brand name, logo, written content and generated artwork in
-this repository belong to Sri Kanchi Silks. Third-party dependencies remain under their own
+Source code © Kanchi Vastra. The brand name, logo, written content and generated artwork in
+this repository belong to Kanchi Vastra. Third-party dependencies remain under their own
 licences, listed above.

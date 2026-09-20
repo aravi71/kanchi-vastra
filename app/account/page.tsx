@@ -6,7 +6,7 @@ import { Reveal } from '@/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Account',
-  description: 'Customer accounts for Sri Kanchi Silks.',
+  description: 'Customer accounts for Kanchi Vastra.',
   robots: { index: false, follow: true },
 };
 

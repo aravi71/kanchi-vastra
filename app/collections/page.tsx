@@ -3,18 +3,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { collections } from '@/data/collections';
-import { productsInCollection } from '@/data/products';
+import { getProducts } from '@/lib/catalogue';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { Reveal } from '@/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Collections',
   description:
-    'Kanchipuram silks, bridal weaves, festive sarees and everyday elegance — the Sri Kanchi Silks collections.',
+    'Kanchipuram silks, bridal weaves, festive sarees and everyday elegance — the Kanchi Vastra collections.',
   alternates: { canonical: '/collections' },
 };
 
-export default function CollectionsPage() {
+export default async function CollectionsPage() {
+  const products = await getProducts();
   return (
     <>
       <PageHeader
@@ -28,7 +29,7 @@ export default function CollectionsPage() {
       <div className="container-editorial pb-24 md:pb-32">
         <ul className="space-y-4 md:space-y-6">
           {collections.map((collection, i) => {
-            const count = productsInCollection(collection.slug).length;
+            const count = products.filter((p) => p.collections.includes(collection.slug)).length;
             const flip = i % 2 === 1;
             return (
               <Reveal as="li" key={collection.slug} delay={i * 60} y={26}>

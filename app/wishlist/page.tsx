@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 
 export const metadata: Metadata = {
   title: 'Wishlist',
-  description: 'Sarees you have saved from the Sri Kanchi Silks collection.',
+  description: 'Sarees you have saved from the Kanchi Vastra collection.',
   robots: { index: false, follow: true },
 };
 

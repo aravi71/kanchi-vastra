@@ -27,14 +27,14 @@ export function TempleBorder({
       style={flip ? { transform: 'scaleY(-1)' } : undefined}
     >
       <defs>
-        <pattern id="sks-temple" width="20" height="14" patternUnits="userSpaceOnUse">
+        <pattern id="kv-temple" width="20" height="14" patternUnits="userSpaceOnUse">
           <path
             d="M0 14V9h3.5V4.5H7V0h6v4.5h3.5V9H20v5z"
             fill="currentColor"
           />
         </pattern>
       </defs>
-      <rect width="120" height="14" fill="url(#sks-temple)" />
+      <rect width="120" height="14" fill="url(#kv-temple)" />
     </svg>
   );
 }
@@ -80,7 +80,7 @@ export function KolamGround({ className }: { className?: string }) {
       className={cn('pointer-events-none absolute inset-0 h-full w-full', className)}
     >
       <defs>
-        <pattern id="sks-kolam" width="64" height="64" patternUnits="userSpaceOnUse">
+        <pattern id="kv-kolam" width="64" height="64" patternUnits="userSpaceOnUse">
           <g fill="none" stroke="currentColor" strokeWidth="1">
             <circle cx="32" cy="32" r="1.6" fill="currentColor" stroke="none" />
             <path d="M32 24c9 0 9 16 0 16s-9-16 0-16z" />
@@ -90,7 +90,7 @@ export function KolamGround({ className }: { className?: string }) {
           </g>
         </pattern>
       </defs>
-      <rect width="100%" height="100%" fill="url(#sks-kolam)" />
+      <rect width="100%" height="100%" fill="url(#kv-kolam)" />
     </svg>
   );
 }

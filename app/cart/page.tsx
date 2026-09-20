@@ -4,7 +4,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 
 export const metadata: Metadata = {
   title: 'Shopping Bag',
-  description: 'Review the sarees in your Sri Kanchi Silks shopping bag.',
+  description: 'Review the sarees in your Kanchi Vastra shopping bag.',
   robots: { index: false, follow: true },
 };
 

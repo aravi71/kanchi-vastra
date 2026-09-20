@@ -124,7 +124,7 @@ row number and fixes nothing, so a bad edit can never half-apply:
 
   Row 4: "Peacock Motif Heritage Silk" has category "wedding".
           Must be one of: kanchipuram, bridal, festive, everyday.
-  Row 6: SKU "SKS-KAN-005" is already used on row 5.
+  Row 6: SKU "KV-KAN-005" is already used on row 5.
   Row 7: "Lotus Zari Kanchipuram" has color_hex "reddish", which is not a
           6-digit colour code. Example: #9B1B30
 ```
@@ -168,7 +168,7 @@ Both methods work on the same data — just don't edit both at once without re-e
 
 ```ts
 {
-  id: 'sks-001',
+  id: 'kv-001',
   slug: 'kanchipuram-ruby-zari-silk-saree',   // the web address - keep it stable
   name: 'Kanchipuram Ruby Zari Silk Saree',   // shown to customers
   price: 18500,                               // PLAIN NUMBER. 18500 = Rs 18,500
@@ -193,7 +193,7 @@ Both methods work on the same data — just don't edit both at once without re-e
     weave: 'Traditional Kanchipuram handloom technique',
     care: 'Dry clean only. Store folded in cotton muslin.',
   },
-  sku: 'SKS-KAN-001',                         // your own stock code
+  sku: 'KV-KAN-001',                         // your own stock code
   stock: 4,                                   // how many you actually have
   images: img('kanchipuram-ruby-zari-silk-saree'),
   featured: true,                             // show on the homepage

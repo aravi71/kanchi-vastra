@@ -4,11 +4,9 @@ import { site } from '@/data/site';
 import { CartProvider } from '@/lib/store/cart';
 import { WishlistProvider } from '@/lib/store/wishlist';
 import { UiProvider } from '@/lib/store/ui';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { SearchOverlay } from '@/components/layout/SearchOverlay';
-import { CartDrawer } from '@/components/cart/CartDrawer';
-import { MobileNav } from '@/components/layout/MobileNav';
+import { CatalogueProvider } from '@/lib/store/catalogue';
+import { getProducts } from '@/lib/catalogue';
+import { SiteChrome } from '@/components/layout/SiteChrome';
 import '@/styles/globals.css';
 
 /* Self-hosted at build time by next/font — no render-blocking request to
@@ -30,8 +28,8 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: 'Sri Kanchi Silks | Timeless Kanchipuram Silk Sarees',
-    template: '%s | Sri Kanchi Silks',
+    default: 'Kanchi Vastra | Timeless Kanchipuram Silk Sarees',
+    template: '%s | Kanchi Vastra',
   },
   description: site.description,
   keywords: [
@@ -40,14 +38,14 @@ export const metadata: Metadata = {
     'silk saree',
     'bridal silk saree',
     'South Indian saree',
-    'Sri Kanchi Silks',
+    'Kanchi Vastra',
   ],
   applicationName: site.name,
   alternates: { canonical: '/' },
   openGraph: {
     type: 'website',
     siteName: site.name,
-    title: 'Sri Kanchi Silks | Timeless Kanchipuram Silk Sarees',
+    title: 'Kanchi Vastra | Timeless Kanchipuram Silk Sarees',
     description: site.description,
     locale: 'en_IN',
     url: site.url,
@@ -55,7 +53,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Sri Kanchi Silks | Timeless Kanchipuram Silk Sarees',
+    title: 'Kanchi Vastra | Timeless Kanchipuram Silk Sarees',
     description: site.description,
     images: ['/images/editorial/hero.svg'],
   },
@@ -99,7 +97,12 @@ const organizationLd = {
   ],
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // Fetched once per render and handed to client components through context,
+  // so the cart, wishlist and search can look products up in the browser
+  // without ever talking to the CMS themselves.
+  const products = await getProducts();
+
   return (
     <html lang="en-IN" className={`${cormorant.variable} ${inter.variable}`}>
       <body className="min-h-screen antialiased">
@@ -113,18 +116,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        <UiProvider>
-          <WishlistProvider>
-            <CartProvider>
-              <Header />
-              <main id="main">{children}</main>
-              <Footer />
-              <SearchOverlay />
-              <CartDrawer />
-              <MobileNav />
-            </CartProvider>
-          </WishlistProvider>
-        </UiProvider>
+        <CatalogueProvider products={products}>
+          <UiProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <SiteChrome>{children}</SiteChrome>
+              </CartProvider>
+            </WishlistProvider>
+          </UiProvider>
+        </CatalogueProvider>
       </body>
     </html>
   );

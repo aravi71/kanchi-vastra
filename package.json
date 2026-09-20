@@ -1,8 +1,8 @@
 {
-  "name": "sri-kanchi-silks",
+  "name": "kanchi-vastra",
   "version": "0.1.0",
   "private": true,
-  "description": "Sri Kanchi Silks - premium Kanchipuram-inspired silk saree e-commerce storefront",
+  "description": "Kanchi Vastra - premium Kanchipuram-inspired silk saree e-commerce storefront",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,24 +11,29 @@
     "typecheck": "tsc --noEmit",
     "gen:art": "node scripts/generate-art.mjs",
     "products:export": "node scripts/products-export.mjs",
-    "products:import": "node scripts/products-import.mjs"
+    "products:import": "node scripts/products-import.mjs",
+    "cms:seed": "node scripts/cms-seed.mjs"
   },
   "dependencies": {
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^6.15.0",
     "clsx": "^2.1.1",
     "lucide-react": "^1.47.0",
-    "next": "^15.5.25",
+    "next": "^16.3.5",
+    "next-sanity": "^13.3.4",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
+    "sanity": "^6.15.0",
+    "styled-components": "^6.5.3",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.7",
     "@tailwindcss/postcss": "^4.3.3",
     "@types/node": "^26.6.2",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "eslint": "^9.39.5",
-    "eslint-config-next": "^15.5.25",
+    "eslint-config-next": "^16.3.5",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3"

@@ -16,7 +16,7 @@ export function Monogram({ className, size = 34 }: { className?: string; size?: 
       height={size}
       viewBox="0 0 120 120"
       role="img"
-      aria-label="Sri Kanchi Silks"
+      aria-label="Kanchi Vastra"
     >
       <g
         fill="none"
@@ -65,13 +65,13 @@ export function Logo({
           className="font-[family-name:var(--font-display)] leading-none"
           style={{ fontSize: stacked ? '1.75rem' : '1.1875rem', letterSpacing: '0.13em' }}
         >
-          SRI KANCHI
+          KANCHI
         </span>
         <span
           className="eyebrow-sm mt-1 leading-none opacity-70"
           style={{ letterSpacing: stacked ? '0.62em' : '0.46em' }}
         >
-          <span className="relative left-[0.3em]">SILKS</span>
+          <span className="relative left-[0.3em]">VASTRA</span>
         </span>
       </span>
     </span>

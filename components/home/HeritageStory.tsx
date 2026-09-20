@@ -52,7 +52,7 @@ export function HeritageStory() {
             <Reveal delay={200}>
               <div className="mt-7 space-y-5 text-[0.9375rem] leading-[1.85] text-ink-600">
                 <p>
-                  Sri Kanchi Silks celebrates the timeless artistry of South Indian silk weaving
+                  Kanchi Vastra celebrates the timeless artistry of South Indian silk weaving
                   through a contemporary collection of elegant sarees.
                 </p>
                 <p>

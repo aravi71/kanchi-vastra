@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   SRI KANCHI SILKS — DESIGN TOKENS
+   KANCHI VASTRA — DESIGN TOKENS
    Ancient Indian craftsmanship presented through modern luxury.
    Gold is an ACCENT. Ivory carries the page. Wine anchors. Ink does the reading.
    ========================================================================== */
@@ -194,27 +194,27 @@
    MOTION
    ========================================================================== */
 
-@keyframes sks-fade-up {
+@keyframes kv-fade-up {
   from { opacity: 0; transform: translate3d(0, 18px, 0); }
   to   { opacity: 1; transform: none; }
 }
-@keyframes sks-fade {
+@keyframes kv-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
-@keyframes sks-sheen {
+@keyframes kv-sheen {
   from { background-position: 220% 0; }
   to   { background-position: -120% 0; }
 }
-@keyframes sks-marquee {
+@keyframes kv-marquee {
   from { transform: translate3d(0, 0, 0); }
   to   { transform: translate3d(-50%, 0, 0); }
 }
 
-.animate-fade-up { animation: sks-fade-up 0.9s var(--ease-silk) both; }
-.animate-fade    { animation: sks-fade 0.9s var(--ease-silk) both; }
-.animate-sheen   { animation: sks-sheen 6s linear infinite; }
-.animate-marquee { animation: sks-marquee 46s linear infinite; }
+.animate-fade-up { animation: kv-fade-up 0.9s var(--ease-silk) both; }
+.animate-fade    { animation: kv-fade 0.9s var(--ease-silk) both; }
+.animate-sheen   { animation: kv-sheen 6s linear infinite; }
+.animate-marquee { animation: kv-marquee 46s linear infinite; }
 
 /* Respect the user's stated preference. Nothing here is load-bearing. */
 @media (prefers-reduced-motion: reduce) {

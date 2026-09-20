@@ -1,5 +1,5 @@
 /**
- * generate-art.mjs — original generative saree artwork for Sri Kanchi Silks.
+ * generate-art.mjs — original generative saree artwork for Kanchi Vastra.
  *
  * WHY THIS EXISTS
  * ---------------

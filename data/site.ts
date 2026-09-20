@@ -2,15 +2,15 @@
    SITE + BUSINESS CONFIGURATION
    ---------------------------------------------------------------------------
    Everything marked `PLACEHOLDER` below is invented scaffolding, not real
-   Sri Kanchi Silks information. Replace each value with the genuine detail
+   Kanchi Vastra information. Replace each value with the genuine detail
    before the site goes live, and delete the `isPlaceholder` flags as you go —
    the UI reads those flags to decide whether to show a "details to follow"
    state instead of a fake phone number or address.
    =========================================================================== */
 
 export const site = {
-  name: 'Sri Kanchi Silks',
-  shortName: 'Sri Kanchi',
+  name: 'Kanchi Vastra',
+  shortName: 'Kanchi Vastra',
   /** Used for canonical URLs, sitemap and Open Graph. Set NEXT_PUBLIC_SITE_URL in production. */
   url: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
   tagline: 'The Art of Timeless Silk',

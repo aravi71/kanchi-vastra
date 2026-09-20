@@ -9,7 +9,7 @@ import { KolamGround, LotusMark, SectionDivider } from '@/components/motifs/Moti
 export const metadata: Metadata = {
   title: 'Our Story',
   description:
-    'Sri Kanchi Silks celebrates the timeless artistry of South Indian silk weaving through a contemporary collection of elegant sarees.',
+    'Kanchi Vastra celebrates the timeless artistry of South Indian silk weaving through a contemporary collection of elegant sarees.',
   alternates: { canonical: '/about' },
 };
 
@@ -19,7 +19,7 @@ export default function AboutPage() {
       <PageHeader
         eyebrow="About Us"
         title="Ancient craftsmanship, presented through modern luxury"
-        description="Sri Kanchi Silks celebrates the timeless artistry of South Indian silk weaving through a contemporary collection of elegant sarees."
+        description="Kanchi Vastra celebrates the timeless artistry of South Indian silk weaving through a contemporary collection of elegant sarees."
         crumbs={[{ label: 'Home', href: '/' }, { label: 'About Us' }]}
         divider
       />
@@ -48,7 +48,7 @@ export default function AboutPage() {
           <Reveal delay={90} className="lg:col-span-7 lg:col-start-6">
             <div className="space-y-5 text-[1.0625rem] leading-[1.9] text-ink-700">
               <p>
-                Sri Kanchi Silks is a new house, built around a simple conviction: that the
+                Kanchi Vastra is a new house, built around a simple conviction: that the
                 silk traditions of South India do not need reinventing, only presenting well.
               </p>
               <p>

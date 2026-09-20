@@ -107,6 +107,6 @@ export async function submitOrder(
   _address: ShippingAddress,
   _lines: CartLine[],
 ): Promise<OrderResult> {
-  const reference = `SKS-${Date.now().toString(36).toUpperCase()}`;
+  const reference = `KV-${Date.now().toString(36).toUpperCase()}`;
   return { status: 'payment-unavailable', reference };
 }

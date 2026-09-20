@@ -73,7 +73,7 @@ export function Hero() {
             className="eyebrow text-gold-400/90 animate-fade"
             style={{ animationDelay: '120ms' }}
           >
-            Sri Kanchi Silks
+            Kanchi Vastra
           </p>
 
           <h1 className="display-hero mt-6 font-light text-ivory-50">

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import { collections } from '@/data/collections';
-import { productsInCollection } from '@/data/products';
+import type { Product } from '@/lib/types';
 import { Reveal } from '@/components/ui/Reveal';
 import { cn } from '@/lib/utils';
 
@@ -11,7 +11,7 @@ import { cn } from '@/lib/utils';
  * collection takes a tall hero position and the rest step down beside it, so
  * the eye is given a route through the section.
  */
-export function CollectionsShowcase() {
+export function CollectionsShowcase({ products }: { products: Product[] }) {
   const [lead, ...rest] = collections;
 
   return (
@@ -37,11 +37,11 @@ export function CollectionsShowcase() {
 
         <div className="mt-12 grid gap-4 md:mt-16 md:grid-cols-2 lg:grid-cols-3 lg:gap-5">
           <Reveal className="md:row-span-2" y={26}>
-            <CollectionTile collection={lead} tall />
+            <CollectionTile collection={lead} products={products} tall />
           </Reveal>
           {rest.map((collection, i) => (
             <Reveal key={collection.slug} delay={80 + i * 70} y={26}>
-              <CollectionTile collection={collection} />
+              <CollectionTile collection={collection} products={products} />
             </Reveal>
           ))}
         </div>
@@ -52,12 +52,14 @@ export function CollectionsShowcase() {
 
 function CollectionTile({
   collection,
+  products,
   tall = false,
 }: {
   collection: (typeof collections)[number];
+  products: Product[];
   tall?: boolean;
 }) {
-  const count = productsInCollection(collection.slug).length;
+  const count = products.filter((p) => p.collections.includes(collection.slug)).length;
 
   return (
     <Link

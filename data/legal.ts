@@ -84,7 +84,7 @@ export const legalPages: Record<string, LegalPage> = {
       {
         heading: 'About this website',
         body: [
-          'This site is operated by Sri Kanchi Silks. Using it means accepting the terms set out on this page.',
+          'This site is operated by Kanchi Vastra. Using it means accepting the terms set out on this page.',
           'The site is currently a pre-launch build. Product listings, prices, stock figures, imagery and business details shown on it are demonstration content and do not constitute an offer to sell.',
         ],
       },
@@ -106,7 +106,7 @@ export const legalPages: Record<string, LegalPage> = {
       {
         heading: 'Intellectual property',
         body: [
-          'The Sri Kanchi Silks name, logo, site design, written content and original artwork on this site belong to Sri Kanchi Silks and may not be reproduced without permission.',
+          'The Kanchi Vastra name, logo, site design, written content and original artwork on this site belong to Kanchi Vastra and may not be reproduced without permission.',
         ],
       },
       {

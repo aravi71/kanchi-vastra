@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import type { Metadata } from 'next';
-import { products } from '@/data/products';
+import { getProducts } from '@/lib/catalogue';
 import { PageHeader } from '@/components/layout/PageHeader';
 import { ShopBrowser } from '@/components/product/ShopBrowser';
 import { GridSkeleton } from '@/components/product/GridSkeleton';
@@ -8,11 +8,13 @@ import { GridSkeleton } from '@/components/product/GridSkeleton';
 export const metadata: Metadata = {
   title: 'All Sarees',
   description:
-    'Browse the full Sri Kanchi Silks collection of Kanchipuram-inspired silk sarees — filter by collection, colour, price and fabric.',
+    'Browse the full Kanchi Vastra collection of Kanchipuram-inspired silk sarees — filter by collection, colour, price and fabric.',
   alternates: { canonical: '/shop' },
 };
 
-export default function ShopPage() {
+export default async function ShopPage() {
+  const products = await getProducts();
+
   return (
     <>
       <PageHeader

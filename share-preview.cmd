@@ -1,6 +1,6 @@
 @echo off
 REM ---------------------------------------------------------------------------
-REM  Sri Kanchi Silks - share a temporary public preview link
+REM  Kanchi Vastra - share a temporary public preview link
 REM ---------------------------------------------------------------------------
 REM  Builds the site, serves it, and opens a free Cloudflare quick tunnel so
 REM  anyone can view it in a browser.
@@ -47,7 +47,7 @@ call npm run build || goto :fail
 
 echo.
 echo === Starting the site on http://localhost:3000 ===
-start "sri-kanchi-silks server" /min cmd /c "npm run start"
+start "kanchi-vastra server" /min cmd /c "npm run start"
 
 echo Waiting for the server to come up...
 timeout /t 8 /nobreak >nul

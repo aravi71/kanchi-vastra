@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getProductBySlug, products, relatedProducts } from '@/data/products';
+import { getProductBySlug, getProducts, getRelatedProducts } from '@/lib/catalogue';
 import { getCollection } from '@/data/collections';
 import { site } from '@/data/site';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -13,7 +13,8 @@ import { Accordion } from '@/components/ui/Accordion';
 import { formatPrice } from '@/lib/utils';
 
 /** Pre-render every product page at build time. */
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  const products = await getProducts();
   return products.map((p) => ({ slug: p.slug }));
 }
 
@@ -23,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) return { title: 'Saree not found' };
 
   return {
@@ -32,7 +33,7 @@ export async function generateMetadata({
     alternates: { canonical: `/product/${product.slug}` },
     openGraph: {
       type: 'website',
-      title: `${product.name} | Sri Kanchi Silks`,
+      title: `${product.name} | Kanchi Vastra`,
       description: product.description,
       images: [{ url: product.images[0], width: 1000, height: 1333, alt: product.name }],
     },
@@ -47,11 +48,11 @@ export async function generateMetadata({
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
   if (!product) notFound();
 
   const collection = getCollection(product.category);
-  const related = relatedProducts(product, 4);
+  const related = await getRelatedProducts(product, 4);
 
   /**
    * Product structured data. `availability` and `price` are driven by the

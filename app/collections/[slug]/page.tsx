@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { collections, getCollection } from '@/data/collections';
-import { productsInCollection } from '@/data/products';
+import { getProductsInCollection } from '@/lib/catalogue';
 import { ShopBrowser } from '@/components/product/ShopBrowser';
 import { GridSkeleton } from '@/components/product/GridSkeleton';
 import { Reveal } from '@/components/ui/Reveal';
@@ -28,7 +28,7 @@ export async function generateMetadata({
     description: collection.description,
     alternates: { canonical: `/collections/${collection.slug}` },
     openGraph: {
-      title: `${collection.title} | Sri Kanchi Silks`,
+      title: `${collection.title} | Kanchi Vastra`,
       description: collection.description,
       images: [{ url: collection.image, alt: collection.title }],
     },
@@ -44,7 +44,7 @@ export default async function CollectionPage({
   const collection = getCollection(slug);
   if (!collection) notFound();
 
-  const items = productsInCollection(collection.slug);
+  const items = await getProductsInCollection(collection.slug);
 
   return (
     <>

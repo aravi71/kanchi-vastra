@@ -1,4 +1,4 @@
-# Sri Kanchi Silks — logo files
+# Kanchi Vastra — logo files
 
 ## The mark
 

@@ -6,7 +6,7 @@ import { ButtonLink } from '@/components/ui/Button';
 
 const tiles = [1, 2, 3, 4, 5, 6].map((n) => ({
   src: `/images/editorial/social-${n}.svg`,
-  alt: 'Placeholder image from the Sri Kanchi Silks collection',
+  alt: 'Placeholder image from the Kanchi Vastra collection',
 }));
 
 /**
@@ -23,7 +23,7 @@ export function SocialSection() {
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow text-wine-700">Follow</p>
           <h2 className="display-lg mt-5 text-balance font-light">
-            Follow the world of Sri Kanchi Silks
+            Follow the world of Kanchi Vastra
           </h2>
           <p className="mt-5 text-[0.9375rem] leading-relaxed text-ink-600">
             New weaves, details from the loom, and the occasional look at how a saree comes

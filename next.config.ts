@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ['image/avif', 'image/webp'],
+    // Photographs uploaded through the CMS are served from Sanity's CDN.
+    remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }],
   },
   poweredByHeader: false,
 };

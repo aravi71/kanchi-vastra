@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Search, X } from 'lucide-react';
 import { useUi } from '@/lib/store/ui';
 import { searchCollections, searchProducts, suggestedSearches } from '@/lib/search';
+import { useCatalogue } from '@/lib/store/catalogue';
 import { readStorage, writeStorage, formatPrice } from '@/lib/utils';
 import { Overlay } from '@/components/ui/Overlay';
 
@@ -17,20 +18,28 @@ export function SearchOverlay() {
   const { isOpen, close } = useUi();
   const router = useRouter();
   const open = isOpen('search');
+  const { products } = useCatalogue();
 
   const [query, setQuery] = useState('');
   const [recent, setRecent] = useState<string[]>([]);
 
+  // Recent searches live in localStorage, which is unavailable during server
+  // rendering — see the fuller note in lib/store/cart.tsx.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see note above
     setRecent(readStorage<string[]>(RECENT_KEY, []));
   }, []);
 
   // Clear the field each time the overlay opens so it never reopens stale.
-  useEffect(() => {
+  // Adjusted during render rather than in an effect — React's documented way
+  // to reset state when a value changes, and it avoids a wasted second pass.
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (open) setQuery('');
-  }, [open]);
+  }
 
-  const results = useMemo(() => searchProducts(query, 6), [query]);
+  const results = useMemo(() => searchProducts(products, query, 6), [products, query]);
   const collectionHits = useMemo(() => searchCollections(query), [query]);
   const hasQuery = query.trim().length >= 2;
 

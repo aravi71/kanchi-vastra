@@ -69,7 +69,7 @@ export function Header() {
           <Link
             href="/"
             className="shrink-0 lg:flex-none"
-            aria-label="Sri Kanchi Silks — home"
+            aria-label="Kanchi Vastra — home"
           >
             <Logo
               className="scale-[0.86] md:scale-100"

@@ -26,9 +26,17 @@ export function QuickView({
   const [added, setAdded] = useState(false);
   const open = product !== null;
 
+  // Reset the "Added" confirmation whenever a different saree is opened.
+  // Done during render, not in an effect, so the button never flashes "Added"
+  // for the previous product.
+  const [shownFor, setShownFor] = useState(product?.id);
+  if (product?.id !== shownFor) {
+    setShownFor(product?.id);
+    setAdded(false);
+  }
+
   useEffect(() => {
     if (!open) return;
-    setAdded(false);
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
     const prev = document.body.style.overflow;

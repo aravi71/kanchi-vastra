@@ -8,7 +8,7 @@ import { Reveal } from '@/components/ui/Reveal';
 export const metadata: Metadata = {
   title: 'FAQs',
   description:
-    'Answers to common questions about Sri Kanchi Silks sarees, weaves, care, shipping and returns.',
+    'Answers to common questions about Kanchi Vastra sarees, weaves, care, shipping and returns.',
   alternates: { canonical: '/faq' },
 };
 

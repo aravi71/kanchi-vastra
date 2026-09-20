@@ -1,4 +1,3 @@
-import { products } from '@/data/products';
 import { collections } from '@/data/collections';
 import type { Product } from '@/lib/types';
 
@@ -27,13 +26,18 @@ const FIELD_WEIGHTS: { get: (p: Product) => string; weight: number }[] = [
   { get: (p) => p.description, weight: 2 },
 ];
 
-export function searchProducts(query: string, limit = 8): Product[] {
+/**
+ * @param source  the live catalogue — passed in rather than imported, so search
+ *                works identically whether products come from the CMS or the
+ *                local data file.
+ */
+export function searchProducts(source: Product[], query: string, limit = 8): Product[] {
   const q = query.trim().toLowerCase();
   if (q.length < 2) return [];
 
   const terms = q.split(/\s+/).filter(Boolean);
 
-  const scored: Scored[] = products.flatMap((product) => {
+  const scored: Scored[] = source.flatMap((product) => {
     let score = 0;
 
     for (const term of terms) {

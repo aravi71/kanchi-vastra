@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 140" width="560" height="140" role="img" aria-label="Sri Kanchi Silks">
-  <title>Sri Kanchi Silks</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 140" width="560" height="140" role="img" aria-label="Kanchi Vastra">
+  <title>Kanchi Vastra</title>
   <g transform="translate(14 14) scale(0.93)">
     <g fill="none" stroke="#E8DFCD" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
       <path d="M20 104 L46 30 C46 16 52 8 60 8 C68 8 74 16 74 30 L100 104"/>
@@ -11,6 +11,6 @@
     <path d="M60 1.5C63.4 5.2 63.4 8.6 60 11.4C56.6 8.6 56.6 5.2 60 1.5Z" fill="#C0994F"/>
   </g>
   <path d="M140 26 V114" stroke="#C0994F" stroke-width="1" opacity=".55"/>
-  <text x="172" y="66" font-family="Cormorant Garamond, Cormorant, Garamond, Times New Roman, serif" font-size="44" letter-spacing="6" fill="#E8DFCD">SRI KANCHI</text>
-  <text x="174" y="100" font-family="Inter, Helvetica Neue, Arial, sans-serif" font-size="16" letter-spacing="11.5" fill="#D4B375">SILKS</text>
+  <text x="172" y="66" font-family="Cormorant Garamond, Cormorant, Garamond, Times New Roman, serif" font-size="44" letter-spacing="6" fill="#E8DFCD">KANCHI</text>
+  <text x="174" y="100" font-family="Inter, Helvetica Neue, Arial, sans-serif" font-size="16" letter-spacing="11.5" fill="#D4B375">VASTRA</text>
 </svg>

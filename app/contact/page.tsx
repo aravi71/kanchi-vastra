@@ -7,7 +7,7 @@ import { Reveal } from '@/components/ui/Reveal';
 
 export const metadata: Metadata = {
   title: 'Contact',
-  description: 'Get in touch with Sri Kanchi Silks about a saree, an order or a commission.',
+  description: 'Get in touch with Kanchi Vastra about a saree, an order or a commission.',
   alternates: { canonical: '/contact' },
 };
 

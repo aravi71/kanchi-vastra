@@ -88,7 +88,7 @@ export function applyFilters(source: Product[], state: FilterState): Product[] {
   let result = source;
 
   if (state.q.trim().length >= 2) {
-    const matches = searchProducts(state.q, source.length);
+    const matches = searchProducts(source, state.q, source.length);
     const ids = new Set(matches.map((p) => p.id));
     const rank = new Map(matches.map((p, i) => [p.id, i]));
     result = source.filter((p) => ids.has(p.id));
