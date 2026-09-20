@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 260" width="420" height="260" role="img" aria-label="Sri Kanchi Silks">
+  <title>Sri Kanchi Silks</title>
+  <g transform="translate(150 6) scale(1)">
+    <g fill="none" stroke="#E8DFCD" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 104 L46 30 C46 16 52 8 60 8 C68 8 74 16 74 30 L100 104"/>
+      <path d="M13 104 H107"/>
+      <path d="M26.3 86 H93.7" opacity=".72"/>
+      <path d="M32.7 68 H87.3" opacity=".58"/>
+      <path d="M39 50 H81" opacity=".44"/>
+      <path d="M45.3 32 H74.7" opacity=".3"/>
+    </g>
+    <path d="M60 1.5C63.4 5.2 63.4 8.6 60 11.4C56.6 8.6 56.6 5.2 60 1.5Z" fill="#C0994F"/>
+  </g>
+  <text x="210" y="172" text-anchor="middle" font-family="Cormorant Garamond, Cormorant, Garamond, Times New Roman, serif" font-size="46" letter-spacing="7" fill="#E8DFCD">SRI KANCHI</text>
+  <g stroke="#C0994F" stroke-width="1.1">
+    <path d="M120 194 H196"/>
+    <path d="M224 194 H300"/>
+  </g>
+  <path d="M210 188.5 L215.5 194 L210 199.5 L204.5 194 Z" fill="#C0994F"/>
+  <text x="210" y="232" text-anchor="middle" font-family="Inter, Helvetica Neue, Arial, sans-serif" font-size="19" font-weight="400" letter-spacing="13" fill="#D4B375">SILKS</text>
+</svg>

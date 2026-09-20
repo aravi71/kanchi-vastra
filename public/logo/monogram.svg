@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Sri Kanchi Silks monogram">
+  <title>Sri Kanchi Silks</title>
+  <g fill="none" stroke="#C0994F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 104 L46 30 C46 16 52 8 60 8 C68 8 74 16 74 30 L100 104"/>
+    <path d="M13 104 H107"/>
+    <path d="M26.3 86 H93.7" opacity=".72"/>
+    <path d="M32.7 68 H87.3" opacity=".58"/>
+    <path d="M39 50 H81" opacity=".44"/>
+    <path d="M45.3 32 H74.7" opacity=".3"/>
+  </g>
+  <path d="M60 1.5C63.4 5.2 63.4 8.6 60 11.4C56.6 8.6 56.6 5.2 60 1.5Z" fill="#C0994F"/>
+</svg>

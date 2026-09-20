@@ -1,0 +1,22 @@
+import type { Metadata } from 'next';
+import { WishlistView } from '@/components/product/WishlistView';
+import { PageHeader } from '@/components/layout/PageHeader';
+
+export const metadata: Metadata = {
+  title: 'Wishlist',
+  description: 'Sarees you have saved from the Sri Kanchi Silks collection.',
+  robots: { index: false, follow: true },
+};
+
+export default function WishlistPage() {
+  return (
+    <>
+      <PageHeader
+        title="Wishlist"
+        description="Saved to this device. Clearing your browser data will clear this list."
+        crumbs={[{ label: 'Home', href: '/' }, { label: 'Wishlist' }]}
+      />
+      <WishlistView />
+    </>
+  );
+}
