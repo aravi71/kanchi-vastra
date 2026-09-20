@@ -329,7 +329,22 @@ catalogue routes for ISR.
 The project is Vercel-ready: no server-only runtime, no database, every catalogue page
 prerendered.
 
-### Deploying to Vercel (free tier)
+### Option A — a temporary link, right now (no account)
+
+```bash
+share-preview.cmd
+```
+
+Builds the site, serves it, and opens a free Cloudflare quick tunnel. The script prints a
+`https://<random-words>.trycloudflare.com` address that anyone can open in a browser.
+
+This is a **preview, not hosting**. It works only while that window is open and this PC is on,
+and the URL changes every run. Use it to show someone the site today; use Option B for a
+permanent address.
+
+### Option B — permanent free hosting on Vercel (needs your account)
+
+
 
 1. Create the GitHub repository and push:
 
