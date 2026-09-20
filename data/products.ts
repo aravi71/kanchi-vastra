@@ -13,7 +13,30 @@ import type { Product } from '@/lib/types';
    /public/images/products. No component changes are required.
    =========================================================================== */
 
-const img = (slug: string) => [1, 2, 3, 4].map((n) => `/images/products/${slug}-${n}.svg`);
+/**
+ * File extension for product photography.
+ *
+ * The demo artwork is SVG. When you replace it with real photographs, change
+ * this ONE line to 'jpg' (or 'webp') and name your files to match the pattern
+ * below — you do not need to edit twenty separate image arrays.
+ *
+ * Remember to also remove `dangerouslyAllowSVG` from next.config.ts once no
+ * SVG images remain.
+ */
+const IMAGE_EXT = 'svg';
+
+/**
+ * Builds the four image paths for a product:
+ *   /images/products/<slug>-1.<ext>  main shot, full drape
+ *   /images/products/<slug>-2.<ext>  border / selvedge detail
+ *   /images/products/<slug>-3.<ext>  pallu detail
+ *   /images/products/<slug>-4.<ext>  weave close-up
+ *
+ * Shoot in 3:4 portrait — the grid, gallery and cards are all built around it.
+ * A product can override this by setting `images` to an explicit array.
+ */
+const img = (slug: string) =>
+  [1, 2, 3, 4].map((n) => `/images/products/${slug}-${n}.${IMAGE_EXT}`);
 
 export const products: Product[] = [
   {
