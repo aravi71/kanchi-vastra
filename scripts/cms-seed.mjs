@@ -16,6 +16,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join, extname, basename } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { homedir } from 'node:os';
 import { createClient } from '@sanity/client';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -31,8 +32,31 @@ if (existsSync(envPath)) {
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production';
-const token = process.env.SANITY_API_TOKEN;
 const replace = process.argv.includes('--replace');
+
+/**
+ * Write access, without storing a second secret.
+ *
+ * Prefer an explicit SANITY_API_TOKEN when one is set (CI needs that).
+ * Otherwise borrow the session created by `npx sanity login` — it already
+ * lives on this machine, it belongs to the person running the command, and
+ * reusing it means there is no long-lived token sitting in a project file
+ * waiting to be leaked into a screenshot or a commit.
+ */
+function resolveToken() {
+  if (process.env.SANITY_API_TOKEN) return process.env.SANITY_API_TOKEN;
+  try {
+    const cliConfig = join(homedir(), '.config', 'sanity', 'config.json');
+    if (existsSync(cliConfig)) {
+      return JSON.parse(readFileSync(cliConfig, 'utf8')).authToken;
+    }
+  } catch {
+    /* fall through to the guidance below */
+  }
+  return undefined;
+}
+
+const token = resolveToken();
 
 function die(lines) {
   console.error('\n' + lines.join('\n') + '\n');
@@ -53,15 +77,14 @@ if (!projectId) {
 
 if (!token) {
   die([
-    '  SANITY_API_TOKEN is not set — the script cannot write without it.',
+    '  No Sanity credentials found.',
     '',
-    '  Create one:  sanity.io -> your project -> API -> Tokens',
-    '               -> Add API token -> name it "seed", permission "Editor"',
+    '  Easiest fix — log in once, and this script will use that session:',
+    '      npx sanity login',
     '',
-    '  Then add it to .env.local:',
-    '      SANITY_API_TOKEN=sk...',
-    '',
-    '  Keep this token private. It is already git-ignored.',
+    '  Or, for an unattended environment, create a token and set it:',
+    '      npx sanity tokens create "ci" --role editor',
+    '      SANITY_API_TOKEN=sk...   (in .env.local)',
   ]);
 }
 
