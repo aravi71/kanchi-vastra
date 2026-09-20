@@ -53,6 +53,8 @@ Then open <http://localhost:3000>.
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run gen:art` | Regenerate the demo saree artwork |
+| `npm run products:export` | Catalogue → `content/products.csv` for editing in Excel/Sheets |
+| `npm run products:import` | Validate that spreadsheet and write it back to the catalogue |
 
 Requires Node.js 20 or newer (built and verified on Node 24 LTS).
 

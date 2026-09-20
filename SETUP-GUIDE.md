@@ -99,9 +99,72 @@ contentDispositionType: 'attachment',
 contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 ```
 
-## Step 5: Set the real details and prices
+## Step 5: Set the real details and prices — the easy way
 
-Everything for one saree lives in a single block in `data/products.ts`. Edit the values:
+**Use the spreadsheet.** You do not need to touch code for this.
+
+```bash
+npm run products:export
+```
+
+That writes `content/products.csv`. Open it in **Excel or Google Sheets** — one row per
+saree, one column per field, with `slug`, `name`, `price` and `stock` first because those
+are what you change most. Edit it like any spreadsheet, save it as CSV in the same place,
+then:
+
+```bash
+npm run products:import
+```
+
+This checks everything *before* changing anything. If something is wrong it tells you the
+row number and fixes nothing, so a bad edit can never half-apply:
+
+```
+  3 problem(s) found. Nothing was changed.
+
+  Row 4: "Peacock Motif Heritage Silk" has category "wedding".
+          Must be one of: kanchipuram, bridal, festive, everyday.
+  Row 6: SKU "SKS-KAN-005" is already used on row 5.
+  Row 7: "Lotus Zari Kanchipuram" has color_hex "reddish", which is not a
+          6-digit colour code. Example: #9B1B30
+```
+
+It is forgiving about the things spreadsheets actually do to your data — typing
+`₹ 24,500` in the price column is fine, and if Excel strips the `#` off a colour code it
+puts it back. It is strict about anything that would break the site or mislead a customer.
+
+It also checks your photographs are present. While you are still shooting them:
+
+```bash
+npm run products:import -- --allow-missing-photos
+```
+
+Your previous catalogue is always saved as `data/products.ts.bak`, so there is one step of
+undo if an import was not what you meant.
+
+**Adding a new saree:** add a row to the spreadsheet. **Removing one:** delete the row.
+
+### Column notes
+
+| Column | Notes |
+| --- | --- |
+| `slug` | The web address, and the photo filename. Lowercase, hyphens, no spaces. **Never change it once published** — it breaks shared links. |
+| `price` | Plain number in rupees. `18500`. The site adds ₹ and Indian commas. |
+| `compare_at_price` | Optional "was" price, shown struck through. **Leave blank** unless it genuinely sold at that price. |
+| `stock` | Real count. `0` = Sold out, `1`–`2` shows an "N left" badge. |
+| `category` | One of `kanchipuram`, `bridal`, `festive`, `everyday` |
+| `collections` | Comma-separated, e.g. `bridal, new-arrivals` |
+| `color_family` | Which colour filter it appears under |
+| `color_hex` | The colour dot, e.g. `#9B1B30` |
+| `featured` | `yes` to show on the homepage |
+| `new_arrival` | `yes` for the "New" badge |
+
+---
+
+### The other way: editing the code directly
+
+If you prefer, everything for one saree also lives in a single block in `data/products.ts`.
+Both methods work on the same data — just don't edit both at once without re-exporting.
 
 ```ts
 {
@@ -214,17 +277,67 @@ Typical cost: **around 2% + GST per transaction** for cards and net banking, low
 UPI. No monthly fee on the standard plan. Confirm current rates with them directly —
 do not take a figure in this document as a quote.
 
-## Step 2: Open the account — this part is yours, and it takes the longest
+## Step 2: Register the business — the part people get stuck on
 
-Sign up at razorpay.com. You will need to upload:
+You are selling online from home, with no shop and no company. That is completely normal
+and there is a straightforward path.
 
-- **PAN card** — business PAN for a company, personal PAN if sole proprietor
-- **Bank account** in the business name, plus a cancelled cheque or statement
-- **Business proof** — GST certificate, Shop & Establishment licence, or Udyam
-  registration
-- **Address proof** and identity proof for the owner/directors
+### You are a Sole Proprietorship
 
-**KYC approval usually takes 2–4 working days.** Start this early; it is the long pole.
+You do not "register" a sole proprietorship as an entity — there is no such certificate in
+India. You exist as a business the moment you trade. What a payment gateway wants is a
+*government-issued document that shows your business exists*. The easiest one to get is:
+
+### Udyam (MSME) registration — free, online, same day
+
+This is the single best answer to "what do I use as business proof".
+
+- Go to **udyamregistration.gov.in** (the official government portal)
+- **It is completely free.** The portal says so explicitly: *"Registration Process is
+  totally free. No Costs or Fees are to be paid to anyone."* Ignore any site charging a fee
+- You need only your **Aadhaar** and **PAN** — fully online, paperless, self-declared
+- The certificate is issued online immediately, with a QR code
+
+That certificate is accepted as business proof. This is the fastest route by a wide margin.
+
+### Alternatives, if you want or need them
+
+| Document | Where | Notes |
+| --- | --- | --- |
+| **Shop & Establishment licence** | Your local municipal body | State-level; works even for a home-based business in most states |
+| **GST registration** | gst.gov.in | Free. Mandatory above ₹40 lakh turnover for goods (₹20 lakh in some states) — but you may want it voluntarily to claim input credit |
+| **Professional tax registration** | State commercial tax dept | Accepted in many states |
+| **Income Tax Return** in your name showing the business income | — | Accepted as proof of existence |
+
+### Address proof
+
+Because you work from home, use a document in **your own name** at your home address:
+
+- Aadhaar card, passport, voter ID or driving licence, **or**
+- A recent **electricity, water or landline bill** (usually within the last 3 months), **or**
+- A **rent agreement**, if you rent
+
+If the bill is in a parent's or landlord's name, you will typically also need a short
+**No Objection Certificate** from them plus their bill. Ask Razorpay's support which they
+want for your specific case — it is a routine question and they answer it quickly.
+
+Note: if a business-proof document already shows your full address, it can usually serve
+as the address proof too.
+
+### Also needed
+
+- **PAN card** — your personal PAN is correct for a sole proprietor
+- **Bank account** with a cancelled cheque or passbook. For a sole proprietorship this
+  should ideally be a **current account in the business name**, though many gateways will
+  start you on a savings account. The name on the account must match your PAN exactly
+- A passport-size photograph
+
+**KYC approval usually takes 2–4 working days.** Start it early; it is the long pole.
+
+> These requirements do change, and they vary by business type. Treat this as a map, not
+> the final word: check Razorpay's own checklist in their dashboard when you apply, and if
+> you are unsure about GST or which structure suits you, **a chartered accountant will
+> settle it in one short conversation.** That is worth the fee.
 
 You will also be asked for your **website URL** — so deploy the site first (see
 "Deployment" in `README.md`), even without payments enabled.
