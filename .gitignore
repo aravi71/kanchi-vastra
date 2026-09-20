@@ -41,3 +41,6 @@ yarn-error.log*
 .idea/
 .vscode/*
 !.vscode/extensions.json
+
+# one-step undo written by products:import
+data/products.ts.bak

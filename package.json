@@ -9,7 +9,9 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "gen:art": "node scripts/generate-art.mjs"
+    "gen:art": "node scripts/generate-art.mjs",
+    "products:export": "node scripts/products-export.mjs",
+    "products:import": "node scripts/products-import.mjs"
   },
   "dependencies": {
     "clsx": "^2.1.1",
