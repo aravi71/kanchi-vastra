@@ -408,6 +408,29 @@ Every later push to `main` redeploys automatically; pull requests get preview UR
 
 ---
 
+## Known limitation: soft 404 on unknown saree URLs
+
+`/product/<anything>` returns HTTP **200** with the "not found" page rather than a real 404.
+Visitors see the correct page; search engines may index these as real pages.
+
+This is inherent to how `notFound()` behaves in this dynamic route on Next 16 here. It
+predates the CMS work — the original static rendering does the same — and neither moving the
+check into `generateMetadata` nor switching the route to per-request rendering changed it, so
+both attempts were reverted rather than left in the codebase. `/nope` and every other unknown
+URL still return a correct 404.
+
+Two ways to fix it, neither free:
+
+- `export const dynamicParams = false` on the route gives real 404s, but a saree added in the
+  admin would then need `npm run deploy` before its page exists.
+- Middleware that checks the slug against the catalogue before the response starts.
+
+**Related, and worth knowing day to day:** deleting a saree in the admin removes it from the
+shop list within about two minutes, but its own page keeps answering until the site is
+rebuilt — Next serves the last good copy while re-rendering, and every re-render finds the
+document gone. **Prefer setting stock to 0 over deleting.** That shows "Sold out", blocks
+purchase, and keeps links people have already shared working.
+
 ## SEO
 
 - Per-page titles and descriptions with a `%s | Kanchi Vastra` template
