@@ -331,6 +331,33 @@ catalogue routes for ISR.
 The project is Vercel-ready: no server-only runtime, no database, every catalogue page
 prerendered.
 
+### Live: Hostinger VPS
+
+The shop runs at **https://srv1396079.hstgr.cloud** on the Hostinger VPS (Ubuntu 24.04),
+alongside the MetaTrader 5 install already on that server.
+
+| Piece | Where |
+| --- | --- |
+| App | `/srv/kanchi-vastra/app` → symlink to `releases/<commit>`, run as user `kanchi` |
+| Service | `systemctl status kanchi-vastra` — Next.js on 127.0.0.1:3000 only |
+| Web server + HTTPS | `systemctl status caddy-kanchi` — Caddy on 80/443, Let's Encrypt renews automatically |
+| Config | `/etc/caddy/Caddyfile`, secrets-free env in `/srv/kanchi-vastra/shared/.env.local` |
+| Node / Caddy | standalone binaries in `/opt/node`, `/opt/caddy` — no system packages touched |
+
+**Content** (prices, photos, sarees) is edited at `/studio` and appears within 5 minutes.
+
+**Code** changes: commit, then from Git Bash
+
+```bash
+npm run deploy
+npm run deploy -- --rollback   # back to the previous release
+```
+
+**Adding a custom domain later:** point its A record at `72.61.146.146` (and AAAA at
+`2a02:4780:f:a691::1`), add the domain as a second site address in `/etc/caddy/Caddyfile`,
+run `systemctl reload caddy-kanchi`, update `NEXT_PUBLIC_SITE_URL` in
+`shared/.env.local`, add the origin with `npx sanity cors add`, and `npm run deploy`.
+
 ### Option A — a temporary link, right now (no account)
 
 ```bash
