@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getProductBySlug, getProducts, getRelatedProducts } from '@/lib/catalogue';
+import { getProductBySlug, getRelatedProducts } from '@/lib/catalogue';
 import { getCollection } from '@/data/collections';
 import { site } from '@/data/site';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -32,7 +32,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProductBySlug(slug);
-  if (!product) return { title: 'Saree not found' };
+
+  // notFound() belongs HERE, not in the component below. This route renders
+  // per request, so by the time the component runs Next has already begun
+  // streaming and sent a 200 - calling notFound() there produces the 404 page
+  // under a 200 status, which search engines index as a real page.
+  // generateMetadata runs before the response starts, so the status is honest.
+  if (!product) notFound();
 
   return {
     title: product.name,
