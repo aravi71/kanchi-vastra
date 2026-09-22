@@ -95,7 +95,7 @@ export async function getProducts(): Promise<Product[]> {
       groq`*[_type == "product" && defined(slug.current)]
              | order(coalesce(order, 9999) asc, name asc) { ${PRODUCT_FIELDS} }`,
       {},
-      { next: { tags: ['product'], revalidate: 300 } },
+      { next: { tags: ['product'], revalidate: 60 } },
     );
     // An empty CMS should not produce an empty shop while it is being filled.
     return docs.length > 0 ? normalise(docs) : localProducts;
