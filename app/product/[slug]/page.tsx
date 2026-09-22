@@ -12,11 +12,18 @@ import { FeaturedRail } from '@/components/home/FeaturedRail';
 import { Accordion } from '@/components/ui/Accordion';
 import { formatPrice } from '@/lib/utils';
 
-/** Pre-render every product page at build time. */
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
-}
+/**
+ * Rendered per request rather than cached as a static page.
+ *
+ * The catalogue fetch itself is still cached (60s), so this costs a few
+ * milliseconds of rendering, not a round trip to the CMS. The reason is
+ * correctness: when a saree is deleted in the admin, a cached page keeps
+ * answering 200 forever, because Next serves the last good copy while it
+ * re-renders and every re-render finds the document gone. Rendering on
+ * demand means a deleted saree starts returning 404 within a minute, and a
+ * price change shows up just as quickly.
+ */
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
   params,
