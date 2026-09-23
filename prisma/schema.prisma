@@ -139,7 +139,8 @@ model Category {
   parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
   children Category[] @relation("CategoryTree")
 
-  products Product[]
+  products          Product[]
+  collectionProducts Product[] @relation("ProductCollections")
 
   // SEO
   metaTitle       String?
@@ -164,8 +165,13 @@ model Product {
   sku              String        @unique
   status           ProductStatus @default(DRAFT)
 
+  // Primary category - drives breadcrumbs, canonical URL and SEO.
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  // Additional collections this saree is merchandised in. A bridal piece
+  // that is also a Kanchipuram weave belongs in both listings.
+  collections Category[] @relation("ProductCollections")
 
   images   ProductImage[]
   variants ProductVariant[]
