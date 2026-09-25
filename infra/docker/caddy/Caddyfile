@@ -1,0 +1,40 @@
+# Caddy — HTTPS and routing for the Kanchi Vastra containers.
+# {$SITE_HOST} and {$MAILPIT_AUTH_HASH} come from the server's stack/.env.
+
+{$SITE_HOST} {
+	encode zstd gzip
+
+	# DEV server: keep search engines out, so demo content never competes
+	# with the real shop once production goes live.
+	header X-Robots-Tag "noindex, nofollow"
+
+	# Shop photos, served from Garage. Public, read-only.
+	handle_path /media/* {
+		header {
+			# Uploaded SVGs cannot run scripts or load anything.
+			Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox"
+			X-Content-Type-Options nosniff
+			Cache-Control "public, max-age=86400"
+		}
+		reverse_proxy garage:3902 {
+			header_up Host kanchi-media.web.garage.localhost
+		}
+	}
+
+	# DEV test inbox - password protected.
+	redir /mailpit /mailpit/
+	handle /mailpit/* {
+		basic_auth {
+			admin {$MAILPIT_AUTH_HASH}
+		}
+		reverse_proxy mailpit:8025
+	}
+
+	# Everything else: the website.
+	handle {
+		reverse_proxy app:3000
+	}
+}
+
+# Mail server admin page — added once the domain is ready.
+import mail.caddy*

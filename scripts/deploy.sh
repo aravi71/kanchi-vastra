@@ -1,17 +1,18 @@
 #!/usr/bin/env bash
 # ---------------------------------------------------------------------------
-#  deploy.sh — ship the committed code to the Hostinger VPS.
+#  deploy.sh — ship the committed code to the Hostinger VPS (Docker Compose).
 #
 #  You only need this for CODE changes. Prices, photos and sarees are edited
 #  in the admin (/studio) and reach the live site on their own within
-#  five minutes.
+#  about a minute.
 #
 #  How it stays safe:
 #    - deploys what is COMMITTED, never half-edited files or local secrets
-#    - builds each release in its own folder while the current one keeps
-#      serving, so a failed build never takes the shop down
-#    - switches over by repointing a symlink, then restarts the app
-#    - keeps the last 3 releases; `npm run deploy -- --rollback` goes back one
+#    - builds a new image (kanchi-vastra:<commit>) while the current container
+#      keeps serving, so a failed build never takes the shop down
+#    - swaps the app container to the new image, then waits for it to report
+#      healthy
+#    - keeps the last 3 images; `npm run deploy -- --rollback` goes back one
 #
 #  Usage (from Git Bash, in the project folder):
 #    npm run deploy
@@ -28,15 +29,29 @@ ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
 cd "$(dirname "$0")/.."
 
+# Runs on the server: wait for the app container to report healthy.
+WAIT_HEALTHY='
+wait_healthy() {
+  for i in $(seq 1 40); do
+    s=$(docker inspect -f "{{.State.Health.Status}}" "$(docker compose ps -q app)" 2>/dev/null || true)
+    [ "$s" = healthy ] && return 0
+    sleep 3
+  done
+  echo "  the app did not become healthy — see: docker compose logs app"; return 1
+}
+'
+
 if [[ "${1:-}" == "--rollback" ]]; then
   ssh_run "
     set -e
-    cd $BASE/releases
-    current=\$(basename \$(readlink -f $BASE/app))
-    previous=\$(ls -1t | grep -vx \"\$current\" | head -1)
-    [ -n \"\$previous\" ] || { echo 'No earlier release to roll back to.'; exit 1; }
-    ln -sfn $BASE/releases/\$previous $BASE/app
-    systemctl restart kanchi-vastra
+    cd $BASE/stack
+    current=\$(sed -n 's/^APP_TAG=//p' .env)
+    previous=\$(docker image ls kanchi-vastra --format '{{.Tag}}' | grep -vx \"\$current\" | head -1)
+    [ -n \"\$previous\" ] || { echo 'No earlier image to roll back to.'; exit 1; }
+    sed -i \"s/^APP_TAG=.*/APP_TAG=\$previous/\" .env
+    $WAIT_HEALTHY
+    docker compose up -d app
+    wait_healthy
     echo \"Rolled back: \$current -> \$previous\"
   "
   exit 0
@@ -55,25 +70,30 @@ git archive --format=tar HEAD | ssh_run "
   STAGE=$BASE/releases/$REL
   rm -rf \$STAGE && mkdir -p \$STAGE
   tar -xf - -C \$STAGE
-  cp $BASE/shared/.env.local \$STAGE/.env.local
-  chmod 600 \$STAGE/.env.local
-  chown -R kanchi:kanchi \$STAGE
 
-  RUN='runuser -u kanchi -- env PATH=/opt/node/bin:/usr/bin:/bin HOME=$BASE NEXT_TELEMETRY_DISABLED=1'
-  cd \$STAGE
-  echo '  installing dependencies...'
-  \$RUN npm ci --no-audit --no-fund > \$STAGE/.deploy-install.log 2>&1 \
-    || { echo '  install FAILED — live site untouched. See' \$STAGE/.deploy-install.log; exit 1; }
-  echo '  building...'
-  \$RUN npm run build > \$STAGE/.deploy-build.log 2>&1 \
+  echo '  building image kanchi-vastra:$REL ...'
+  docker build --secret id=appenv,src=$BASE/shared/app.env -t kanchi-vastra:$REL \$STAGE \
+      > \$STAGE/.deploy-build.log 2>&1 \
     || { echo '  build FAILED — live site untouched. See' \$STAGE/.deploy-build.log; exit 1; }
 
-  ln -sfn \$STAGE $BASE/app
-  systemctl restart kanchi-vastra
+  # server layout and the backup job travel with the code
+  mkdir -p $BASE/stack/caddy
+  cp \$STAGE/infra/docker/compose.yaml $BASE/stack/compose.yaml
+  cp \$STAGE/infra/docker/caddy/Caddyfile $BASE/stack/caddy/Caddyfile
+  install -m 700 \$STAGE/infra/docker/backup.sh /usr/local/sbin/kanchi-backup
 
-  # keep the three most recent releases
-  cd $BASE/releases && ls -1t | tail -n +4 | xargs -r rm -rf
+  cd $BASE/stack
+  sed -i 's/^APP_TAG=.*/APP_TAG=$REL/' .env
+  docker compose up -d
+  docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile >/dev/null
+  $WAIT_HEALTHY
+  wait_healthy
   echo '  switched to' $REL
+
+  # keep the three most recent releases and images
+  cd $BASE/releases && ls -1t | tail -n +4 | xargs -r rm -rf
+  docker image ls kanchi-vastra --format '{{.Tag}}' | tail -n +4 | sed 's/^/kanchi-vastra:/' | xargs -r docker image rm >/dev/null
+  docker builder prune -f --filter until=168h >/dev/null
 "
 
 for i in 1 2 3 4 5 6 7 8 9 10; do

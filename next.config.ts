@@ -2,6 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  // The Docker image runs `node server.js` from this traced bundle instead
+  // of shipping the whole node_modules folder.
+  output: 'standalone',
   images: {
     // Demo artwork ships as SVG in /public. When real saree photography
     // replaces it, remove `dangerouslyAllowSVG` and add remotePatterns here.

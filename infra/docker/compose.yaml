@@ -1,0 +1,111 @@
+# Kanchi Vastra — the whole server in one file.
+#
+# Runs on the DEV server from /srv/kanchi-vastra/stack (deploy.sh copies this
+# folder there). Server-only values — passwords, the app image tag, the site
+# hostname — come from /srv/kanchi-vastra/stack/.env, which is never committed.
+# See infra/docker/README.md.
+#
+# Security shape:
+#   - Only Caddy (80/443) and the mail server (25/465/587/993) face the
+#     internet. Everything else has no published port, or one bound to
+#     127.0.0.1 for backups and maintenance from the server itself.
+#   - The database sits on the `internal` network only: Caddy cannot reach it.
+
+name: kanchi
+
+services:
+  caddy:
+    image: caddy:2.11.4-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_HOST: ${SITE_HOST:?set SITE_HOST in .env}
+      MAILPIT_AUTH_HASH: ${MAILPIT_AUTH_HASH:?set MAILPIT_AUTH_HASH in .env}
+    volumes:
+      - ./caddy:/etc/caddy:ro
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/caddy:/data
+    networks: [edge]
+    depends_on: [app]
+
+  app:
+    image: kanchi-vastra:${APP_TAG:?set APP_TAG in .env}
+    restart: unless-stopped
+    env_file: ${SHARED_DIR:-/srv/kanchi-vastra/shared}/app.env
+    environment:
+      NODE_ENV: production
+    networks: [edge, internal]
+    depends_on:
+      postgres: { condition: service_healthy }
+      garage: { condition: service_started }
+      mailpit: { condition: service_started }
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: kanchi
+      POSTGRES_DB: kanchi_vastra
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/postgres:/var/lib/postgresql/data
+    # No published port at all. Backups use `docker compose exec postgres`.
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kanchi -d kanchi_vastra"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  garage:
+    image: dxflrs/garage:v2.4.1
+    restart: unless-stopped
+    user: "10001:10001"
+    environment:
+      RUST_LOG: garage=warn
+    volumes:
+      - ${SHARED_DIR:-/srv/kanchi-vastra/shared}/garage.toml:/etc/garage.toml:ro
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/garage:/var/lib/garage
+    ports:
+      # server-only: the nightly backup copies the bucket through this
+      - "127.0.0.1:3900:3900"
+    networks: [edge, internal]
+
+  # DEV test inbox: catches every email the shop sends, delivers none.
+  mailpit:
+    image: axllent/mailpit:v1.31.2
+    restart: unless-stopped
+    environment:
+      MP_SMTP_BIND_ADDR: 0.0.0.0:1025
+      MP_UI_BIND_ADDR: 0.0.0.0:8025
+      MP_WEBROOT: /mailpit/
+      MP_DATABASE: /data/mailpit.db
+      MP_MAX_MESSAGES: 2000
+    volumes:
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/mailpit:/data
+    networks: [edge, internal]
+
+  # Real mail server: sends and receives for your domain.
+  # Starts only with `--profile mail`, once the domain and DNS are ready.
+  stalwart:
+    image: stalwartlabs/stalwart:v0.16.23
+    restart: unless-stopped
+    profiles: [mail]
+    ports:
+      - "25:25"     # other mail servers deliver to you
+      - "465:465"   # sending, TLS
+      - "587:587"   # sending, STARTTLS
+      - "993:993"   # reading mail (IMAP, TLS)
+    volumes:
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/stalwart:/opt/stalwart
+      # Caddy's certificates, so mail uses the same trusted certificate
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/caddy/caddy/certificates:/certs:ro
+    networks: [edge, internal]
+
+networks:
+  edge: {}
+  internal:
+    internal: true

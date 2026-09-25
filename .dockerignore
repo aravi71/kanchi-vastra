@@ -1,0 +1,20 @@
+# Keep the build context small and free of secrets.
+.git
+node_modules
+.next
+out
+build
+coverage
+*.tsbuildinfo
+npm-debug.log*
+
+# settings files - the build gets them as a BuildKit secret instead
+.env
+.env.*
+!.env.example
+
+# not needed inside the image
+infra
+scripts/deploy.sh
+share-preview.cmd
+*.md
