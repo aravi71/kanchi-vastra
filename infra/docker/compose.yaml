@@ -89,18 +89,28 @@ services:
     networks: [edge, internal]
 
   # Real mail server: sends and receives for your domain.
-  # Starts only with `--profile mail`, once the domain and DNS are ready.
+  # Starts only with COMPOSE_PROFILES=mail in .env, once the domain and DNS
+  # are ready. Configured with stalwart-cli (see infra/docker/README.md);
+  # config.json in the etc folder skips the browser setup wizard.
   stalwart:
     image: stalwartlabs/stalwart:v0.16.23
     restart: unless-stopped
     profiles: [mail]
+    environment:
+      # admin login for stalwart-cli; the value lives only in the server's .env
+      # (plain ${VAR} rather than ${VAR:?}: compose checks required values
+      # even for services whose profile is off)
+      STALWART_RECOVERY_ADMIN: ${STALWART_ADMIN}
+      STALWART_PUBLIC_URL: https://${MAIL_HOST}
     ports:
       - "25:25"     # other mail servers deliver to you
-      - "465:465"   # sending, TLS
-      - "587:587"   # sending, STARTTLS
+      - "465:465"   # sending from apps and phones (TLS)
       - "993:993"   # reading mail (IMAP, TLS)
+      # server-only: stalwart-cli administration
+      - "127.0.0.1:18080:8080"
     volumes:
-      - ${DATA_DIR:-/srv/kanchi-vastra/data}/stalwart:/opt/stalwart
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/stalwart/etc:/etc/stalwart
+      - ${DATA_DIR:-/srv/kanchi-vastra/data}/stalwart/data:/var/lib/stalwart
       # Caddy's certificates, so mail uses the same trusted certificate
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/caddy/caddy/certificates:/certs:ro
     networks: [edge, internal]
