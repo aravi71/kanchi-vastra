@@ -37,8 +37,8 @@ export function WishlistView() {
           <Heart className="mx-auto size-10 text-ivory-400" strokeWidth={0.8} />
           <h2 className="display-md mt-6 font-light">Nothing saved yet</h2>
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink-500">
-            Tap the heart on any saree to keep it here while you decide. Useful when a weave is
-            down to its last few pieces.
+            Tap the heart on any saree to keep it here while you decide. Useful when a weave is down
+            to its last few pieces.
           </p>
           <ButtonLink href="/shop" className="mt-8">
             Explore the Collection
@@ -94,13 +94,13 @@ export function WishlistView() {
                   <button
                     type="button"
                     onClick={() => remove(product.id)}
-                    className="absolute right-2.5 top-2.5 z-10 grid size-9 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-opacity hover:opacity-70"
+                    className="absolute top-2.5 right-2.5 z-10 grid size-9 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-opacity hover:opacity-70"
                     aria-label={`Remove ${product.name} from wishlist`}
                   >
                     <X className="size-4" strokeWidth={1.5} />
                   </button>
                   {soldOut && (
-                    <span className="eyebrow-sm absolute left-0 top-0 bg-ink-900/85 px-3 py-1.5 text-ivory-50">
+                    <span className="eyebrow-sm absolute top-0 left-0 bg-ink-900/85 px-3 py-1.5 text-ivory-50">
                       Sold out
                     </span>
                   )}
@@ -112,7 +112,7 @@ export function WishlistView() {
                 <p className="mt-1 text-xs text-ink-400">
                   {product.color} · {product.fabric}
                 </p>
-                <p className={cn('mt-2 text-sm tnum', soldOut && 'text-ink-400')}>
+                <p className={cn('tnum mt-2 text-sm', soldOut && 'text-ink-400')}>
                   {formatPrice(product.price)}
                 </p>
 

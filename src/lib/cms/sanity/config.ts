@@ -25,9 +25,7 @@ export default defineConfig({
         S.list()
           .title('Shop')
           .items([
-            S.listItem()
-              .title('Sarees')
-              .child(S.documentTypeList('product').title('Sarees')),
+            S.listItem().title('Sarees').child(S.documentTypeList('product').title('Sarees')),
             S.divider(),
             // Settings is a singleton — one document, edited in place, rather
             // than a list the owner could accidentally add a second entry to.
@@ -47,7 +45,6 @@ export default defineConfig({
 
   document: {
     // Hide the singleton from "create new" menus.
-    newDocumentOptions: (prev) =>
-      prev.filter((item) => item.templateId !== 'siteSettings'),
+    newDocumentOptions: (prev) => prev.filter((item) => item.templateId !== 'siteSettings'),
   },
 });

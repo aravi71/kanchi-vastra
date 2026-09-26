@@ -66,11 +66,7 @@ export function Header() {
           </button>
 
           {/* --- logo --- */}
-          <Link
-            href="/"
-            className="shrink-0 lg:flex-none"
-            aria-label="Kanchi Vastra — home"
-          >
+          <Link href="/" className="shrink-0 lg:flex-none" aria-label="Kanchi Vastra — home">
             <Logo
               className="scale-[0.86] md:scale-100"
               markClassName={overHero ? 'text-gold-400' : 'text-gold-600'}
@@ -97,7 +93,7 @@ export function Header() {
                       href={item.href}
                       aria-current={active ? 'page' : undefined}
                       className={cn(
-                        'eyebrow-sm link-underline whitespace-nowrap py-1 transition-opacity duration-500',
+                        'eyebrow-sm link-underline py-1 whitespace-nowrap transition-opacity duration-500',
                         active ? 'opacity-100' : 'opacity-70 hover:opacity-100',
                       )}
                     >
@@ -156,7 +152,7 @@ export function Header() {
 function CountDot({ value }: { value: number }) {
   return (
     <span
-      className="absolute right-0 top-0 grid size-[17px] place-items-center rounded-full bg-wine-700 text-[9px] font-medium text-ivory-50 tnum"
+      className="tnum absolute top-0 right-0 grid size-[17px] place-items-center rounded-full bg-wine-700 text-[9px] font-medium text-ivory-50"
       aria-hidden="true"
     >
       {value > 9 ? '9+' : value}

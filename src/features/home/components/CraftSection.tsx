@@ -32,13 +32,13 @@ export function CraftSection() {
       id="craftsmanship"
       className="relative overflow-hidden bg-wine-950 py-24 text-ivory-200 md:py-32 lg:py-40"
     >
-      <PeacockCorner className="absolute -left-16 top-8 hidden size-80 text-gold-500/[0.07] lg:block" />
+      <PeacockCorner className="absolute top-8 -left-16 hidden size-80 text-gold-500/[0.07] lg:block" />
       <PeacockCorner className="absolute -right-16 bottom-8 hidden size-80 rotate-180 text-gold-500/[0.07] lg:block" />
 
       <div className="container-editorial relative">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow text-gold-400/85">The Craft</p>
-          <h2 className="display-xl mt-5 text-balance font-light text-ivory-50">
+          <h2 className="display-xl mt-5 font-light text-balance text-ivory-50">
             Three things decide a silk saree
           </h2>
           <SectionDivider className="mx-auto mt-8 max-w-xs" />
@@ -56,7 +56,7 @@ export function CraftSection() {
                     sizes="(max-width: 768px) 100vw, 31vw"
                     className="object-cover"
                   />
-                  <span className="absolute left-0 top-0 bg-wine-950/80 px-3.5 py-2 font-[family-name:var(--font-display)] text-sm tnum text-gold-400">
+                  <span className="tnum absolute top-0 left-0 bg-wine-950/80 px-3.5 py-2 font-[family-name:var(--font-display)] text-sm text-gold-400">
                     {pillar.index}
                   </span>
                 </div>

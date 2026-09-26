@@ -135,17 +135,14 @@ function CheckRow({
         empty && !checked && 'opacity-40',
       )}
     >
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onToggle}
-        className="sr-only"
-      />
+      <input type="checkbox" checked={checked} onChange={onToggle} className="sr-only" />
       <span
         aria-hidden="true"
         className={cn(
           'grid size-4 shrink-0 place-items-center border transition-colors duration-300',
-          checked ? 'border-wine-700 bg-wine-700' : 'border-ink-900/30 group-hover:border-ink-900/60',
+          checked
+            ? 'border-wine-700 bg-wine-700'
+            : 'border-ink-900/30 group-hover:border-ink-900/60',
         )}
       >
         {checked && <Check className="size-3 text-ivory-50" strokeWidth={2.4} />}
@@ -154,15 +151,13 @@ function CheckRow({
       {swatch && (
         <span
           aria-hidden="true"
-          className="size-3.5 shrink-0 rounded-full ring-1 ring-inset ring-ink-900/15"
+          className="size-3.5 shrink-0 rounded-full ring-1 ring-ink-900/15 ring-inset"
           style={{ backgroundColor: swatch }}
         />
       )}
 
       <span className="flex-1 text-ink-700">{label}</span>
-      {typeof count === 'number' && (
-        <span className="text-xs tnum text-ink-300">{count}</span>
-      )}
+      {typeof count === 'number' && <span className="tnum text-xs text-ink-300">{count}</span>}
     </label>
   );
 }

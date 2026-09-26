@@ -48,25 +48,24 @@ export default function AboutPage() {
           <Reveal delay={90} className="lg:col-span-7 lg:col-start-6">
             <div className="space-y-5 text-[1.0625rem] leading-[1.9] text-ink-700">
               <p>
-                Kanchi Vastra is a new house, built around a simple conviction: that the
-                silk traditions of South India do not need reinventing, only presenting well.
+                Kanchi Vastra is a new house, built around a simple conviction: that the silk
+                traditions of South India do not need reinventing, only presenting well.
               </p>
               <p>
-                The sarees we are drawn to are the ones that have changed least across
-                generations — the stepped temple border, the korvai join worked thread by
-                thread, the lotus and mango buttas that have travelled through centuries of
-                Indian textile. These are not decorative choices. They are a grammar, and it is
-                a grammar worth keeping intact.
+                The sarees we are drawn to are the ones that have changed least across generations —
+                the stepped temple border, the korvai join worked thread by thread, the lotus and
+                mango buttas that have travelled through centuries of Indian textile. These are not
+                decorative choices. They are a grammar, and it is a grammar worth keeping intact.
               </p>
               <p>
-                What we bring to it is restraint. Fewer motifs. Cleaner grounds. Colour chosen
-                for how it behaves in real light rather than under a studio lamp. A saree should
-                be able to hold a room without shouting across it.
+                What we bring to it is restraint. Fewer motifs. Cleaner grounds. Colour chosen for
+                how it behaves in real light rather than under a studio lamp. A saree should be able
+                to hold a room without shouting across it.
               </p>
               <p className="text-ink-500">
-                We are at the very beginning of this. As the collection grows, so will what we
-                are able to tell you about the hands behind each weave — and we would rather
-                say nothing than say something we cannot yet stand behind.
+                We are at the very beginning of this. As the collection grows, so will what we are
+                able to tell you about the hands behind each weave — and we would rather say nothing
+                than say something we cannot yet stand behind.
               </p>
             </div>
           </Reveal>
@@ -99,8 +98,8 @@ export default function AboutPage() {
                 <p>
                   Silk is a protein fibre with a triangular cross-section. That geometry is the
                   entire reason silk has its particular lustre: the fibre refracts light at
-                  different angles along its length, so the same cloth reads as several depths
-                  of one colour at once.
+                  different angles along its length, so the same cloth reads as several depths of
+                  one colour at once.
                 </p>
                 <p>
                   It also means silk takes dye unlike cotton or synthetic fibre. Colour sits
@@ -108,9 +107,9 @@ export default function AboutPage() {
                   depth and a poor one looks painted.
                 </p>
                 <p>
-                  Weight comes from two places: the density of the weave and the quantity of
-                  zari. A heavier saree holds its pleats longer and drapes with more authority.
-                  A lighter one moves. Neither is better — they are different tools.
+                  Weight comes from two places: the density of the weave and the quantity of zari. A
+                  heavier saree holds its pleats longer and drapes with more authority. A lighter
+                  one moves. Neither is better — they are different tools.
                 </p>
               </div>
             </Reveal>
@@ -131,16 +130,16 @@ export default function AboutPage() {
         <Reveal delay={90} className="mx-auto mt-12 max-w-3xl">
           <div className="space-y-5 text-[1.0625rem] leading-[1.9] text-ink-700">
             <p>
-              Kanchipuram, in Tamil Nadu, is one of the oldest continuously inhabited
-              temple towns in India, and silk weaving there is old enough that its origins are
-              recorded more in tradition than in documents.
+              Kanchipuram, in Tamil Nadu, is one of the oldest continuously inhabited temple towns
+              in India, and silk weaving there is old enough that its origins are recorded more in
+              tradition than in documents.
             </p>
             <p>
-              What distinguishes the Kanchipuram saree technically is the korvai construction:
-              the body and the border are woven from separate warps and interlocked by hand
-              where they meet. It is slower than weaving a saree in one piece, and it is what
-              allows a border to be a genuinely different colour and weight from the body
-              without the join weakening.
+              What distinguishes the Kanchipuram saree technically is the korvai construction: the
+              body and the border are woven from separate warps and interlocked by hand where they
+              meet. It is slower than weaving a saree in one piece, and it is what allows a border
+              to be a genuinely different colour and weight from the body without the join
+              weakening.
             </p>
             <p>
               The motifs are drawn largely from the architecture around the looms — the stepped
@@ -184,8 +183,11 @@ export default function AboutPage() {
                   b: 'Presentation exists to serve the cloth. If a photograph, a page or a price is doing more work than the saree, something has gone wrong.',
                 },
               ].map((item) => (
-                <li key={item.n} className="flex gap-6 border-b border-ivory-300 pb-9 last:border-0">
-                  <span className="font-[family-name:var(--font-display)] text-2xl tnum text-gold-600">
+                <li
+                  key={item.n}
+                  className="flex gap-6 border-b border-ivory-300 pb-9 last:border-0"
+                >
+                  <span className="tnum font-[family-name:var(--font-display)] text-2xl text-gold-600">
                     {item.n}
                   </span>
                   <div>

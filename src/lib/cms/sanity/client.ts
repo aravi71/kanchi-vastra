@@ -29,11 +29,7 @@ const builder = sanityEnabled ? createImageUrlBuilder({ projectId, dataset }) : 
  * phone. `fit: 'crop'` honours the hotspot they set in the admin, so the
  * border of a saree does not get cropped out.
  */
-export function urlForImage(
-  source: SanityImage,
-  width = 1000,
-  height?: number,
-): string {
+export function urlForImage(source: SanityImage, width = 1000, height?: number): string {
   if (!builder || !source) return '';
   let img = builder.image(source).width(width).auto('format').quality(82);
   if (height) img = img.height(height).fit('crop');

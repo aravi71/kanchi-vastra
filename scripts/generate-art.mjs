@@ -48,11 +48,7 @@ function makeRng(seedStr) {
 /* ---- colour helpers ----------------------------------------------------- */
 const hex = (c) => {
   const v = c.replace('#', '');
-  return [
-    parseInt(v.slice(0, 2), 16),
-    parseInt(v.slice(2, 4), 16),
-    parseInt(v.slice(4, 6), 16),
-  ];
+  return [parseInt(v.slice(0, 2), 16), parseInt(v.slice(2, 4), 16), parseInt(v.slice(4, 6), 16)];
 };
 /** Relative luminance, used to decide whether light cloth needs darker shading. */
 const luma = (c) => {
@@ -62,7 +58,10 @@ const luma = (c) => {
 const mix = (a, b, t) => {
   const [r1, g1, b1] = hex(a);
   const [r2, g2, b2] = hex(b);
-  const to = (x, y) => Math.round(x + (y - x) * t).toString(16).padStart(2, '0');
+  const to = (x, y) =>
+    Math.round(x + (y - x) * t)
+      .toString(16)
+      .padStart(2, '0');
   return `#${to(r1, r2)}${to(g1, g2)}${to(b1, b2)}`;
 };
 
@@ -144,10 +143,18 @@ const motifs = {
     const s = w / 6;
     const t = h / 3;
     const pts = [
-      [x, y], [x, y - t], [x + s, y - t], [x + s, y - 2 * t],
-      [x + 2 * s, y - 2 * t], [x + 2 * s, y - h], [x + 4 * s, y - h],
-      [x + 4 * s, y - 2 * t], [x + 5 * s, y - 2 * t], [x + 5 * s, y - t],
-      [x + 6 * s, y - t], [x + 6 * s, y],
+      [x, y],
+      [x, y - t],
+      [x + s, y - t],
+      [x + s, y - 2 * t],
+      [x + 2 * s, y - 2 * t],
+      [x + 2 * s, y - h],
+      [x + 4 * s, y - h],
+      [x + 4 * s, y - 2 * t],
+      [x + 5 * s, y - 2 * t],
+      [x + 5 * s, y - t],
+      [x + 6 * s, y - t],
+      [x + 6 * s, y],
     ];
     return `<path d="M${pts.map((p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' L')} Z"/>`;
   },

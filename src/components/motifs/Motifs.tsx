@@ -28,10 +28,7 @@ export function TempleBorder({
     >
       <defs>
         <pattern id="kv-temple" width="20" height="14" patternUnits="userSpaceOnUse">
-          <path
-            d="M0 14V9h3.5V4.5H7V0h6v4.5h3.5V9H20v5z"
-            fill="currentColor"
-          />
+          <path d="M0 14V9h3.5V4.5H7V0h6v4.5h3.5V9H20v5z" fill="currentColor" />
         </pattern>
       </defs>
       <rect width="120" height="14" fill="url(#kv-temple)" />
@@ -113,7 +110,9 @@ export function PeacockCorner({ className }: { className?: string }) {
         const ey = 176 + Math.sin(a) * 88;
         return (
           <g key={i}>
-            <path d={`M100 180 Q${100 + Math.cos(a) * 44 - i * 10} ${176 + Math.sin(a) * 44} ${ex} ${ey}`} />
+            <path
+              d={`M100 180 Q${100 + Math.cos(a) * 44 - i * 10} ${176 + Math.sin(a) * 44} ${ex} ${ey}`}
+            />
             <circle cx={ex} cy={ey} r="9" />
             <circle cx={ex} cy={ey} r="3.4" fill="currentColor" stroke="none" />
           </g>

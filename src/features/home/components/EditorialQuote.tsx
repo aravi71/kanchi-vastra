@@ -8,13 +8,13 @@ import { LotusMark, TempleBorder } from '@/components/motifs/Motifs';
  */
 export function EditorialQuote() {
   return (
-    <section className="relative overflow-hidden bg-ivory-200/70 silk-weave">
+    <section className="silk-weave relative overflow-hidden bg-ivory-200/70">
       <TempleBorder className="text-ivory-100" height={12} flip />
 
       <div className="container-editorial py-24 md:py-32">
         <Reveal className="mx-auto max-w-3xl text-center">
           <LotusMark className="mx-auto text-gold-500" size={28} />
-          <blockquote className="display-lg mt-8 text-balance font-light leading-[1.22]">
+          <blockquote className="display-lg mt-8 leading-[1.22] font-light text-balance">
             Ancient craftsmanship, presented through modern luxury — nothing added to the weave,
             everything removed from around it.
           </blockquote>

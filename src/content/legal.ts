@@ -49,7 +49,8 @@ export const legalPages: Record<string, LegalPage> = {
         body: [
           'We do not collect, process or store card numbers, CVVs, UPI PINs or bank credentials, and we do not intend to. When payments are enabled, they will be handled entirely by a third-party payment gateway using its own secure, hosted interface.',
         ],
-        pending: 'To be completed: the name of the payment processor and a link to its privacy policy.',
+        pending:
+          'To be completed: the name of the payment processor and a link to its privacy policy.',
       },
       {
         heading: 'Cookies and tracking',
@@ -201,9 +202,7 @@ export const legalPages: Record<string, LegalPage> = {
       },
       {
         heading: 'Refunds',
-        body: [
-          'Where a return is accepted, we intend to refund to the original payment method.',
-        ],
+        body: ['Where a return is accepted, we intend to refund to the original payment method.'],
         pending:
           'To be completed: processing time, whether shipping charges are refunded, and the treatment of partial returns.',
       },

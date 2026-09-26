@@ -22,17 +22,13 @@ export default function Error({
 
       <p className="eyebrow mt-8 text-wine-700">Something went wrong</p>
 
-      <h1 className="display-lg mt-5 max-w-xl font-light text-balance">
-        We have dropped a stitch
-      </h1>
+      <h1 className="display-lg mt-5 max-w-xl font-light text-balance">We have dropped a stitch</h1>
 
       <p className="mx-auto mt-5 max-w-md text-[0.9375rem] leading-relaxed text-ink-600">
         An unexpected error stopped this page from loading. Trying again usually resolves it.
       </p>
 
-      {error.digest && (
-        <p className="mt-4 text-xs tnum text-ink-400">Reference: {error.digest}</p>
-      )}
+      {error.digest && <p className="tnum mt-4 text-xs text-ink-400">Reference: {error.digest}</p>}
 
       <div className="mt-9 flex flex-wrap justify-center gap-3">
         <Button onClick={reset}>Try Again</Button>

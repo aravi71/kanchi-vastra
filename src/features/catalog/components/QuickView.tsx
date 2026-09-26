@@ -14,13 +14,7 @@ import type { Product } from '@/types/catalog';
  * it shows enough to decide, then sends the visitor to the full page for
  * specifications.
  */
-export function QuickView({
-  product,
-  onClose,
-}: {
-  product: Product | null;
-  onClose: () => void;
-}) {
+export function QuickView({ product, onClose }: { product: Product | null; onClose: () => void }) {
   const { add } = useCart();
   const { has, toggle } = useWishlist();
   const [added, setAdded] = useState(false);
@@ -58,19 +52,19 @@ export function QuickView({
         type="button"
         aria-label="Close quick view"
         onClick={onClose}
-        className="absolute inset-0 h-full w-full cursor-default bg-wine-950/50 backdrop-blur-[2px] animate-fade"
+        className="animate-fade absolute inset-0 h-full w-full cursor-default bg-wine-950/50 backdrop-blur-[2px]"
       />
 
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="quickview-title"
-        className="relative grid w-full max-w-4xl overflow-hidden bg-ivory-100 shadow-[0_24px_80px_rgba(43,10,20,0.28)] animate-fade-up md:grid-cols-2"
+        className="animate-fade-up relative grid w-full max-w-4xl overflow-hidden bg-ivory-100 shadow-[0_24px_80px_rgba(43,10,20,0.28)] md:grid-cols-2"
       >
         <button
           type="button"
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 grid size-9 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-opacity hover:opacity-70"
+          className="absolute top-3 right-3 z-10 grid size-9 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-opacity hover:opacity-70"
           aria-label="Close quick view"
         >
           <X className="size-4.5" strokeWidth={1.4} />
@@ -92,7 +86,7 @@ export function QuickView({
             {product.name}
           </h2>
 
-          <p className="mt-4 flex items-baseline gap-3 text-lg tnum">
+          <p className="tnum mt-4 flex items-baseline gap-3 text-lg">
             {formatPrice(product.price)}
             {product.compareAtPrice && (
               <span className="text-sm text-ink-300 line-through">
@@ -108,7 +102,7 @@ export function QuickView({
               <dt className="w-24 shrink-0 text-ink-400">Colour</dt>
               <dd className="flex items-center gap-2">
                 <span
-                  className="size-3.5 rounded-full ring-1 ring-inset ring-ink-900/15"
+                  className="size-3.5 rounded-full ring-1 ring-ink-900/15 ring-inset"
                   style={{ backgroundColor: product.colorHex }}
                   aria-hidden="true"
                 />

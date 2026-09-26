@@ -85,7 +85,7 @@ export default function CareGuidePage() {
             {sections.map((section, i) => (
               <Reveal as="li" key={section.n} delay={i * 60}>
                 <div className="flex gap-6 md:gap-9">
-                  <span className="font-[family-name:var(--font-display)] text-2xl tnum text-gold-600">
+                  <span className="tnum font-[family-name:var(--font-display)] text-2xl text-gold-600">
                     {section.n}
                   </span>
                   <div className="flex-1">
@@ -115,7 +115,10 @@ export default function CareGuidePage() {
                   'Perfume first, saree second.',
                 ].map((line) => (
                   <li key={line} className="flex gap-3">
-                    <span className="mt-2 size-1 shrink-0 rotate-45 bg-gold-600" aria-hidden="true" />
+                    <span
+                      className="mt-2 size-1 shrink-0 rotate-45 bg-gold-600"
+                      aria-hidden="true"
+                    />
                     {line}
                   </li>
                 ))}

@@ -22,7 +22,7 @@ export function SocialSection() {
       <div className="container-editorial">
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="eyebrow text-wine-700">Follow</p>
-          <h2 className="display-lg mt-5 text-balance font-light">
+          <h2 className="display-lg mt-5 font-light text-balance">
             Follow the world of Kanchi Vastra
           </h2>
           <p className="mt-5 text-[0.9375rem] leading-relaxed text-ink-600">

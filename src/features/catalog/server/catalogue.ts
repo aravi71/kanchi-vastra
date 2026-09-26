@@ -52,9 +52,10 @@ function normalise(docs: SanityProduct[]): Product[] {
     // The gallery is built for four images. Pad by repeating the last one so
     // a shop owner who uploads only one photo still gets a working page.
     const urls = refs.map((ref) => urlForImage(ref as never, 1000, 1333)).filter(Boolean);
-    const images = urls.length > 0
-      ? [...urls, ...Array(Math.max(0, 4 - urls.length)).fill(urls[urls.length - 1])]
-      : ['/images/placeholder.svg'];
+    const images =
+      urls.length > 0
+        ? [...urls, ...Array(Math.max(0, 4 - urls.length)).fill(urls[urls.length - 1])]
+        : ['/images/placeholder.svg'];
 
     return {
       id: doc.id,

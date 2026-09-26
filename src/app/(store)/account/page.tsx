@@ -32,9 +32,9 @@ export default function AccountPage() {
               <UserRound className="size-8 text-ivory-400" strokeWidth={0.9} />
               <h2 className="display-sm mt-5 font-light">What this will do later</h2>
               <p className="mt-3 text-sm leading-relaxed text-ink-600">
-                Once ordering is live, an account will hold your order history, saved addresses
-                and a wishlist that follows you between devices. None of that exists today, and
-                we would rather tell you than show you a sign-in box that does nothing.
+                Once ordering is live, an account will hold your order history, saved addresses and
+                a wishlist that follows you between devices. None of that exists today, and we would
+                rather tell you than show you a sign-in box that does nothing.
               </p>
             </div>
           </Reveal>
@@ -45,8 +45,7 @@ export default function AccountPage() {
                 <ShoppingBag className="size-5 text-gold-600" strokeWidth={1.2} />
                 <h3 className="eyebrow-sm mt-4">Your bag</h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-ink-500">
-                  Saved in this browser. It will still be here when you come back on this
-                  device.
+                  Saved in this browser. It will still be here when you come back on this device.
                 </p>
                 <ButtonLink href="/cart" variant="secondary" size="sm" className="mt-5">
                   View Bag
@@ -59,8 +58,7 @@ export default function AccountPage() {
                 <Heart className="size-5 text-gold-600" strokeWidth={1.2} />
                 <h3 className="eyebrow-sm mt-4">Your wishlist</h3>
                 <p className="mt-2.5 text-sm leading-relaxed text-ink-500">
-                  Also saved in this browser. Useful when a weave is down to its last few
-                  pieces.
+                  Also saved in this browser. Useful when a weave is down to its last few pieces.
                 </p>
                 <ButtonLink href="/wishlist" variant="secondary" size="sm" className="mt-5">
                   View Wishlist

@@ -6,7 +6,11 @@ import { CraftSection } from '@/features/home/components/CraftSection';
 import { TrustSection } from '@/features/home/components/TrustSection';
 import { SocialSection } from '@/features/home/components/SocialSection';
 import { EditorialQuote } from '@/features/home/components/EditorialQuote';
-import { getFeaturedProducts, getNewArrivals, getProducts } from '@/features/catalog/server/catalogue';
+import {
+  getFeaturedProducts,
+  getNewArrivals,
+  getProducts,
+} from '@/features/catalog/server/catalogue';
 
 export default async function HomePage() {
   const [featured, arrivals, all] = await Promise.all([

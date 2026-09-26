@@ -118,7 +118,7 @@ export function ShopBrowser({
   return (
     <div className="container-editorial pb-24 md:pb-32">
       {/* --- toolbar ---------------------------------------------------- */}
-      <div className="sticky top-[68px] z-30 -mx-5 flex items-center justify-between gap-4 border-y border-ivory-300 bg-ivory-100/95 px-5 py-3 backdrop-blur-md md:-mx-10 md:px-10 md:top-[84px] xl:-mx-16 xl:px-16">
+      <div className="sticky top-[68px] z-30 -mx-5 flex items-center justify-between gap-4 border-y border-ivory-300 bg-ivory-100/95 px-5 py-3 backdrop-blur-md md:top-[84px] md:-mx-10 md:px-10 xl:-mx-16 xl:px-16">
         <div className="flex items-center gap-4">
           <button
             type="button"
@@ -129,16 +129,12 @@ export function ShopBrowser({
             <SlidersHorizontal className="size-4" strokeWidth={1.3} />
             Filter
             {activeCount > 0 && (
-              <span className="grid size-[18px] place-items-center rounded-full bg-wine-700 text-[9px] text-ivory-50 tnum">
+              <span className="tnum grid size-[18px] place-items-center rounded-full bg-wine-700 text-[9px] text-ivory-50">
                 {activeCount}
               </span>
             )}
           </button>
-          <p
-            className="eyebrow-sm whitespace-nowrap text-ink-400"
-            role="status"
-            aria-live="polite"
-          >
+          <p className="eyebrow-sm whitespace-nowrap text-ink-400" role="status" aria-live="polite">
             {results.length} {results.length === 1 ? 'saree' : 'sarees'}
           </p>
         </div>
@@ -195,7 +191,10 @@ export function ShopBrowser({
 
       {/* --- mobile filter sheet --------------------------------------- */}
       <div
-        className={cn('fixed inset-0 z-[75] lg:hidden', sheetOpen ? 'visible' : 'invisible delay-500')}
+        className={cn(
+          'fixed inset-0 z-[75] lg:hidden',
+          sheetOpen ? 'visible' : 'invisible delay-500',
+        )}
         aria-hidden={!sheetOpen}
       >
         <button

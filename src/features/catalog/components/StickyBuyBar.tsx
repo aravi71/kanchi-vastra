@@ -45,7 +45,7 @@ export function StickyBuyBar({ product }: { product: Product }) {
           <p className="truncate font-[family-name:var(--font-display)] text-sm leading-tight">
             {product.name}
           </p>
-          <p className="text-xs tnum text-ink-500">{formatPrice(product.price)}</p>
+          <p className="tnum text-xs text-ink-500">{formatPrice(product.price)}</p>
         </div>
         <Button
           tabIndex={visible ? 0 : -1}

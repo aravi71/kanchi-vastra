@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { getProductBySlug, getProducts, getRelatedProducts } from '@/features/catalog/server/catalogue';
+import {
+  getProductBySlug,
+  getProducts,
+  getRelatedProducts,
+} from '@/features/catalog/server/catalogue';
 import { getCollection } from '@/content/collections';
 import { site } from '@/config/site';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -75,9 +79,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       priceCurrency: 'INR',
       price: product.price,
       availability:
-        product.stock > 0
-          ? 'https://schema.org/InStock'
-          : 'https://schema.org/OutOfStock',
+        product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       seller: { '@type': 'Organization', name: site.name },
     },
   };
@@ -107,7 +109,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         crumbs={[
           { label: 'Home', href: '/' },
           { label: 'Sarees', href: '/shop' },
-          ...(collection ? [{ label: collection.title, href: `/collections/${collection.slug}` }] : []),
+          ...(collection
+            ? [{ label: collection.title, href: `/collections/${collection.slug}` }]
+            : []),
           { label: product.name },
         ]}
       />
@@ -150,11 +154,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                       <div className="space-y-3">
                         <p>{product.specs.care}</p>
                         <p>
-                          Silk should be kept away from direct sunlight and damp. Refold the
-                          saree along a different line every few months so the zari does not
-                          crease permanently along one fold.
+                          Silk should be kept away from direct sunlight and damp. Refold the saree
+                          along a different line every few months so the zari does not crease
+                          permanently along one fold.
                         </p>
-                        <Link href="/care-guide" className="link-underline inline-block text-wine-700">
+                        <Link
+                          href="/care-guide"
+                          className="link-underline inline-block text-wine-700"
+                        >
                           Read the full care guide
                         </Link>
                       </div>
@@ -169,15 +176,14 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                           We ship across India. Estimated delivery is 5–7 business days from
                           dispatch, with tracking shared by email.
                         </p>
-                        <p>
-                          Complimentary shipping applies to orders above{' '}
-                          {formatPrice(15000)}.
-                        </p>
+                        <p>Complimentary shipping applies to orders above {formatPrice(15000)}.</p>
                         <p className="text-ink-400">
-                          Shipping partners and precise timelines will be confirmed before
-                          launch.
+                          Shipping partners and precise timelines will be confirmed before launch.
                         </p>
-                        <Link href="/legal/shipping" className="link-underline inline-block text-wine-700">
+                        <Link
+                          href="/legal/shipping"
+                          className="link-underline inline-block text-wine-700"
+                        >
                           Shipping policy
                         </Link>
                       </div>
@@ -189,14 +195,17 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     content: (
                       <div className="space-y-3">
                         <p>
-                          Returns are accepted on unworn, unwashed sarees with original tags
-                          intact. The saree must be in the condition it arrived in.
+                          Returns are accepted on unworn, unwashed sarees with original tags intact.
+                          The saree must be in the condition it arrived in.
                         </p>
                         <p className="text-ink-400">
-                          The return window and process are being finalised and will be
-                          published here before the store opens for orders.
+                          The return window and process are being finalised and will be published
+                          here before the store opens for orders.
                         </p>
-                        <Link href="/legal/returns" className="link-underline inline-block text-wine-700">
+                        <Link
+                          href="/legal/returns"
+                          className="link-underline inline-block text-wine-700"
+                        >
                           Returns policy
                         </Link>
                       </div>
@@ -207,9 +216,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                     title: 'About the imagery',
                     content: (
                       <p>
-                        The images on this page are original artwork created for this
-                        demonstration build, not photographs of the saree described. They will
-                        be replaced with photography of the actual piece before launch.
+                        The images on this page are original artwork created for this demonstration
+                        build, not photographs of the saree described. They will be replaced with
+                        photography of the actual piece before launch.
                       </p>
                     ),
                   },

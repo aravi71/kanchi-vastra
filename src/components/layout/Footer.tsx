@@ -21,7 +21,7 @@ export function Footer() {
         <div className="grid gap-10 border-b border-ivory-100/10 py-16 md:grid-cols-2 md:items-end md:gap-16 lg:py-20">
           <div>
             <p className="eyebrow text-gold-400/80">The Atelier Letter</p>
-            <h2 className="display-md mt-4 max-w-md text-balance font-light text-ivory-100">
+            <h2 className="display-md mt-4 max-w-md font-light text-balance text-ivory-100">
               New weaves, quietly announced
             </h2>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-ivory-200/65">
@@ -34,7 +34,11 @@ export function Footer() {
         {/* --- navigation ------------------------------------------------- */}
         <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5 lg:gap-8 lg:py-20">
           <div className="lg:col-span-2">
-            <Logo orientation="horizontal" markClassName="text-gold-400" className="text-ivory-100" />
+            <Logo
+              orientation="horizontal"
+              markClassName="text-gold-400"
+              className="text-ivory-100"
+            />
             <p className="mt-6 max-w-xs text-sm leading-relaxed text-ivory-200/60">
               {site.positioning}
             </p>
@@ -70,7 +74,11 @@ export function Footer() {
               </li>
               <li>
                 <ConnectLink
-                  href={contact.isPlaceholder ? '' : `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`}
+                  href={
+                    contact.isPlaceholder
+                      ? ''
+                      : `https://wa.me/${contact.whatsapp.replace(/\D/g, '')}`
+                  }
                   icon={<MessageCircle className="size-4" strokeWidth={1.3} />}
                   label="WhatsApp"
                 />
@@ -97,7 +105,10 @@ export function Footer() {
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {footerNav.legal.map((link) => (
               <li key={link.href}>
-                <Link href={link.href} className="link-underline transition-colors hover:text-ivory-100">
+                <Link
+                  href={link.href}
+                  className="link-underline transition-colors hover:text-ivory-100"
+                >
                   {link.label}
                 </Link>
               </li>
@@ -107,9 +118,9 @@ export function Footer() {
 
         {/* Honesty notice — remove once real catalogue data is in place. */}
         <p className="border-t border-ivory-100/5 py-5 text-[11px] leading-relaxed text-ivory-200/35">
-          Demonstration build. Product photography, names, prices, stock figures and contact
-          details shown on this site are placeholder content and do not represent actual
-          Kanchi Vastra merchandise or business information.
+          Demonstration build. Product photography, names, prices, stock figures and contact details
+          shown on this site are placeholder content and do not represent actual Kanchi Vastra
+          merchandise or business information.
         </p>
       </div>
     </footer>
@@ -135,7 +146,7 @@ function ConnectLink({
       <span className="inline-flex items-center gap-2.5 text-ivory-200/40">
         {icon}
         {label}
-        <span className="text-[10px] uppercase tracking-[0.18em]">soon</span>
+        <span className="text-[10px] tracking-[0.18em] uppercase">soon</span>
       </span>
     );
   }

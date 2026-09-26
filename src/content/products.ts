@@ -35,8 +35,7 @@ const IMAGE_EXT = 'svg';
  * Shoot in 3:4 portrait — the grid, gallery and cards are all built around it.
  * A product can override this by setting `images` to an explicit array.
  */
-const img = (slug: string) =>
-  [1, 2, 3, 4].map((n) => `/images/products/${slug}-${n}.${IMAGE_EXT}`);
+const img = (slug: string) => [1, 2, 3, 4].map((n) => `/images/products/${slug}-${n}.${IMAGE_EXT}`);
 
 export const products: Product[] = [
   {
@@ -510,8 +509,7 @@ export const products: Product[] = [
     colorFamily: 'green',
     colorHex: '#0F4C55',
     fabric: 'Pure Mulberry Silk',
-    description:
-      'Concentric rudraksha rings in gold on deep teal, with a narrow stepped border.',
+    description: 'Concentric rudraksha rings in gold on deep teal, with a narrow stepped border.',
     story:
       'The rudraksha motif is drawn from the seed used in prayer beads and appears throughout South Indian weaving, usually along borders. Bringing it onto the body at this scale gives the saree a quiet, repeating rhythm.',
     specs: {

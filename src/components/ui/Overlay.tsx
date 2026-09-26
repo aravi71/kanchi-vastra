@@ -74,7 +74,11 @@ export function Overlay({
   }, [open]);
 
   const hiddenTransform =
-    side === 'right' ? 'translate-x-full' : side === 'left' ? '-translate-x-full' : '-translate-y-full';
+    side === 'right'
+      ? 'translate-x-full'
+      : side === 'left'
+        ? '-translate-x-full'
+        : '-translate-y-full';
 
   const position =
     side === 'top'

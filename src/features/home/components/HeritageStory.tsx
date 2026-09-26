@@ -22,7 +22,7 @@ export function HeritageStory() {
               />
             </div>
             {/* Offset detail frame — the editorial device used throughout the site. */}
-            <div className="absolute -bottom-8 -right-4 hidden aspect-square w-44 overflow-hidden border-[6px] border-ivory-100 md:block lg:-right-10 lg:w-56">
+            <div className="absolute -right-4 -bottom-8 hidden aspect-square w-44 overflow-hidden border-[6px] border-ivory-100 md:block lg:-right-10 lg:w-56">
               <Image
                 src="/images/editorial/craft-zari.svg"
                 alt="Close view of antique gold zari thread worked into a mango motif"
@@ -40,7 +40,7 @@ export function HeritageStory() {
             </Reveal>
 
             <Reveal delay={90}>
-              <h2 className="display-xl mt-6 text-balance font-light">
+              <h2 className="display-xl mt-6 font-light text-balance">
                 A tradition measured in threads, not years
               </h2>
             </Reveal>
@@ -59,12 +59,12 @@ export function HeritageStory() {
                   The weaves we are drawn to are the ones that have changed least — the stepped
                   temple border, the korvai join worked by hand, the lotus and mango buttas that
                   have travelled across centuries of Indian textile. What we bring to them is
-                  restraint: fewer motifs, cleaner grounds, and colour chosen for how it behaves
-                  in real light rather than under a studio lamp.
+                  restraint: fewer motifs, cleaner grounds, and colour chosen for how it behaves in
+                  real light rather than under a studio lamp.
                 </p>
                 <p>
-                  We are at the beginning of this. As the collection grows, so will what we can
-                  tell you about the hands behind each saree.
+                  We are at the beginning of this. As the collection grows, so will what we can tell
+                  you about the hands behind each saree.
                 </p>
               </div>
             </Reveal>

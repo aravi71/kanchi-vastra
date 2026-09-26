@@ -9,22 +9,10 @@
 export type CategoryId = 'kanchipuram' | 'bridal' | 'festive' | 'everyday';
 
 export type ColorFamily =
-  | 'red'
-  | 'maroon'
-  | 'gold'
-  | 'green'
-  | 'blue'
-  | 'purple'
-  | 'pink'
-  | 'saffron'
-  | 'neutral';
+  'red' | 'maroon' | 'gold' | 'green' | 'blue' | 'purple' | 'pink' | 'saffron' | 'neutral';
 
 export type Fabric =
-  | 'Pure Mulberry Silk'
-  | 'Korvai Silk'
-  | 'Tissue Silk'
-  | 'Silk Cotton'
-  | 'Organza Silk';
+  'Pure Mulberry Silk' | 'Korvai Silk' | 'Tissue Silk' | 'Silk Cotton' | 'Organza Silk';
 
 export interface ProductSpecs {
   /** Total saree length including the blouse piece, e.g. "6.3 metres". */

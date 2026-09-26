@@ -18,9 +18,9 @@ services:
     image: caddy:2.11.4-alpine
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
     environment:
       SITE_HOST: ${SITE_HOST:?set SITE_HOST in .env}
       MAILPIT_AUTH_HASH: ${MAILPIT_AUTH_HASH:?set MAILPIT_AUTH_HASH in .env}
@@ -55,7 +55,7 @@ services:
     # No published port at all. Backups use `docker compose exec postgres`.
     networks: [internal]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U kanchi -d kanchi_vastra"]
+      test: ['CMD-SHELL', 'pg_isready -U kanchi -d kanchi_vastra']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -63,7 +63,7 @@ services:
   garage:
     image: dxflrs/garage:v2.4.1
     restart: unless-stopped
-    user: "10001:10001"
+    user: '10001:10001'
     environment:
       RUST_LOG: garage=warn
     volumes:
@@ -71,7 +71,7 @@ services:
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/garage:/var/lib/garage
     ports:
       # server-only: the nightly backup copies the bucket through this
-      - "127.0.0.1:3900:3900"
+      - '127.0.0.1:3900:3900'
     networks: [edge, internal]
 
   # DEV test inbox: catches every email the shop sends, delivers none.
@@ -103,11 +103,11 @@ services:
       STALWART_RECOVERY_ADMIN: ${STALWART_ADMIN}
       STALWART_PUBLIC_URL: https://${MAIL_HOST}
     ports:
-      - "25:25"     # other mail servers deliver to you
-      - "465:465"   # sending from apps and phones (TLS)
-      - "993:993"   # reading mail (IMAP, TLS)
+      - '25:25' # other mail servers deliver to you
+      - '465:465' # sending from apps and phones (TLS)
+      - '993:993' # reading mail (IMAP, TLS)
       # server-only: stalwart-cli administration
-      - "127.0.0.1:18080:8080"
+      - '127.0.0.1:18080:8080'
     volumes:
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/stalwart/etc:/etc/stalwart
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/stalwart/data:/var/lib/stalwart

@@ -74,7 +74,7 @@ export function SearchOverlay() {
             aria-label="Search sarees, colours and collections"
             // Suppress Chrome's own search-clear glyph; it sits right next to
             // our close button and the two Xs read as a mistake.
-            className="w-full bg-transparent font-[family-name:var(--font-display)] text-2xl font-light text-ink-900 placeholder:text-ink-300 focus:outline-none [&::-webkit-search-cancel-button]:appearance-none md:text-3xl"
+            className="w-full bg-transparent font-[family-name:var(--font-display)] text-2xl font-light text-ink-900 placeholder:text-ink-300 focus:outline-none md:text-3xl [&::-webkit-search-cancel-button]:appearance-none"
           />
           <button
             type="button"
@@ -87,7 +87,7 @@ export function SearchOverlay() {
         </form>
 
         {/* --- body ---------------------------------------------------- */}
-        <div className="overflow-y-auto pb-10 pt-7">
+        <div className="overflow-y-auto pt-7 pb-10">
           {!hasQuery ? (
             <div className="grid gap-10 md:grid-cols-2">
               {recent.length > 0 && (
@@ -153,7 +153,7 @@ export function SearchOverlay() {
                       <p className="mt-3 font-[family-name:var(--font-display)] text-[0.9375rem] leading-snug">
                         {product.name}
                       </p>
-                      <p className="mt-1 text-xs tnum text-ink-500">{formatPrice(product.price)}</p>
+                      <p className="tnum mt-1 text-xs text-ink-500">{formatPrice(product.price)}</p>
                     </Link>
                   </li>
                 ))}

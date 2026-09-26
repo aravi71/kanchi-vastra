@@ -33,7 +33,7 @@ export function PageHeader({
   const centered = align === 'center';
 
   return (
-    <div className={cn('container-editorial pb-10 pt-32 md:pb-14 md:pt-44', className)}>
+    <div className={cn('container-editorial pt-32 pb-10 md:pt-44 md:pb-14', className)}>
       {crumbs && crumbs.length > 0 && (
         <nav aria-label="Breadcrumb" className={cn('mb-7', centered && 'flex justify-center')}>
           <ol className="flex flex-wrap items-center gap-1.5 text-xs text-ink-400">

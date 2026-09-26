@@ -114,7 +114,7 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
             <button
               type="button"
               onClick={() => setFullscreen(true)}
-              className="absolute bottom-3 right-3 grid size-10 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-opacity hover:opacity-75"
+              className="absolute right-3 bottom-3 grid size-10 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-opacity hover:opacity-75"
               aria-label="View fullscreen"
             >
               <Expand className="size-4" strokeWidth={1.3} />
@@ -124,7 +124,7 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
             <button
               type="button"
               onClick={() => go(-1)}
-              className="absolute left-2 top-1/2 grid size-10 -translate-y-1/2 place-items-center bg-ivory-50/80 opacity-0 backdrop-blur-sm transition-opacity duration-500 focus-visible:opacity-100 group-hover:opacity-100 max-md:opacity-100"
+              className="absolute top-1/2 left-2 grid size-10 -translate-y-1/2 place-items-center bg-ivory-50/80 opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-100 focus-visible:opacity-100 max-md:opacity-100"
               aria-label="Previous image"
             >
               <ChevronLeft className="size-5" strokeWidth={1.3} />
@@ -132,7 +132,7 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
             <button
               type="button"
               onClick={() => go(1)}
-              className="absolute right-2 top-1/2 grid size-10 -translate-y-1/2 place-items-center bg-ivory-50/80 opacity-0 backdrop-blur-sm transition-opacity duration-500 focus-visible:opacity-100 group-hover:opacity-100 max-md:opacity-100"
+              className="absolute top-1/2 right-2 grid size-10 -translate-y-1/2 place-items-center bg-ivory-50/80 opacity-0 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-100 focus-visible:opacity-100 max-md:opacity-100"
               aria-label="Next image"
             >
               <ChevronRight className="size-5" strokeWidth={1.3} />
@@ -151,7 +151,7 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
           role="dialog"
           aria-modal="true"
           aria-label={`${name} — fullscreen image viewer`}
-          className="fixed inset-0 z-[90] flex flex-col bg-wine-950/97 animate-fade"
+          className="animate-fade fixed inset-0 z-[90] flex flex-col bg-wine-950/97"
         >
           <div className="flex items-center justify-between px-5 py-4 text-ivory-100">
             <p className="eyebrow-sm">

@@ -64,13 +64,16 @@ export default defineType({
       description:
         'Shows struck through next to the price. Leave empty unless it genuinely sold at this price before — a fake "was" price is misleading and illegal in many places.',
       validation: (r) =>
-        r.positive().integer().custom((value, ctx) => {
-          const price = (ctx.document as { price?: number } | undefined)?.price;
-          if (value && price && value <= price) {
-            return 'The was-price must be higher than the current price, or left empty.';
-          }
-          return true;
-        }),
+        r
+          .positive()
+          .integer()
+          .custom((value, ctx) => {
+            const price = (ctx.document as { price?: number } | undefined)?.price;
+            if (value && price && value <= price) {
+              return 'The was-price must be higher than the current price, or left empty.';
+            }
+            return true;
+          }),
     }),
     defineField({
       name: 'slug',
@@ -83,7 +86,12 @@ export default defineType({
         source: 'name',
         maxLength: 80,
         slugify: (input) =>
-          input.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80),
+          input
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/^-|-$/g, '')
+            .slice(0, 80),
       },
       validation: (r) => r.required(),
     }),
@@ -178,13 +186,7 @@ export default defineType({
       type: 'string',
       group: 'details',
       options: {
-        list: [
-          'Pure Mulberry Silk',
-          'Korvai Silk',
-          'Tissue Silk',
-          'Silk Cotton',
-          'Organza Silk',
-        ],
+        list: ['Pure Mulberry Silk', 'Korvai Silk', 'Tissue Silk', 'Silk Cotton', 'Organza Silk'],
       },
       validation: (r) => r.required(),
     }),
@@ -197,13 +199,34 @@ export default defineType({
       group: 'specs',
       options: { collapsible: true, collapsed: false },
       fields: [
-        { name: 'length', title: 'Length', type: 'string', initialValue: '6.3 metres including blouse piece' },
+        {
+          name: 'length',
+          title: 'Length',
+          type: 'string',
+          initialValue: '6.3 metres including blouse piece',
+        },
         { name: 'width', title: 'Width', type: 'string', initialValue: '47 inches' },
-        { name: 'blouse', title: 'Blouse piece', type: 'string', initialValue: '0.8 metre blouse piece attached' },
+        {
+          name: 'blouse',
+          title: 'Blouse piece',
+          type: 'string',
+          initialValue: '0.8 metre blouse piece attached',
+        },
         { name: 'zari', title: 'Zari', type: 'string', initialValue: 'Half-fine gold zari' },
         { name: 'weight', title: 'Weight', type: 'string', initialValue: 'Approx. 700 g' },
-        { name: 'weave', title: 'Weave', type: 'string', initialValue: 'Traditional Kanchipuram handloom technique' },
-        { name: 'care', title: 'Care', type: 'text', rows: 2, initialValue: 'Dry clean only. Store folded in cotton muslin.' },
+        {
+          name: 'weave',
+          title: 'Weave',
+          type: 'string',
+          initialValue: 'Traditional Kanchipuram handloom technique',
+        },
+        {
+          name: 'care',
+          title: 'Care',
+          type: 'text',
+          rows: 2,
+          initialValue: 'Dry clean only. Store folded in cotton muslin.',
+        },
       ],
     }),
 

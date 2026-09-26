@@ -26,7 +26,7 @@ export function MobileNav() {
   return (
     <Overlay open={open} onClose={close} side="left" label="Menu" panelClassName="max-w-[21rem]">
       <div className="flex items-center justify-between border-b border-ivory-300 px-6 py-5">
-        <Logo markClassName="text-gold-600" className="scale-90 origin-left" />
+        <Logo markClassName="text-gold-600" className="origin-left scale-90" />
         <button
           type="button"
           onClick={close}
@@ -47,7 +47,7 @@ export function MobileNav() {
                   href={item.href}
                   onClick={close}
                   aria-current={active ? 'page' : undefined}
-                  className="block py-2.5 font-[family-name:var(--font-display)] text-[1.625rem] font-light leading-tight transition-colors duration-500 hover:text-wine-700"
+                  className="block py-2.5 font-[family-name:var(--font-display)] text-[1.625rem] leading-tight font-light transition-colors duration-500 hover:text-wine-700"
                   style={{
                     opacity: open ? 1 : 0,
                     transform: open ? 'none' : 'translateX(-12px)',
@@ -72,7 +72,7 @@ export function MobileNav() {
             >
               <Heart className="size-4" strokeWidth={1.3} />
               Wishlist
-              {count > 0 && <span className="text-ink-400 tnum">({count})</span>}
+              {count > 0 && <span className="tnum text-ink-400">({count})</span>}
             </Link>
           </li>
           <li>

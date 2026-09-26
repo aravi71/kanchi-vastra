@@ -88,14 +88,16 @@ export function CartDrawer() {
                     <button
                       type="button"
                       onClick={() => remove(product.id)}
-                      className="-mr-1 -mt-1 shrink-0 p-1 text-ink-400 transition-colors hover:text-wine-700"
+                      className="-mt-1 -mr-1 shrink-0 p-1 text-ink-400 transition-colors hover:text-wine-700"
                       aria-label={`Remove ${product.name} from bag`}
                     >
                       <X className="size-4" strokeWidth={1.4} />
                     </button>
                   </div>
 
-                  <p className="mt-1 text-xs text-ink-400">{product.color} · {product.fabric}</p>
+                  <p className="mt-1 text-xs text-ink-400">
+                    {product.color} · {product.fabric}
+                  </p>
 
                   <div className="mt-auto flex items-center justify-between gap-3 pt-3">
                     <QuantityStepper
@@ -104,7 +106,7 @@ export function CartDrawer() {
                       onChange={(q) => setQuantity(product.id, q)}
                       label={product.name}
                     />
-                    <span className="text-sm tnum text-ink-900">{formatPrice(lineTotal)}</span>
+                    <span className="tnum text-sm text-ink-900">{formatPrice(lineTotal)}</span>
                   </div>
                 </div>
               </li>
@@ -125,7 +127,7 @@ export function CartDrawer() {
               </div>
               <div className="flex justify-between border-t border-ivory-300 pt-3">
                 <dt className="eyebrow pt-0.5">Total</dt>
-                <dd className="font-[family-name:var(--font-display)] text-xl tnum">
+                <dd className="tnum font-[family-name:var(--font-display)] text-xl">
                   {formatPrice(total)}
                 </dd>
               </div>
@@ -157,8 +159,8 @@ function EmptyBag({ onClose }: { onClose: () => void }) {
       <div>
         <h3 className="display-sm font-light">Your bag is empty</h3>
         <p className="mt-2 text-sm leading-relaxed text-ink-500">
-          Every saree in the collection is woven in limited numbers. Begin with the pieces we
-          are showing this season.
+          Every saree in the collection is woven in limited numbers. Begin with the pieces we are
+          showing this season.
         </p>
       </div>
       <ButtonLink href="/shop" onClick={onClose} variant="secondary">
@@ -189,7 +191,7 @@ export function QuantityStepper({
       >
         <Minus className="size-3.5" strokeWidth={1.5} />
       </button>
-      <span className="w-8 text-center text-sm tnum" aria-live="polite">
+      <span className="tnum w-8 text-center text-sm" aria-live="polite">
         {value}
       </span>
       <button

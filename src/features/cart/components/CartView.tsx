@@ -35,8 +35,8 @@ export function CartView() {
           <ShoppingBag className="mx-auto size-10 text-ivory-400" strokeWidth={0.8} />
           <h2 className="display-md mt-6 font-light">Your bag is empty</h2>
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink-500">
-            Nothing here yet. The collection is small and changes as new weaves come off the
-            loom — start with the pieces we are showing this season.
+            Nothing here yet. The collection is small and changes as new weaves come off the loom —
+            start with the pieces we are showing this season.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <ButtonLink href="/shop">Explore the Collection</ButtonLink>
@@ -83,7 +83,7 @@ export function CartView() {
                         <p className="mt-1.5 text-xs text-ink-400">
                           {product.color} · {product.fabric}
                         </p>
-                        <p className="mt-0.5 text-xs tnum text-ink-400">{product.sku}</p>
+                        <p className="tnum mt-0.5 text-xs text-ink-400">{product.sku}</p>
                       </div>
                       <button
                         type="button"
@@ -120,7 +120,7 @@ export function CartView() {
                       <div className="text-right">
                         <p className="tnum">{formatPrice(lineTotal)}</p>
                         {quantity > 1 && (
-                          <p className="mt-0.5 text-xs tnum text-ink-400">
+                          <p className="tnum mt-0.5 text-xs text-ink-400">
                             {formatPrice(product.price)} each
                           </p>
                         )}

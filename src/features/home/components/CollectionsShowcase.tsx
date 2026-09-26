@@ -20,7 +20,7 @@ export function CollectionsShowcase({ products }: { products: Product[] }) {
         <div className="flex flex-wrap items-end justify-between gap-6">
           <Reveal>
             <p className="eyebrow text-wine-700">The Collections</p>
-            <h2 className="display-xl mt-5 max-w-xl text-balance font-light">
+            <h2 className="display-xl mt-5 max-w-xl font-light text-balance">
               Four ways to wear silk
             </h2>
           </Reveal>
@@ -66,7 +66,9 @@ function CollectionTile({
       href={`/collections/${collection.slug}`}
       className={cn(
         'group relative block h-full w-full overflow-hidden bg-wine-950',
-        tall ? 'aspect-[3/4] md:aspect-auto md:h-full md:min-h-[34rem]' : 'aspect-[4/3] lg:aspect-[5/4]',
+        tall
+          ? 'aspect-[3/4] md:aspect-auto md:h-full md:min-h-[34rem]'
+          : 'aspect-[4/3] lg:aspect-[5/4]',
       )}
     >
       <Image
@@ -85,12 +87,7 @@ function CollectionTile({
 
       <div className="absolute inset-x-0 bottom-0 p-6 md:p-8">
         <p className="eyebrow-sm text-gold-400/90">{collection.tagline}</p>
-        <h3
-          className={cn(
-            'mt-2.5 font-light text-ivory-50',
-            tall ? 'display-lg' : 'display-sm',
-          )}
-        >
+        <h3 className={cn('mt-2.5 font-light text-ivory-50', tall ? 'display-lg' : 'display-sm')}>
           {collection.title}
         </h3>
         <p

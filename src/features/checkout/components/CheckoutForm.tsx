@@ -35,12 +35,12 @@ export function CheckoutForm() {
   const [reference, setReference] = useState<string | null>(null);
   const summaryRef = useRef<HTMLDivElement>(null);
 
-  const set = (key: keyof ShippingAddress) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ) => {
-    setValues((v) => ({ ...v, [key]: e.target.value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
-  };
+  const set =
+    (key: keyof ShippingAddress) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setValues((v) => ({ ...v, [key]: e.target.value }));
+      if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
+    };
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -102,12 +102,12 @@ export function CheckoutForm() {
 
           <div className="mt-6 space-y-4 text-sm leading-relaxed text-ink-600">
             <p>
-              Online payments are not yet enabled on this site, so nothing has been charged and
-              no order has been created. Your bag has been left untouched.
+              Online payments are not yet enabled on this site, so nothing has been charged and no
+              order has been created. Your bag has been left untouched.
             </p>
             <p>
-              Your details were validated locally and were <strong>not</strong> transmitted
-              anywhere — there is no server behind this form yet.
+              Your details were validated locally and were <strong>not</strong> transmitted anywhere
+              — there is no server behind this form yet.
             </p>
           </div>
 
@@ -216,12 +216,7 @@ export function CheckoutForm() {
           <fieldset className="mt-12">
             <legend className="eyebrow text-wine-700">Delivery Address</legend>
             <div className="mt-7 grid gap-7 sm:grid-cols-2">
-              <Field
-                label="Address"
-                required
-                error={errors.address}
-                className="sm:col-span-2"
-              >
+              <Field label="Address" required error={errors.address} className="sm:col-span-2">
                 {(a) => (
                   <TextArea
                     {...a}
@@ -310,9 +305,8 @@ export function CheckoutForm() {
               <div className="text-sm leading-relaxed text-ink-600">
                 <p className="eyebrow-sm text-ink-900">Payment gateway coming soon</p>
                 <p className="mt-2.5">
-                  Online payment is not yet enabled. Submitting this form will validate your
-                  details and show you a local reference — it will not create an order or charge
-                  anything.
+                  Online payment is not yet enabled. Submitting this form will validate your details
+                  and show you a local reference — it will not create an order or charge anything.
                 </p>
                 <p className="mt-2.5 text-ink-400">
                   We never ask for card numbers, CVVs or UPI PINs on this site. When payments go

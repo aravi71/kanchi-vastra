@@ -56,10 +56,10 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
                 <p className="eyebrow-sm text-ink-900">Draft — not legally reviewed</p>
                 <p className="mt-2.5">
                   This page is a structural placeholder written to be replaced. It has not been
-                  drafted or reviewed by a legal professional, it does not reflect finalised
-                  Kanchi Vastra policy, and it should not be relied upon. Replace the content
-                  in <code className="text-xs">data/legal.ts</code> with wording approved by your
-                  own legal adviser before launch.
+                  drafted or reviewed by a legal professional, it does not reflect finalised Kanchi
+                  Vastra policy, and it should not be relied upon. Replace the content in{' '}
+                  <code className="text-xs">data/legal.ts</code> with wording approved by your own
+                  legal adviser before launch.
                 </p>
               </div>
             </div>
@@ -95,8 +95,8 @@ export default async function LegalPage({ params }: { params: Promise<{ slug: st
                 .
               </p>
               <p className="mt-2 text-xs text-ink-400">
-                Last updated: not yet published. This document has no effective date because it
-                has not been finalised.
+                Last updated: not yet published. This document has no effective date because it has
+                not been finalised.
               </p>
             </div>
           </Reveal>

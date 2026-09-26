@@ -25,7 +25,12 @@ export function ProductCard({
   return (
     <article className="group relative">
       <div className="relative aspect-[3/4] overflow-hidden bg-ivory-200">
-        <Link href={`/product/${product.slug}`} className="block h-full w-full" tabIndex={-1} aria-hidden="true">
+        <Link
+          href={`/product/${product.slug}`}
+          className="block h-full w-full"
+          tabIndex={-1}
+          aria-hidden="true"
+        >
           {/* Primary image */}
           <Image
             src={product.images[0]}
@@ -47,7 +52,7 @@ export function ProductCard({
         </Link>
 
         {/* --- badges --- */}
-        <div className="pointer-events-none absolute left-0 top-0 flex flex-col items-start gap-px">
+        <div className="pointer-events-none absolute top-0 left-0 flex flex-col items-start gap-px">
           {soldOut && (
             <span className="eyebrow-sm bg-ink-900/85 px-3 py-1.5 text-ivory-50">Sold out</span>
           )}
@@ -72,14 +77,17 @@ export function ProductCard({
           className={cn(
             // z-10 lifts this above the title link's full-card ::after overlay,
             // which would otherwise swallow the click.
-            'absolute right-2.5 top-2.5 z-10 grid size-9 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-all duration-500',
-            'opacity-0 focus-visible:opacity-100 group-hover:opacity-100 md:opacity-0',
+            'absolute top-2.5 right-2.5 z-10 grid size-9 place-items-center bg-ivory-50/85 backdrop-blur-sm transition-all duration-500',
+            'opacity-0 group-hover:opacity-100 focus-visible:opacity-100 md:opacity-0',
             'max-md:opacity-100',
             wished && 'opacity-100',
           )}
         >
           <Heart
-            className={cn('size-4 transition-colors', wished ? 'fill-wine-700 text-wine-700' : 'text-ink-700')}
+            className={cn(
+              'size-4 transition-colors',
+              wished ? 'fill-wine-700 text-wine-700' : 'text-ink-700',
+            )}
             strokeWidth={1.4}
           />
         </button>
@@ -89,7 +97,7 @@ export function ProductCard({
           <button
             type="button"
             onClick={() => onQuickView(product)}
-            className="eyebrow-sm absolute inset-x-0 bottom-0 z-10 hidden translate-y-full items-center justify-center gap-2 bg-ivory-50/95 py-3.5 text-ink-900 backdrop-blur-sm transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-0 group-focus-within:translate-y-0 md:flex"
+            className="eyebrow-sm absolute inset-x-0 bottom-0 z-10 hidden translate-y-full items-center justify-center gap-2 bg-ivory-50/95 py-3.5 text-ink-900 backdrop-blur-sm transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-focus-within:translate-y-0 group-hover:translate-y-0 md:flex"
           >
             <Maximize2 className="size-3.5" strokeWidth={1.4} />
             Quick View
@@ -99,16 +107,19 @@ export function ProductCard({
 
       {/* --- meta --- */}
       <div className="pt-4">
-        <h3 className="font-[family-name:var(--font-display)] text-[1.0625rem] font-normal leading-snug">
+        <h3 className="font-[family-name:var(--font-display)] text-[1.0625rem] leading-snug font-normal">
           {/* The whole card is reachable through this one link. */}
-          <Link href={`/product/${product.slug}`} className="after:absolute after:inset-0 after:content-['']">
+          <Link
+            href={`/product/${product.slug}`}
+            className="after:absolute after:inset-0 after:content-['']"
+          >
             {product.name}
           </Link>
         </h3>
         <p className="mt-1 text-xs text-ink-400">
           {product.color} · {product.fabric}
         </p>
-        <p className="mt-2 flex items-baseline gap-2.5 text-sm tnum">
+        <p className="tnum mt-2 flex items-baseline gap-2.5 text-sm">
           <span className={cn(soldOut && 'text-ink-400')}>{formatPrice(product.price)}</span>
           {product.compareAtPrice && (
             <span className="text-xs text-ink-300 line-through">

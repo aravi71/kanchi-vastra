@@ -105,7 +105,9 @@ if (replace) {
   if (existing.length) {
     console.log(`  Removing ${existing.length} existing saree(s) first...`);
     let tx = client.transaction();
-    existing.forEach((id) => { tx = tx.delete(id); });
+    existing.forEach((id) => {
+      tx = tx.delete(id);
+    });
     await tx.commit();
   }
 }
@@ -133,10 +135,9 @@ let skipped = 0;
 
 for (const [i, p] of products.entries()) {
   // Don't duplicate on a re-run.
-  const already = await client.fetch(
-    '*[_type == "product" && slug.current == $slug][0]._id',
-    { slug: p.slug },
-  );
+  const already = await client.fetch('*[_type == "product" && slug.current == $slug][0]._id', {
+    slug: p.slug,
+  });
   if (already && !replace) {
     console.log(`  ${String(i + 1).padStart(2)}. ${p.name} — already there, skipped`);
     skipped++;

@@ -50,8 +50,8 @@ export default function ContactPage() {
 
               {pending && (
                 <p className="mt-5 border-l-2 border-gold-500 bg-ivory-100/60 py-3 pl-4 text-xs leading-relaxed text-ink-500">
-                  Our contact channels are being set up. The details below are placeholders and
-                  will be replaced with real ones before launch.
+                  Our contact channels are being set up. The details below are placeholders and will
+                  be replaced with real ones before launch.
                 </p>
               )}
 
@@ -72,15 +72,14 @@ export default function ContactPage() {
                   <MapPin className="mt-0.5 size-4 shrink-0 text-gold-600" strokeWidth={1.3} />
                   <div>
                     <p className="eyebrow-sm text-ink-400">Store</p>
-                    <address className="mt-1 text-sm not-italic leading-relaxed text-ink-600">
+                    <address className="mt-1 text-sm leading-relaxed text-ink-600 not-italic">
                       {pending ? (
                         'Store address to be confirmed'
                       ) : (
                         <>
                           {contact.address.line1}
                           <br />
-                          {contact.address.city}, {contact.address.state}{' '}
-                          {contact.address.pincode}
+                          {contact.address.city}, {contact.address.state} {contact.address.pincode}
                         </>
                       )}
                     </address>

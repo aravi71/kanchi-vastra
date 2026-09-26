@@ -38,12 +38,12 @@ export function ContactForm() {
   const [errors, setErrors] = useState<Partial<Record<keyof Values, string>>>({});
   const [sent, setSent] = useState(false);
 
-  const set = (key: keyof Values) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
-  ) => {
-    setValues((v) => ({ ...v, [key]: e.target.value }));
-    if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }));
-  };
+  const set =
+    (key: keyof Values) =>
+    (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+      setValues((v) => ({ ...v, [key]: e.target.value }));
+      if (errors[key]) setErrors((p) => ({ ...p, [key]: undefined }));
+    };
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -78,8 +78,8 @@ export function ContactForm() {
             service behind this form yet, and nothing was transmitted anywhere.
           </p>
           <p>
-            Once our contact channels are live, this form will reach us directly and we will
-            reply to the address you gave.
+            Once our contact channels are live, this form will reach us directly and we will reply
+            to the address you gave.
           </p>
         </div>
         <Button
@@ -175,8 +175,8 @@ export function ContactForm() {
         Send Message
       </Button>
       <p className="mt-4 text-xs leading-relaxed text-ink-400">
-        Our inbox is not connected yet — this form will confirm your details but cannot deliver
-        a message until launch.
+        Our inbox is not connected yet — this form will confirm your details but cannot deliver a
+        message until launch.
       </p>
     </form>
   );

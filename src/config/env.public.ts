@@ -15,9 +15,15 @@ const schema = z.object({
   siteUrl: z.url().default('http://localhost:3000'),
   sanity: z.object({
     /** Empty until the CMS is connected; the shop then serves src/content. */
-    projectId: z.string().regex(/^[a-z0-9]*$/, 'lowercase letters and digits only').default(''),
+    projectId: z
+      .string()
+      .regex(/^[a-z0-9]*$/, 'lowercase letters and digits only')
+      .default(''),
     dataset: z.string().min(1).default('production'),
-    apiVersion: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).default('2024-10-01'),
+    apiVersion: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/)
+      .default('2024-10-01'),
   }),
 });
 

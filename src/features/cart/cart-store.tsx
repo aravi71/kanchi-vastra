@@ -68,9 +68,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const cap = Math.max(product.stock, 0);
       if (existing) {
         return prev.map((l) =>
-          l.productId === product.id
-            ? { ...l, quantity: Math.min(l.quantity + quantity, cap) }
-            : l,
+          l.productId === product.id ? { ...l, quantity: Math.min(l.quantity + quantity, cap) } : l,
         );
       }
       if (cap === 0) return prev;
@@ -110,8 +108,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
 
     const subtotal = items.reduce((sum, i) => sum + i.lineTotal, 0);
-    const shippingCost =
-      subtotal === 0 || subtotal >= shipping.freeAbove ? 0 : shipping.flatRate;
+    const shippingCost = subtotal === 0 || subtotal >= shipping.freeAbove ? 0 : shipping.flatRate;
 
     return {
       lines,

@@ -67,12 +67,9 @@ export function Hero() {
       />
 
       {/* --- copy --- */}
-      <div className="container-editorial relative w-full pb-20 pt-40 md:pb-28 lg:pb-32">
+      <div className="container-editorial relative w-full pt-40 pb-20 md:pb-28 lg:pb-32">
         <div className="max-w-3xl">
-          <p
-            className="eyebrow text-gold-400/90 animate-fade"
-            style={{ animationDelay: '120ms' }}
-          >
+          <p className="eyebrow animate-fade text-gold-400/90" style={{ animationDelay: '120ms' }}>
             Kanchi Vastra
           </p>
 
@@ -80,7 +77,7 @@ export function Hero() {
             {['The Art of', 'Timeless Silk'].map((line, i) => (
               <span key={line} className="block overflow-hidden">
                 <span
-                  className="block animate-fade-up"
+                  className="animate-fade-up block"
                   style={{ animationDelay: `${260 + i * 130}ms` }}
                 >
                   {line}
@@ -90,17 +87,22 @@ export function Hero() {
           </h1>
 
           <p
-            className="mt-7 max-w-md text-[1.0625rem] leading-relaxed text-ivory-200/85 animate-fade-up"
+            className="animate-fade-up mt-7 max-w-md text-[1.0625rem] leading-relaxed text-ivory-200/85"
             style={{ animationDelay: '580ms' }}
           >
             Where South Indian heritage meets contemporary elegance.
           </p>
 
           <div
-            className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4 animate-fade-up"
+            className="animate-fade-up mt-10 flex flex-col gap-3 sm:flex-row sm:gap-4"
             style={{ animationDelay: '700ms' }}
           >
-            <ButtonLink href="/shop" variant="onDark" size="lg" className="bg-ivory-50 text-wine-950 hover:bg-gold-400 hover:text-wine-950 border-transparent">
+            <ButtonLink
+              href="/shop"
+              variant="onDark"
+              size="lg"
+              className="border-transparent bg-ivory-50 text-wine-950 hover:bg-gold-400 hover:text-wine-950"
+            >
               Explore the Collection
             </ButtonLink>
             <ButtonLink href="/about" variant="onDark" size="lg">

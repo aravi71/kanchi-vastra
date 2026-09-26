@@ -27,14 +27,8 @@ export function OrderSummary({
           {items.map(({ product, quantity, lineTotal }) => (
             <li key={product.id} className="flex gap-3.5">
               <div className="relative aspect-[3/4] w-14 shrink-0 overflow-hidden bg-ivory-200">
-                <Image
-                  src={product.images[0]}
-                  alt=""
-                  fill
-                  sizes="56px"
-                  className="object-cover"
-                />
-                <span className="absolute -right-1.5 -top-1.5 grid size-5 place-items-center rounded-full bg-wine-800 text-[10px] tnum text-ivory-50">
+                <Image src={product.images[0]} alt="" fill sizes="56px" className="object-cover" />
+                <span className="tnum absolute -top-1.5 -right-1.5 grid size-5 place-items-center rounded-full bg-wine-800 text-[10px] text-ivory-50">
                   {quantity}
                 </span>
               </div>
@@ -44,7 +38,7 @@ export function OrderSummary({
                 </p>
                 <p className="mt-0.5 text-xs text-ink-400">{product.color}</p>
               </div>
-              <p className="shrink-0 text-sm tnum">{formatPrice(lineTotal)}</p>
+              <p className="tnum shrink-0 text-sm">{formatPrice(lineTotal)}</p>
             </li>
           ))}
         </ul>
@@ -53,7 +47,10 @@ export function OrderSummary({
       <dl className="mt-6 space-y-3 text-sm">
         <div className="flex justify-between">
           <dt className="text-ink-600">
-            Subtotal <span className="text-ink-400">({count} {count === 1 ? 'item' : 'items'})</span>
+            Subtotal{' '}
+            <span className="text-ink-400">
+              ({count} {count === 1 ? 'item' : 'items'})
+            </span>
           </dt>
           <dd className="tnum">{formatPrice(subtotal)}</dd>
         </div>
@@ -65,7 +62,7 @@ export function OrderSummary({
         </div>
         <div className="flex items-baseline justify-between border-t border-ivory-300 pt-4">
           <dt className="eyebrow">Total</dt>
-          <dd className="font-[family-name:var(--font-display)] text-2xl tnum">
+          <dd className="tnum font-[family-name:var(--font-display)] text-2xl">
             {formatPrice(total)}
           </dd>
         </div>

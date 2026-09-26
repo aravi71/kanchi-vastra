@@ -26,9 +26,9 @@ const groups = [
         content: (
           <div className="space-y-3">
             <p>
-              Technically, the korvai construction: the body and the border are woven from
-              separate warps and interlocked by hand where they meet. That is what allows the
-              border to be a genuinely different colour and weight from the body.
+              Technically, the korvai construction: the body and the border are woven from separate
+              warps and interlocked by hand where they meet. That is what allows the border to be a
+              genuinely different colour and weight from the body.
             </p>
             <p>
               Beyond that, a Kanchipuram is defined by pure mulberry silk, zari worked into the
@@ -42,10 +42,10 @@ const groups = [
         title: 'What is the difference between korvai and a regular weave?',
         content: (
           <p>
-            In a korvai saree the border is woven separately and joined to the body thread by
-            thread — slower, and visible in the crispness of the seam. In a non-korvai saree
-            the body and border share one warp, so the contrast between them is softer. Both are
-            legitimate; korvai is more labour-intensive and generally more expensive.
+            In a korvai saree the border is woven separately and joined to the body thread by thread
+            — slower, and visible in the crispness of the seam. In a non-korvai saree the body and
+            border share one warp, so the contrast between them is softer. Both are legitimate;
+            korvai is more labour-intensive and generally more expensive.
           </p>
         ),
       },
@@ -55,9 +55,8 @@ const groups = [
         content: (
           <p>
             Each product page lists the zari for that specific saree under Specifications —
-            typically half-fine or fine gold zari, in either a bright or an antique finish. The
-            zari type is the single largest factor in both the weight and the price of a silk
-            saree.
+            typically half-fine or fine gold zari, in either a bright or an antique finish. The zari
+            type is the single largest factor in both the weight and the price of a silk saree.
           </p>
         ),
       },
@@ -66,9 +65,9 @@ const groups = [
         title: 'Does the saree come with a blouse piece?',
         content: (
           <p>
-            Yes. Every saree in the collection includes an attached blouse piece, and the
-            length and whether it is matching or contrast are listed on each product page. The
-            blouse piece is unstitched.
+            Yes. Every saree in the collection includes an attached blouse piece, and the length and
+            whether it is matching or contrast are listed on each product page. The blouse piece is
+            unstitched.
           </p>
         ),
       },
@@ -83,9 +82,9 @@ const groups = [
         content: (
           <div className="space-y-3">
             <p>
-              Online payment is <strong>not yet enabled</strong>. You can browse, build a bag
-              and enter delivery details, but no order can currently be placed and nothing will
-              be charged.
+              Online payment is <strong>not yet enabled</strong>. You can browse, build a bag and
+              enter delivery details, but no order can currently be placed and nothing will be
+              charged.
             </p>
             <p>
               A payment gateway is being set up. Until then, please{' '}
@@ -104,8 +103,8 @@ const groups = [
           <div className="space-y-3">
             <p>We intend to ship across India, with tracking provided on every order.</p>
             <p className="text-ink-400">
-              Our shipping partners, precise delivery windows and international availability
-              are still being confirmed and will be published on the{' '}
+              Our shipping partners, precise delivery windows and international availability are
+              still being confirmed and will be published on the{' '}
               <Link href="/legal/shipping" className="link-underline text-ink-600">
                 shipping policy
               </Link>{' '}
@@ -119,9 +118,7 @@ const groups = [
         title: 'Can I return or exchange a saree?',
         content: (
           <div className="space-y-3">
-            <p>
-              Returns will be accepted on unworn, unwashed sarees with original tags intact.
-            </p>
+            <p>Returns will be accepted on unworn, unwashed sarees with original tags intact.</p>
             <p className="text-ink-400">
               The exact return window, who covers return shipping, and the exchange process are
               being finalised. See the{' '}
@@ -138,9 +135,9 @@ const groups = [
         title: 'What does “only 2 remaining” mean?',
         content: (
           <p>
-            Exactly what it says — the number of that specific saree we currently hold. Silk
-            sarees are woven in small numbers and each colourway is limited, so the figure is
-            genuinely the stock count rather than a pressure tactic.
+            Exactly what it says — the number of that specific saree we currently hold. Silk sarees
+            are woven in small numbers and each colourway is limited, so the figure is genuinely the
+            stock count rather than a pressure tactic.
           </p>
         ),
       },
@@ -155,12 +152,12 @@ const groups = [
         content: (
           <div className="space-y-3">
             <p>
-              Pure silk sarees with zari should be dry cleaned only. Water and detergent damage
-              both the fibre and the metallic thread.
+              Pure silk sarees with zari should be dry cleaned only. Water and detergent damage both
+              the fibre and the metallic thread.
             </p>
             <p>
-              Silk-cotton weaves are more forgiving and can be gently hand washed in cold
-              water. Each product page states which applies.
+              Silk-cotton weaves are more forgiving and can be gently hand washed in cold water.
+              Each product page states which applies.
             </p>
             <Link href="/care-guide" className="link-underline inline-block text-wine-700">
               Read the full care guide
@@ -173,9 +170,9 @@ const groups = [
         title: 'How should I store my sarees?',
         content: (
           <p>
-            Folded, in cotton muslin, away from direct sunlight and damp. Refold along a
-            different line every few months so the zari does not crease permanently in one
-            place. Avoid plastic covers, which trap moisture.
+            Folded, in cotton muslin, away from direct sunlight and damp. Refold along a different
+            line every few months so the zari does not crease permanently in one place. Avoid
+            plastic covers, which trap moisture.
           </p>
         ),
       },
@@ -189,10 +186,10 @@ const groups = [
         title: 'Are these photographs of the actual sarees?',
         content: (
           <p>
-            No. The images currently on this site are original artwork created for this build,
-            not photographs of real merchandise. Product names, prices, SKUs, stock figures and
-            contact details are also placeholder content. All of it will be replaced with
-            genuine information and photography before launch.
+            No. The images currently on this site are original artwork created for this build, not
+            photographs of real merchandise. Product names, prices, SKUs, stock figures and contact
+            details are also placeholder content. All of it will be replaced with genuine
+            information and photography before launch.
           </p>
         ),
       },
@@ -262,8 +259,8 @@ export default function FaqPage() {
             <div className="border border-ivory-300 bg-ivory-200/40 p-8 text-center">
               <h2 className="display-sm font-light">Still have a question?</h2>
               <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink-500">
-                If it is not answered here, ask us directly. We would rather have the
-                conversation than have you guess.
+                If it is not answered here, ask us directly. We would rather have the conversation
+                than have you guess.
               </p>
               <ButtonLink href="/contact" className="mt-7">
                 Contact Us
