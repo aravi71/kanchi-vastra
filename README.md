@@ -14,11 +14,11 @@ Specifically, none of the following is real:
 
 | What | Where it lives | Status |
 | --- | --- | --- |
-| Product names, descriptions, prices, SKUs, stock | `data/products.ts` | Placeholder |
+| Product names, descriptions, prices, SKUs, stock | `src/content/products.ts` | Placeholder |
 | Product and editorial imagery | `public/images/**` | Generated artwork, not photography |
-| Phone, WhatsApp, email, address, hours, social | `data/site.ts` → `contact` | Placeholder, flagged `isPlaceholder: true` |
-| Privacy / Terms / Shipping / Returns policies | `data/legal.ts` | Draft, **not legally reviewed** |
-| Shipping rates and delivery estimates | `data/site.ts` → `shipping` | Placeholder |
+| Phone, WhatsApp, email, address, hours, social | `src/config/site.ts` → `contact` | Placeholder, flagged `isPlaceholder: true` |
+| Privacy / Terms / Shipping / Returns policies | `src/content/legal.ts` | Draft, **not legally reviewed** |
+| Shipping rates and delivery estimates | `src/config/site.ts` → `shipping` | Placeholder |
 
 The site is deliberately honest about this rather than hiding it:
 
@@ -53,8 +53,9 @@ Then open <http://localhost:3000>.
 | `npm run lint` | ESLint |
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run gen:art` | Regenerate the demo saree artwork |
-| `npm run products:export` | Catalogue → `content/products.csv` for editing in Excel/Sheets |
-| `npm run products:import` | Validate that spreadsheet and write it back to the catalogue |
+| `npm run check` | Lint + typecheck + formatting — run before every commit |
+| `npm run format` | Format all files with Prettier |
+| `npm run deploy` | Build and ship the committed code to the server (Docker) |
 
 Requires Node.js 20 or newer (built and verified on Node 24 LTS).
 
@@ -83,12 +84,12 @@ Requires Node.js 20 or newer (built and verified on Node 24 LTS).
 No UI kit or theme was used. Every component, layout, colour, motif and animation in this
 project was designed and written for it. `shadcn/ui` was deliberately **not** installed —
 the handful of primitives needed (`Button`, `Field`, `Overlay`, `Accordion`) are hand-written
-in `components/ui/`, which is less code than the dependency would have added.
+in `src/components/ui/`, which is less code than the dependency would have added.
 
 **On animation:** Motion / Framer Motion was evaluated and deliberately left out. Every
 effect this design needs — scroll reveals, the header transform, image and hover transitions,
 the drawer and sheet slides, the hero parallax — is a CSS transition driven by a class or a
-single `IntersectionObserver` (`components/ui/Reveal.tsx`). That costs a few hundred bytes
+single `IntersectionObserver` (`src/components/ui/Reveal.tsx`). That costs a few hundred bytes
 instead of roughly 40 kB, and it makes `prefers-reduced-motion` a pure-CSS concern rather than
 something each animation has to remember to check. Add `motion` if you later want shared-element
 page transitions or gesture-driven components, which genuinely do need a runtime.
@@ -97,49 +98,8 @@ page transitions or gesture-driven components, which genuinely do need a runtime
 
 ## Project structure
 
-```text
-app/                      Routes (App Router)
-  layout.tsx              Fonts, metadata, providers, Organization/WebSite JSON-LD
-  page.tsx                Homepage
-  shop/                   Catalogue with filters
-  product/[slug]/         Product detail (+ Product JSON-LD)
-  collections/            Collection index and individual collections
-  cart/ checkout/ wishlist/ account/
-  about/ contact/ faq/ care-guide/
-  legal/[slug]/           Privacy, terms, shipping, returns (draft)
-  not-found.tsx  error.tsx  loading.tsx
-  sitemap.ts  robots.ts
-
-components/
-  layout/                 Header, Footer, MobileNav, SearchOverlay, forms, PageHeader
-  home/                   Hero, HeritageStory, CollectionsShowcase, FeaturedRail,
-                          CraftSection, TrustSection, SocialSection, EditorialQuote
-  product/                ProductCard, ProductGallery, BuyBox, FilterPanel,
-                          ShopBrowser, QuickView, StickyBuyBar, WishlistView
-  cart/                   CartDrawer, CartView, OrderSummary
-  checkout/               CheckoutForm
-  ui/                     Button, Field, Overlay, Accordion, Reveal, Logo
-  motifs/                 Temple border, lotus, kolam, peacock ornament
-
-data/                     ALL replaceable content lives here
-  products.ts             The catalogue
-  collections.ts          Collections + filter vocabularies
-  site.ts                 Brand, contact, navigation, trust points, shipping
-  legal.ts                Policy drafts
-  art-specs.json          Colourways driving the artwork generator
-
-lib/
-  types.ts                Domain types — the contract between data and UI
-  store/                  cart, wishlist, ui (React Context + localStorage)
-  filters.ts              Faceted filtering and sorting
-  search.ts               Weighted client-side search
-  checkout.ts             Address validation + the payment-gateway seam
-  utils.ts                cn, price formatting, safe storage access
-
-scripts/generate-art.mjs  Generative SVG saree artwork
-styles/globals.css        Design tokens and brand utilities
-public/logo/              Logo suite for web, print and packaging
-```
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for the folder layout, coding rules,
+settings/secrets handling and the security baseline.
 
 ---
 
@@ -162,7 +122,7 @@ zari lines across a weave, capped by a kalasam finial. It is original to this pr
 | `public/favicon.svg` | Favicon (simplified for 16 px legibility) |
 
 **On the website**, the logo is rendered as inline SVG plus live text
-(`components/ui/Logo.tsx`) rather than as an image file, so it inherits colour from its
+(`src/components/ui/Logo.tsx`) rather than as an image file, so it inherits colour from its
 container, stays sharp at any zoom, and remains selectable and searchable. To change the mark
 site-wide, edit that component; the files above are the print/packaging handoff.
 
@@ -173,12 +133,12 @@ site-wide, edit that component; the files above are the print/packaging handoff.
 ### Replacing the logo
 
 1. Swap the files in `public/logo/` and `public/favicon.svg`, keeping the filenames.
-2. Replace the paths inside `components/ui/Logo.tsx` (`Monogram`), or have it render an
+2. Replace the paths inside `src/components/ui/Logo.tsx` (`Monogram`), or have it render an
    `<Image>` pointing at your file.
 
 ### Colour and type
 
-Both are declared once, in the `@theme` block at the top of `styles/globals.css`:
+Both are declared once, in the `@theme` block at the top of `src/styles/globals.css`:
 
 | Role | Token | Value |
 | --- | --- | --- |
@@ -189,14 +149,14 @@ Both are declared once, in the `@theme` block at the top of `styles/globals.css`
 | Accent — temple terracotta | `--color-terracotta-500` | `#b4543a` |
 
 Gold is an accent only. It is never used for body text, because `#c0994f` on ivory is roughly
-2.3:1 and would fail WCAG AA. Fonts are swapped in `app/layout.tsx`.
+2.3:1 and would fail WCAG AA. Fonts are swapped in `src/app/layout.tsx`.
 
 ---
 
 ## Replacing product content
 
-Everything is in `data/products.ts`. The UI reads only the `Product` type in `lib/types.ts`,
-so nothing in `components/` needs to change.
+Everything is in `src/content/products.ts`. The UI reads only the `Product` type in `src/types/catalog.ts`,
+so nothing in `src/features/` needs to change.
 
 ```ts
 {
@@ -240,13 +200,13 @@ To use real photography:
 
 1. Delete `public/images/products/` and `public/images/editorial/`.
 2. Drop in your photographs using the same filenames (`<slug>-1.jpg` … `-4.jpg`), or point
-   `images` in `data/products.ts` at whatever paths you prefer.
+   `images` in `src/content/products.ts` at whatever paths you prefer.
 3. Use a **3:4 portrait** ratio — the grid, gallery and cards are all built around it.
 4. In `next.config.ts`, remove `dangerouslyAllowSVG` and the SVG content-security policy.
    They exist only because the demo artwork is SVG.
-5. Delete `scripts/generate-art.mjs`, `data/art-specs.json` and the `gen:art` script.
+5. Delete `scripts/generate-art.mjs`, `src/content/art-specs.json` and the `gen:art` script.
 
-To adjust the demo artwork instead, edit the colourways in `data/art-specs.json` and run
+To adjust the demo artwork instead, edit the colourways in `src/content/art-specs.json` and run
 `npm run gen:art`.
 
 ---
@@ -275,7 +235,7 @@ To adjust the demo artwork instead, edit the colourways in `data/art-specs.json`
 | Customer accounts | Not built. `/account` explains this rather than showing a dead sign-in form. |
 | Contact form delivery | No mail provider. The form says the message was not sent. |
 | Newsletter | No mailing list. The form says nothing was subscribed. |
-| Instagram / WhatsApp links | Render as inert "soon" labels until configured in `data/site.ts`. |
+| Instagram / WhatsApp links | Render as inert "soon" labels until configured in `src/config/site.ts`. |
 
 ---
 
@@ -283,33 +243,33 @@ To adjust the demo artwork instead, edit the colourways in `data/art-specs.json`
 
 ### Razorpay
 
-The seam is already defined in `lib/checkout.ts`, which documents the whole flow. In short:
+The seam is already defined in `src/features/checkout/checkout.ts`, which documents the whole flow. In short:
 
 1. Put `NEXT_PUBLIC_RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` in `.env.local`.
    **The secret is server-only — never prefix it with `NEXT_PUBLIC_` and never import it into
    a component.**
-2. `app/api/checkout/create-order/route.ts` — receives the validated address plus cart line
+2. `src/app/api/checkout/create-order/route.ts` — receives the validated address plus cart line
    ids, **recomputes the total server-side from the catalogue** (never trust a total sent by
    the browser), calls the Razorpay Orders API, returns `{ orderId, amount, currency }`.
-3. `app/api/checkout/verify/route.ts` — verifies `razorpay_signature` with HMAC-SHA256 over
+3. `src/app/api/checkout/verify/route.ts` — verifies `razorpay_signature` with HMAC-SHA256 over
    `` `${razorpay_order_id}|${razorpay_payment_id}` `` keyed by `RAZORPAY_KEY_SECRET`.
    **Mark an order paid only inside this route.**
-4. `app/api/webhooks/razorpay/route.ts` — verified against `RAZORPAY_WEBHOOK_SECRET`; treat
+4. `src/app/api/webhooks/razorpay/route.ts` — verified against `RAZORPAY_WEBHOOK_SECRET`; treat
    this as the authoritative source of payment state.
-5. Replace the body of `submitOrder` in `lib/checkout.ts` to call step 2, open Razorpay
+5. Replace the body of `submitOrder` in `src/features/checkout/checkout.ts` to call step 2, open Razorpay
    Checkout, and pass the handler response to step 3.
 
 Card numbers, CVVs and UPI PINs are collected by Razorpay's own hosted widget and must never
 touch this codebase. Then remove the "payment gateway coming soon" panel from
-`components/checkout/CheckoutForm.tsx` and update the FAQ and terms.
+`src/features/checkout/components/CheckoutForm.tsx` and update the FAQ and terms.
 
 The same seam works for Stripe or Cashfree — only the SDK calls differ.
 
 ### A real product database
 
-`data/products.ts` exports plain functions (`getProductBySlug`, `productsInCollection`,
+`src/content/products.ts` exports plain functions (`getProductBySlug`, `productsInCollection`,
 `featuredProducts`, …). Swap their bodies for queries against Supabase, Shopify, Medusa,
-Sanity or your own API, keep the `Product` shape from `lib/types.ts`, and make the page
+Sanity or your own API, keep the `Product` shape from `src/types/catalog.ts`, and make the page
 components `async`. No component needs to change. Add `export const revalidate = 60` to the
 catalogue routes for ISR.
 
@@ -317,9 +277,9 @@ catalogue routes for ISR.
 
 | Want | Do this |
 | --- | --- |
-| Customer accounts | NextAuth or Supabase Auth; then move cart/wishlist from `localStorage` to the user record in `lib/store/` |
-| Contact email | `app/api/contact/route.ts` posting to Resend/SES with a server-only key; then update `components/layout/ContactForm.tsx` |
-| WhatsApp | Set `contact.whatsapp` and `isPlaceholder: false` in `data/site.ts` — the `wa.me` link activates automatically |
+| Customer accounts | NextAuth or Supabase Auth; then move cart/wishlist from `localStorage` to the user record in `src/features/` |
+| Contact email | `src/app/api/contact/route.ts` posting to Resend/SES with a server-only key; then update `src/components/layout/ContactForm.tsx` |
+| WhatsApp | Set `contact.whatsapp` and `isPlaceholder: false` in `src/config/site.ts` — the `wa.me` link activates automatically |
 | Instagram | Set `contact.social.instagram`; the footer link and social CTA activate automatically |
 | Analytics | `@vercel/analytics`, or GA4 via `next/script`. Add a consent banner and update the privacy policy |
 | Admin panel | Use a headless CMS (Sanity, Contentful) rather than building one — it is the smaller job and non-developers can use it |
@@ -328,108 +288,21 @@ catalogue routes for ISR.
 
 ## Deployment
 
-The project is Vercel-ready: no server-only runtime, no database, every catalogue page
-prerendered.
-
-### Live: Hostinger VPS
-
-The shop runs at **https://srv1396079.hstgr.cloud** on the Hostinger VPS (Ubuntu 24.04),
-alongside the MetaTrader 5 install already on that server.
-
-| Piece | Where |
-| --- | --- |
-| App | `/srv/kanchi-vastra/app` → symlink to `releases/<commit>`, run as user `kanchi` |
-| Service | `systemctl status kanchi-vastra` — Next.js on 127.0.0.1:3000 only |
-| Web server + HTTPS | `systemctl status caddy-kanchi` — Caddy on 80/443, Let's Encrypt renews automatically |
-| Config | `/etc/caddy/Caddyfile`, secrets-free env in `/srv/kanchi-vastra/shared/.env.local` |
-| Node / Caddy | standalone binaries in `/opt/node`, `/opt/caddy` — no system packages touched |
-
-**Content** (prices, photos, sarees) is edited at `/studio` and appears within 5 minutes.
-
-**Code** changes: commit, then from Git Bash
+The site runs on a Hostinger VPS as Docker containers (Caddy, the app,
+PostgreSQL, Garage photo storage, Mailpit), defined in
+[infra/docker/compose.yaml](infra/docker/compose.yaml). Server layout, paths,
+backups and restore steps: [infra/dev/README.md](infra/dev/README.md).
 
 ```bash
-npm run deploy
-npm run deploy -- --rollback   # back to the previous release
+npm run deploy                 # build the committed code into an image and switch to it
+npm run deploy -- --rollback   # go back to the previous image
 ```
 
-**Adding a custom domain later:** point its A record at `72.61.146.146` (and AAAA at
-`2a02:4780:f:a691::1`), add the domain as a second site address in `/etc/caddy/Caddyfile`,
-run `systemctl reload caddy-kanchi`, update `NEXT_PUBLIC_SITE_URL` in
-`shared/.env.local`, add the origin with `npx sanity cors add`, and `npm run deploy`.
+The deploy builds the new image while the current one keeps serving, swaps
+it in, waits for the health check, and keeps the last three images.
 
-### Option A — a temporary link, right now (no account)
-
-```bash
-share-preview.cmd
-```
-
-Builds the site, serves it, and opens a free Cloudflare quick tunnel. The script prints a
-`https://<random-words>.trycloudflare.com` address that anyone can open in a browser.
-
-This is a **preview, not hosting**. It works only while that window is open and this PC is on,
-and the URL changes every run. Use it to show someone the site today; use Option B for a
-permanent address.
-
-### Option B — permanent free hosting on Vercel (needs your account)
-
-
-
-1. Create the GitHub repository and push:
-
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Kanchi Vastra storefront"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/kanchi-vastra.git
-   git push -u origin main
-   ```
-
-2. Go to <https://vercel.com/new>, sign in with GitHub, and import the repository.
-3. Vercel detects Next.js automatically — leave the build settings alone.
-4. Add one environment variable: `NEXT_PUBLIC_SITE_URL` = your production URL
-   (e.g. `https://kanchi-vastra.vercel.app`). This drives canonical URLs, the sitemap,
-   Open Graph tags and JSON-LD, so getting it right matters for SEO.
-5. Deploy. You get HTTPS and a free `*.vercel.app` URL.
-
-Every later push to `main` redeploys automatically; pull requests get preview URLs.
-
-### Connecting a custom domain later
-
-1. Buy the domain from any registrar.
-2. In Vercel: **Project → Settings → Domains → Add**, enter it.
-3. At your registrar, add the DNS records Vercel shows — usually an `A` record for the apex
-   pointing at `76.76.21.21`, and a `CNAME` for `www` pointing at `cname.vercel-dns.com`.
-   Use whatever Vercel displays; these values can change.
-4. Wait for DNS propagation. Vercel issues the TLS certificate automatically.
-5. **Update `NEXT_PUBLIC_SITE_URL` to the custom domain and redeploy**, otherwise canonical
-   URLs and the sitemap will keep pointing at the `.vercel.app` address.
-
----
-
-## Known limitation: soft 404 on unknown saree URLs
-
-`/product/<anything>` returns HTTP **200** with the "not found" page rather than a real 404.
-Visitors see the correct page; search engines may index these as real pages.
-
-This is inherent to how `notFound()` behaves in this dynamic route on Next 16 here. It
-predates the CMS work — the original static rendering does the same — and neither moving the
-check into `generateMetadata` nor switching the route to per-request rendering changed it, so
-both attempts were reverted rather than left in the codebase. `/nope` and every other unknown
-URL still return a correct 404.
-
-Two ways to fix it, neither free:
-
-- `export const dynamicParams = false` on the route gives real 404s, but a saree added in the
-  admin would then need `npm run deploy` before its page exists.
-- Middleware that checks the slug against the catalogue before the response starts.
-
-**Related, and worth knowing day to day:** deleting a saree in the admin removes it from the
-shop list within about two minutes, but its own page keeps answering until the site is
-rebuilt — Next serves the last good copy while re-rendering, and every re-render finds the
-document gone. **Prefer setting stock to 0 over deleting.** That shows "Sold out", blocks
-purchase, and keeps links people have already shared working.
+The version before the 2026-09 redesign is preserved as the git tag
+`v1-classic-design`.
 
 ## SEO
 
