@@ -16,11 +16,11 @@ import 'dotenv/config';
 import { PrismaClient, ProductStatus } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { createClient } from '@sanity/client';
-import { products as localProducts } from '../data/products';
-import { collections as localCollections } from '../data/collections';
+import { products as localProducts } from '../src/content/products';
+import { collections as localCollections } from '../src/content/collections';
 
 const prisma = new PrismaClient({
-  adapter: new PrismaPg({ connectionString: process.env.DIRECT_URL! }),
+  adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
 });
 
 interface SeedProduct {

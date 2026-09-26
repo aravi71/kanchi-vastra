@@ -24,7 +24,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SPEC = JSON.parse(readFileSync(join(ROOT, 'data', 'art-specs.json'), 'utf8'));
+const SPEC = JSON.parse(readFileSync(join(ROOT, 'src', 'content', 'art-specs.json'), 'utf8'));
 
 /* -------------------------------------------------------------------------
    Deterministic PRNG — the same slug always produces the same cloth, so the

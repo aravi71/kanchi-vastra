@@ -2,12 +2,11 @@ import 'dotenv/config';
 import { defineConfig, env } from 'prisma/config';
 
 /**
- * Prisma 7 moved connection URLs out of schema.prisma into this file.
+ * Prisma CLI settings (migrate, generate, seed). The connection string comes
+ * from DATABASE_URL in the environment — never from this file.
  *
- * Migrations use DIRECT_URL — Neon's unpooled endpoint. Running DDL through
- * the pooler can fail or hang, because a pooled connection is not guaranteed
- * to be the same backend session between statements. The app itself uses the
- * pooled DATABASE_URL, wired up in lib/db/prisma.ts.
+ * Locally: .env.local is not read by dotenv, so run migrations with the
+ * variable set, e.g. through an SSH tunnel to the server's database.
  */
 export default defineConfig({
   schema: 'prisma/schema.prisma',
@@ -16,6 +15,6 @@ export default defineConfig({
     seed: 'tsx prisma/seed.ts',
   },
   datasource: {
-    url: env('DIRECT_URL'),
+    url: env('DATABASE_URL'),
   },
 });

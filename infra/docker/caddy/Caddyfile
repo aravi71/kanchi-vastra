@@ -4,9 +4,14 @@
 {$SITE_HOST} {
 	encode zstd gzip
 
-	# DEV server: keep search engines out, so demo content never competes
-	# with the real shop once production goes live.
-	header X-Robots-Tag "noindex, nofollow"
+	header {
+		# DEV server: keep search engines out, so demo content never competes
+		# with the real shop once production goes live.
+		X-Robots-Tag "noindex, nofollow"
+		# Browsers remember to use HTTPS only (one year).
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
 
 	# Shop photos, served from Garage. Public, read-only.
 	handle_path /media/* {

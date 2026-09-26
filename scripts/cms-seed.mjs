@@ -96,7 +96,7 @@ const client = createClient({
   useCdn: false,
 });
 
-const { products } = await import(pathToFileURL(join(ROOT, 'data', 'products.ts')).href);
+const { products } = await import(pathToFileURL(join(ROOT, 'src', 'content', 'products.ts')).href);
 
 console.log(`\n  Seeding ${products.length} sarees into ${projectId}/${dataset}\n`);
 

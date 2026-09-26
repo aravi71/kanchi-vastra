@@ -20,10 +20,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY package.json package-lock.json prisma.config.ts ./
 COPY prisma ./prisma
 # postinstall runs `prisma generate`, which loads prisma.config.ts and so
-# needs DIRECT_URL to be set. Generating never connects, so a placeholder is
+# needs DATABASE_URL to be set. Generating never connects, so a placeholder is
 # enough and keeps real credentials out of this stage.
 RUN --mount=type=cache,target=/root/.npm \
-    DIRECT_URL=postgresql://build:build@localhost:5432/build \
+    DATABASE_URL=postgresql://build:build@localhost:5432/build \
     npm ci --no-audit --no-fund
 
 # --- 2. build --------------------------------------------------------------

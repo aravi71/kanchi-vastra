@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+      # Build without the CMS: the site serves its built-in demo catalogue.
+      NEXT_PUBLIC_SITE_URL: https://example.invalid
+      # prisma generate (postinstall) loads prisma.config.ts; never connects.
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+      - run: npm run build
+      - name: Audit production dependencies
+        # Known high findings are build-time only (Prisma CLI, Sanity CLI) and
+        # absent from the runtime image - see docs/ARCHITECTURE.md.
+        run: npm audit --omit=dev --audit-level=critical
