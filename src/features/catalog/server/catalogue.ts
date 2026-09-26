@@ -49,13 +49,10 @@ interface SanityProduct extends Omit<Product, 'images'> {
 function normalise(docs: SanityProduct[]): Product[] {
   return docs.map((doc) => {
     const refs = doc.imageRefs ?? [];
-    // The gallery is built for four images. Pad by repeating the last one so
-    // a shop owner who uploads only one photo still gets a working page.
+    // As many photos as the owner uploaded (at least one placeholder), never
+    // padded with repeats — the gallery and "change look" strip adapt.
     const urls = refs.map((ref) => urlForImage(ref as never, 1000, 1333)).filter(Boolean);
-    const images =
-      urls.length > 0
-        ? [...urls, ...Array(Math.max(0, 4 - urls.length)).fill(urls[urls.length - 1])]
-        : ['/images/placeholder.svg'];
+    const images = urls.length > 0 ? urls : ['/images/placeholder.svg'];
 
     return {
       id: doc.id,
@@ -74,7 +71,7 @@ function normalise(docs: SanityProduct[]): Product[] {
       specs: doc.specs,
       sku: doc.sku,
       stock: doc.stock ?? 0,
-      images: images.slice(0, 4),
+      images: images.slice(0, 8),
       featured: Boolean(doc.featured),
       newArrival: Boolean(doc.newArrival),
     };

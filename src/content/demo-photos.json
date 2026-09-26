@@ -1,0 +1,160 @@
+{
+  "$comment": "DEMO placeholder photography. Every photo is from Unsplash under the Unsplash License (free for commercial use, no permission or attribution required: https://unsplash.com/license). They show sarees that Kanchi Vastra does not sell, so replace each one with real product photography before launch. Used by scripts/cms-demo-photos.mjs (product photos -> Sanity) and scripts/media-demo-photos.sh (editorial photos -> Garage).",
+  "photos": {
+    "p01": {
+      "id": "photo-1727430228383-aa1fb59db8bf",
+      "alt": "Woman in a gold-bordered red silk saree by the sea"
+    },
+    "p02": {
+      "id": "photo-1641699862936-be9f49b1c38d",
+      "alt": "Woman in a purple and gold zari silk saree"
+    },
+    "p03": { "id": "photo-1676696706907-0e04665b80bd", "alt": "Folds of teal silk" },
+    "p04": {
+      "id": "photo-1610030469983-98e550d6193c",
+      "alt": "Woman in a purple silk saree with a gold border"
+    },
+    "p05": {
+      "id": "photo-1618901185975-d59f7091bcfe",
+      "alt": "Woman in a red silk saree seated at a carved stone temple"
+    },
+    "p06": {
+      "id": "photo-1692992193981-d3d92fabd9cb",
+      "alt": "Woman in a blue silk saree with a multicolour border"
+    },
+    "p07": {
+      "id": "photo-1588140686379-1b76a52103dc",
+      "alt": "Red silk with a wide gold zari border"
+    },
+    "p08": {
+      "id": "photo-1610189012906-4c0aa9b9781e",
+      "alt": "Woman in a royal blue saree with a yellow border"
+    },
+    "p10": { "id": "photo-1609748340041-f5d61e061ebc", "alt": "Woman in a pale green silk saree" },
+    "p11": {
+      "id": "photo-1617627143750-d86bc21e42bb",
+      "alt": "Woman in a pink and orange silk saree with gold jewellery"
+    },
+    "p12": {
+      "id": "photo-1610030468706-9a6dbad49b0a",
+      "alt": "Woman in a rust and gold silk saree"
+    },
+    "p13": {
+      "id": "flagged/photo-1551854716-8b811be39e7e",
+      "alt": "Woman in a pink silk saree with a green blouse"
+    },
+    "p14": {
+      "id": "photo-1615886753866-79396abc446e",
+      "alt": "Woman in a blue silk saree in a field"
+    },
+    "p15": {
+      "id": "photo-1619516388835-2b60acc4049e",
+      "alt": "Woman in a red and pink silk saree in a garden"
+    },
+    "p16": { "id": "photo-1665960211264-5e0a7112bacd", "alt": "Bride in red silk, lit in shadow" },
+    "p17": {
+      "id": "photo-1570212773364-e30cd076539e",
+      "alt": "Bride in a red and gold wedding saree"
+    },
+    "p18": {
+      "id": "photo-1622207691293-5cd80466dab3",
+      "alt": "Portrait with a silk veil and maang tikka"
+    },
+    "p19": {
+      "id": "photo-1677691257005-9d69ab23f485",
+      "alt": "Bride in red with a gold-embroidered veil"
+    },
+    "p20": {
+      "id": "photo-1630267693092-2ea1f7dcc9a5",
+      "alt": "Woman in a red silk saree on a flower-strewn path"
+    },
+    "p21": {
+      "id": "photo-1665960212625-3c6b274222ed",
+      "alt": "Bride in red with emerald jewellery"
+    },
+    "p22": {
+      "id": "photo-1640290699030-b477f95f13b2",
+      "alt": "Wedding celebration in red and gold"
+    },
+    "p24": { "id": "photo-1583878545451-a83daf591083", "alt": "Bride laughing beneath a red veil" },
+    "p25": {
+      "id": "photo-1640745693152-1c2aab4a8253",
+      "alt": "Bride in red and gold with heirloom jewellery"
+    },
+    "p26": {
+      "id": "photo-1681220430066-75a6620c3a11",
+      "alt": "Woman in a teal and rose silk saree"
+    },
+    "p27": {
+      "id": "photo-1600312914724-0c318dd0eb29",
+      "alt": "Bride in red and gold, hand raised"
+    },
+    "p28": { "id": "photo-1610189026205-27510cfc52f8", "alt": "Three women in purple silk sarees" },
+    "p29": {
+      "id": "photo-1610189337543-1c5d8e64f574",
+      "alt": "Woman in a yellow and red saree with the pallu spread"
+    },
+    "p30": {
+      "id": "photo-1761549924624-6a00e5dfabb7",
+      "alt": "Mannequins in silk sarees in a shop window"
+    },
+    "p31": { "id": "photo-1773218373348-34db6bb11662", "alt": "Patterned silks on hangers" },
+    "p38": {
+      "id": "photo-1718104561384-c51083b9ace8",
+      "alt": "Woman in a red and gold silk saree on temple steps"
+    },
+    "p39": {
+      "id": "photo-1615573678157-69c7fce87d54",
+      "alt": "Woman in a yellow and red saree walking through a temple courtyard"
+    }
+  },
+  "products": {
+    "kanchipuram-ruby-zari-silk-saree": ["p11", "p15"],
+    "temple-border-crimson-silk": ["p15", "p20"],
+    "peacock-motif-heritage-silk": ["p26", "p06"],
+    "antique-gold-bridal-kanjivaram": ["p01", "p38"],
+    "emerald-temple-weave": ["p13", "p10"],
+    "lotus-zari-kanchipuram": ["p10", "p01"],
+    "maroon-bridal-heritage-silk": ["p17", "p25"],
+    "royal-purple-zari-silk": ["p02", "p04"],
+    "indigo-kolam-silk": ["p14", "p08"],
+    "saffron-festive-silk": ["p39", "p29"],
+    "rose-quartz-tissue-silk": ["p04", "p28"],
+    "midnight-blue-zari-kanjivaram": ["p06", "p14"],
+    "turmeric-gold-mangalagiri": ["p12", "p39"],
+    "olive-korvai-silk": ["p20", "p13"],
+    "coral-mango-butta-silk": ["p38", "p11"],
+    "pearl-ivory-wedding-silk": ["p28", "p02"],
+    "deep-teal-rudraksha-silk": ["p26", "p10"],
+    "blush-tissue-organza-drape": ["p11", "p04"],
+    "sandalwood-beige-silk-cotton": ["p10", "p12"],
+    "wine-heritage-korvai-silk": ["p17", "p27"]
+  },
+  "editorial": {
+    "hero": { "photo": "p05", "width": 2400 },
+    "mood-heirloom": { "photo": "p01", "width": 900 },
+    "mood-festive": { "photo": "p13", "width": 900 },
+    "mood-regal": { "photo": "p02", "width": 900 },
+    "mood-garden": { "photo": "p15", "width": 900 },
+    "mood-contemporary": { "photo": "p06", "width": 900 },
+    "mood-evening": { "photo": "p26", "width": 900 },
+    "bridal": { "photo": "p17", "width": 1400 },
+    "edit-wedding": { "photo": "p25", "width": 1000 },
+    "edit-heritage": { "photo": "p02", "width": 1000 },
+    "edit-new-drape": { "photo": "p14", "width": 1000 },
+    "edit-atelier": { "photo": "p28", "width": 1000 },
+    "offer-1": { "photo": "p21", "width": 1000 },
+    "offer-2": { "photo": "p18", "width": 1000 },
+    "offer-3": { "photo": "p24", "width": 1600 },
+    "offer-4": { "photo": "p16", "width": 1000 },
+    "offer-5": { "photo": "p19", "width": 1000 },
+    "offer-6": { "photo": "p27", "width": 1000 },
+    "story": { "photo": "p22", "width": 2400 },
+    "temple-walk": { "photo": "p39", "width": 1400 },
+    "trends": { "photo": "p29", "width": 1600 },
+    "shop-window": { "photo": "p30", "width": 1600 },
+    "texture-zari": { "photo": "p07", "width": 2000 },
+    "texture-teal": { "photo": "p03", "width": 2000 },
+    "texture-hangers": { "photo": "p31", "width": 1600 }
+  }
+}

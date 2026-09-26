@@ -14,87 +14,13 @@
  */
 
 import { readFileSync, existsSync } from 'node:fs';
-import { dirname, join, extname, basename } from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
-import { homedir } from 'node:os';
-import { createClient } from '@sanity/client';
+import { join, extname, basename } from 'node:path';
+import { pathToFileURL } from 'node:url';
+import { ROOT, sanityAdminClient } from './lib/sanity-admin.mjs';
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-
-/* --- read .env.local without a dependency ------------------------------- */
-const envPath = join(ROOT, '.env.local');
-if (existsSync(envPath)) {
-  for (const line of readFileSync(envPath, 'utf8').split('\n')) {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
-    if (m && !process.env[m[1]]) process.env[m[1]] = m[2].replace(/^["']|["']$/g, '');
-  }
-}
-
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production';
 const replace = process.argv.includes('--replace');
-
-/**
- * Write access, without storing a second secret.
- *
- * Prefer an explicit SANITY_API_TOKEN when one is set (CI needs that).
- * Otherwise borrow the session created by `npx sanity login` — it already
- * lives on this machine, it belongs to the person running the command, and
- * reusing it means there is no long-lived token sitting in a project file
- * waiting to be leaked into a screenshot or a commit.
- */
-function resolveToken() {
-  if (process.env.SANITY_API_TOKEN) return process.env.SANITY_API_TOKEN;
-  try {
-    const cliConfig = join(homedir(), '.config', 'sanity', 'config.json');
-    if (existsSync(cliConfig)) {
-      return JSON.parse(readFileSync(cliConfig, 'utf8')).authToken;
-    }
-  } catch {
-    /* fall through to the guidance below */
-  }
-  return undefined;
-}
-
-const token = resolveToken();
-
-function die(lines) {
-  console.error('\n' + lines.join('\n') + '\n');
-  process.exit(1);
-}
-
-if (!projectId) {
-  die([
-    '  NEXT_PUBLIC_SANITY_PROJECT_ID is not set.',
-    '',
-    '  Add it to .env.local first:',
-    '      NEXT_PUBLIC_SANITY_PROJECT_ID=your-project-id',
-    '      NEXT_PUBLIC_SANITY_DATASET=production',
-    '',
-    '  You get the project id from sanity.io -> your project -> Settings.',
-  ]);
-}
-
-if (!token) {
-  die([
-    '  No Sanity credentials found.',
-    '',
-    '  Easiest fix — log in once, and this script will use that session:',
-    '      npx sanity login',
-    '',
-    '  Or, for an unattended environment, create a token and set it:',
-    '      npx sanity tokens create "ci" --role editor',
-    '      SANITY_API_TOKEN=sk...   (in .env.local)',
-  ]);
-}
-
-const client = createClient({
-  projectId,
-  dataset,
-  token,
-  apiVersion: '2024-10-01',
-  useCdn: false,
-});
+const client = sanityAdminClient();
+const { projectId, dataset } = client.config();
 
 const { products } = await import(pathToFileURL(join(ROOT, 'src', 'content', 'products.ts')).href);
 
