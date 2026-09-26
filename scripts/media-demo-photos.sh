@@ -33,9 +33,15 @@ printf '%s\n' "$LIST" | ssh -i "$KEY" -o BatchMode=yes "$HOST" "FORCE='$FORCE' b
   have=\$(rclone -q lsf G:\"\$S3_BUCKET\"/editorial/ 2>/dev/null || true)
   new=0
   while read -r name id width; do
-    if [ -z \"\$FORCE\" ] && grep -qx \"\$name.jpg\" <<<\"\$have\"; then continue; fi
+    # The original (JPEG, for sharing previews) plus WebP renditions at the
+    # widths src/lib/image-loader.ts asks for.
+    if [ -z \"\$FORCE\" ] && grep -qx \"\$name-2400.webp\" <<<\"\$have\"; then continue; fi
     curl -fsS \"https://images.unsplash.com/\$id?w=\$width&q=80&fm=jpg&fit=max\" \
       | rclone -q rcat --header-upload \"Content-Type: image/jpeg\" G:\"\$S3_BUCKET\"/editorial/\$name.jpg
+    for w in 640 1080 1600 2400; do
+      curl -fsS \"https://images.unsplash.com/\$id?w=\$w&q=78&fm=webp&fit=max\" \
+        | rclone -q rcat --header-upload \"Content-Type: image/webp\" G:\"\$S3_BUCKET\"/editorial/\$name-\$w.webp
+    done
     new=\$((new+1))
   done
   echo \"  uploaded \$new, total \$(rclone -q lsf G:\"\$S3_BUCKET\"/editorial/ | wc -l) editorial photos\"
