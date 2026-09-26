@@ -123,7 +123,58 @@ for u in ubuntu x2goprint; do
 done
 
 say "7. audit tools"
-apt-get install -y -qq lynis >/dev/null
+apt-get install -y -qq lynis debsums apt-show-versions apt-listchanges libpam-tmpdir >/dev/null
 echo "  run: lynis audit system --quick"
+
+say "8. audit trail (auditd)"
+apt-get install -y -qq auditd >/dev/null
+cat > /etc/audit/rules.d/60-kanchi.rules <<'EOF'
+# Who changed accounts, privileges, SSH or Docker - kept even if an attacker
+# later edits the normal logs. Search with: ausearch -k <key>
+-w /etc/passwd -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/sudoers -p wa -k privilege
+-w /etc/sudoers.d/ -p wa -k privilege
+-w /etc/ssh/sshd_config -p wa -k sshd
+-w /etc/ssh/sshd_config.d/ -p wa -k sshd
+-w /etc/docker/ -p wa -k docker
+-w /srv/kanchi-vastra/shared/ -p wa -k secrets
+-w /srv/kanchi-vastra/stack/.env -p wa -k secrets
+-w /usr/bin/docker -p x -k docker-cli
+EOF
+augenrules --load >/dev/null 2>&1 || true
+systemctl enable --now auditd >/dev/null 2>&1
+
+say "9. rootkit scanner"
+apt-get install -y -qq rkhunter >/dev/null
+sed -i 's/^CRON_DAILY_RUN=.*/CRON_DAILY_RUN="true"/; s/^APT_AUTOGEN=.*/APT_AUTOGEN="true"/' /etc/default/rkhunter
+sed -i 's|^WEB_CMD=.*|WEB_CMD=""|' /etc/rkhunter.conf
+rkhunter --propupd -q || true
+
+say "10. unused kernel features"
+cat > /etc/modprobe.d/60-kanchi-blacklist.conf <<'EOF'
+# Network protocols and USB storage a cloud web server never uses.
+install dccp /bin/true
+install sctp /bin/true
+install rds /bin/true
+install tipc /bin/true
+install usb-storage /bin/true
+EOF
+printf '* hard core 0\n' > /etc/security/limits.d/60-kanchi-nocore.conf
+sed -i 's/^UMASK\s.*/UMASK\t\t027/' /etc/login.defs
+
+say "11. accounting and banner"
+apt-get install -y -qq acct >/dev/null
+systemctl enable --now acct >/dev/null 2>&1 || true
+sed -i 's/^ENABLED=.*/ENABLED="true"/' /etc/default/sysstat 2>/dev/null || true
+systemctl enable --now sysstat >/dev/null 2>&1 || true
+BANNER='Authorised access only. Activity on this system is monitored and recorded.'
+echo "$BANNER" > /etc/issue
+echo "$BANNER" > /etc/issue.net
+
+say "12. leftover package configuration"
+dpkg -l | awk '/^rc/{print $2}' | xargs -r dpkg --purge >/dev/null 2>&1 || true
+apt-get autoremove -y -qq >/dev/null
 
 say "done"

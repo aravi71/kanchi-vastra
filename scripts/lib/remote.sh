@@ -17,6 +17,6 @@ KEY="${DEPLOY_KEY:-$HOME/.ssh/kanchi_vastra_vps}"
 remote() {
   local encoded
   encoded=$(printf '%s' "$1" | base64 -w0)
-  ssh -i "$KEY" -o BatchMode=yes -o ServerAliveInterval=15 "$HOST" \
+  ssh -i "$KEY" -o BatchMode=yes -o LogLevel=ERROR -o ServerAliveInterval=15 "$HOST" \
     "f=\$(mktemp) && echo $encoded | base64 -d > \$f && sudo -n bash \$f; rc=\$?; rm -f \$f; exit \$rc"
 }
