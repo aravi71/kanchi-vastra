@@ -32,7 +32,7 @@ export function BridalCollection({ products }: { products: Product[] }) {
             </span>
           </Link>
 
-          <div>
+          <div className="min-w-0">
             <p className="eyebrow text-marigold-300">{bridal.eyebrow}</p>
             <h2 className="display-xl mt-3 font-light text-ivory-50">{bridal.title}</h2>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-ivory-100/70">{bridal.body}</p>

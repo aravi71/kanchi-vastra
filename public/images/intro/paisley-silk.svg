@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+  <!-- Kanchi Vastra: seamless red-and-gold paisley brocade tile (original artwork) -->
+  <defs>
+    <path id="buta" d="M40 140C25 110 45 80 80 80C105 80 118 60 112 38C132 60 130 100 112 130C95 160 55 168 40 140Z"/>
+    <g id="rosette">
+      <g fill="#eaa43a">
+        <ellipse cy="-13" rx="5.5" ry="9"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(45)"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(90)"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(135)"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(180)"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(225)"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(270)"/>
+        <ellipse cy="-13" rx="5.5" ry="9" transform="rotate(315)"/>
+      </g>
+      <circle r="7.5" fill="#b3141b"/>
+      <circle r="4" fill="#f6c65e"/>
+    </g>
+    <g id="floret" fill="#e9a23a">
+      <circle cy="-5" r="3"/><circle cx="5" r="3"/><circle cy="5" r="3"/><circle cx="-5" r="3"/>
+      <circle r="2.2" fill="#f7cf6c"/>
+    </g>
+  </defs>
+
+  <rect width="240" height="240" fill="#c41c21"/>
+
+  <!-- large buta: dotted halo, gold body, red and gold inlays -->
+  <use href="#buta" fill="none" stroke="#f0b447" stroke-width="4" stroke-linecap="round" stroke-dasharray="0 9"
+       transform="translate(78 122) scale(1.2) translate(-78 -122)"/>
+  <use href="#buta" fill="#e8a236"/>
+  <use href="#buta" fill="#b3141b" transform="translate(78 125) scale(.72) translate(-78 -125)"/>
+  <use href="#buta" fill="#f5c45a" transform="translate(76 130) scale(.46) translate(-76 -130)"/>
+  <circle cx="72" cy="134" r="5" fill="#b3141b"/>
+
+  <!-- small buta, turned -->
+  <g transform="translate(186 178) rotate(160) scale(.48) translate(-78 -122)">
+    <use href="#buta" fill="#e8a236"/>
+    <use href="#buta" fill="#b3141b" transform="translate(78 125) scale(.7) translate(-78 -125)"/>
+    <use href="#buta" fill="#f5c45a" transform="translate(76 130) scale(.42) translate(-76 -130)"/>
+  </g>
+
+  <use href="#rosette" transform="translate(186 58)"/>
+  <use href="#rosette" transform="translate(30 30) scale(.62)"/>
+  <use href="#floret" transform="translate(140 110)"/>
+  <use href="#floret" transform="translate(30 205)"/>
+  <use href="#floret" transform="translate(112 214) scale(.8)"/>
+  <use href="#floret" transform="translate(224 124) scale(.8)"/>
+  <use href="#rosette" transform="translate(150 206) scale(.5)"/>
+  <use href="#floret" transform="translate(206 100) scale(.9)"/>
+  <use href="#floret" transform="translate(140 30) scale(.75)"/>
+  <use href="#floret" transform="translate(18 150) scale(.75)"/>
+
+  <g fill="#f0b447">
+    <circle cx="150" cy="24" r="2"/><circle cx="124" cy="176" r="2"/><circle cx="16" cy="96" r="2"/>
+    <circle cx="214" cy="222" r="2"/><circle cx="160" cy="146" r="1.6"/><circle cx="72" cy="206" r="1.6"/>
+    <circle cx="222" cy="12" r="1.6"/><circle cx="100" cy="16" r="1.6"/>
+  </g>
+</svg>

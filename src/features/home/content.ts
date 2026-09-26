@@ -18,7 +18,7 @@ export const hero = {
   body: 'Kanchipuram silks and festive weaves, chosen for the weight of the silk and the gleam of the zari — for the days you will want to remember.',
   primary: { label: 'Explore collections', href: '/collections' },
   secondary: { label: 'Our story', href: '/about' },
-  photo: 'hero',
+  photo: 'hero-temple',
   promises: [
     'Handpicked silk sarees',
     `Free shipping above ${formatPrice(shipping.freeAbove)}`,

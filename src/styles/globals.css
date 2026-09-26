@@ -399,6 +399,120 @@
   }
 }
 
+/* ==========================================================================
+   COMPONENT: the silk intro (home) — see SilkIntro.tsx
+   Timeline: 0–1.5s the silk drifts; 1.5–2.6s it is drawn away along a
+   diagonal from the bottom-right corner; the hero content follows
+   (--intro-offset delays its entrance).
+   ========================================================================== */
+
+.intro-scope {
+  --intro-offset: 2.05s;
+}
+
+.silk-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  /* The shadow follows the clipped edge: a zari-gold selvedge line, then a
+     soft shadow falling onto the shop being revealed. */
+  filter: drop-shadow(5px 5px 0 var(--color-marigold-400))
+    drop-shadow(22px 22px 30px rgba(20, 4, 8, 0.55));
+  animation: silk-done 0s linear 2.7s forwards;
+}
+.silk-intro__cloth {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #c41c21;
+  animation: silk-draw-away 1.1s cubic-bezier(0.65, 0, 0.35, 1) 1.5s both;
+}
+.silk-intro__pattern {
+  position: absolute;
+  inset: -12%;
+  background: url('/images/intro/paisley-silk.svg') 0 0 / clamp(240px, 30vw, 440px) auto;
+  animation: silk-drift 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+/* Light across the folds of the cloth. */
+.silk-intro__sheen {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      112deg,
+      rgba(40, 4, 10, 0.4) 0%,
+      transparent 28%,
+      rgba(255, 214, 150, 0.22) 46%,
+      transparent 60%,
+      rgba(40, 4, 10, 0.42) 100%
+    ),
+    repeating-linear-gradient(
+      98deg,
+      transparent 0 140px,
+      rgba(40, 4, 10, 0.16) 190px,
+      rgba(255, 230, 190, 0.07) 240px,
+      transparent 300px
+    );
+  background-size:
+    220% 100%,
+    100% 100%;
+  animation: silk-sheen 2.6s ease-in-out both;
+}
+
+@keyframes silk-drift {
+  from {
+    transform: scale(1.14) translate(2%, 1.5%) rotate(-1.2deg);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes silk-sheen {
+  from {
+    background-position:
+      100% 0,
+      0 0;
+  }
+  to {
+    background-position:
+      0 0,
+      -120px 0;
+  }
+}
+@keyframes silk-draw-away {
+  0% {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%);
+  }
+  55% {
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%, 0 100%);
+  }
+  100% {
+    clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0);
+  }
+}
+@keyframes silk-done {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* Seen this session, or the visitor prefers less motion: no silk, no wait. */
+html[data-intro-seen] .silk-intro {
+  display: none;
+}
+html[data-intro-seen] .intro-scope {
+  --intro-offset: 0s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .silk-intro {
+    display: none;
+  }
+  .intro-scope {
+    --intro-offset: 0s;
+  }
+}
+
 /* Slow push-in on cinematic photographs. */
 @keyframes kv-kenburns {
   from {

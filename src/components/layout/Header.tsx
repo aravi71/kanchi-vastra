@@ -49,7 +49,10 @@ export function Header() {
         )}
       >
         <p className="eyebrow-sm container-editorial flex h-10 items-center justify-center text-center text-ivory-100/85">
-          Complimentary shipping on orders above ₹15,000 · Pan-India delivery
+          <span className="md:hidden">Free shipping above ₹15,000</span>
+          <span className="hidden md:inline">
+            Complimentary shipping on orders above ₹15,000 · Pan-India delivery
+          </span>
         </p>
       </div>
 

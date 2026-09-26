@@ -27,7 +27,12 @@ services:
     volumes:
       - ./caddy:/etc/caddy:ro
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/caddy:/data
-    networks: [edge]
+    networks:
+      edge:
+        # Containers reach the site by its public name straight through Caddy
+        # (Docker does not loop a container back through the host's public
+        # IP). The image optimiser relies on this to fetch /media photos.
+        aliases: ['${SITE_HOST}']
     depends_on: [app]
 
   app:

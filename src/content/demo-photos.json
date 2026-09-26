@@ -9,7 +9,10 @@
       "id": "photo-1641699862936-be9f49b1c38d",
       "alt": "Woman in a purple and gold zari silk saree"
     },
-    "p03": { "id": "photo-1676696706907-0e04665b80bd", "alt": "Folds of teal silk" },
+    "p03": {
+      "id": "photo-1676696706907-0e04665b80bd",
+      "alt": "Folds of teal silk"
+    },
     "p04": {
       "id": "photo-1610030469983-98e550d6193c",
       "alt": "Woman in a purple silk saree with a gold border"
@@ -30,7 +33,10 @@
       "id": "photo-1610189012906-4c0aa9b9781e",
       "alt": "Woman in a royal blue saree with a yellow border"
     },
-    "p10": { "id": "photo-1609748340041-f5d61e061ebc", "alt": "Woman in a pale green silk saree" },
+    "p10": {
+      "id": "photo-1609748340041-f5d61e061ebc",
+      "alt": "Woman in a pale green silk saree"
+    },
     "p11": {
       "id": "photo-1617627143750-d86bc21e42bb",
       "alt": "Woman in a pink and orange silk saree with gold jewellery"
@@ -51,7 +57,10 @@
       "id": "photo-1619516388835-2b60acc4049e",
       "alt": "Woman in a red and pink silk saree in a garden"
     },
-    "p16": { "id": "photo-1665960211264-5e0a7112bacd", "alt": "Bride in red silk, lit in shadow" },
+    "p16": {
+      "id": "photo-1665960211264-5e0a7112bacd",
+      "alt": "Bride in red silk, lit in shadow"
+    },
     "p17": {
       "id": "photo-1570212773364-e30cd076539e",
       "alt": "Bride in a red and gold wedding saree"
@@ -76,7 +85,10 @@
       "id": "photo-1640290699030-b477f95f13b2",
       "alt": "Wedding celebration in red and gold"
     },
-    "p24": { "id": "photo-1583878545451-a83daf591083", "alt": "Bride laughing beneath a red veil" },
+    "p24": {
+      "id": "photo-1583878545451-a83daf591083",
+      "alt": "Bride laughing beneath a red veil"
+    },
     "p25": {
       "id": "photo-1640745693152-1c2aab4a8253",
       "alt": "Bride in red and gold with heirloom jewellery"
@@ -89,7 +101,10 @@
       "id": "photo-1600312914724-0c318dd0eb29",
       "alt": "Bride in red and gold, hand raised"
     },
-    "p28": { "id": "photo-1610189026205-27510cfc52f8", "alt": "Three women in purple silk sarees" },
+    "p28": {
+      "id": "photo-1610189026205-27510cfc52f8",
+      "alt": "Three women in purple silk sarees"
+    },
     "p29": {
       "id": "photo-1610189337543-1c5d8e64f574",
       "alt": "Woman in a yellow and red saree with the pallu spread"
@@ -98,7 +113,10 @@
       "id": "photo-1761549924624-6a00e5dfabb7",
       "alt": "Mannequins in silk sarees in a shop window"
     },
-    "p31": { "id": "photo-1773218373348-34db6bb11662", "alt": "Patterned silks on hangers" },
+    "p31": {
+      "id": "photo-1773218373348-34db6bb11662",
+      "alt": "Patterned silks on hangers"
+    },
     "p38": {
       "id": "photo-1718104561384-c51083b9ace8",
       "alt": "Woman in a red and gold silk saree on temple steps"
@@ -106,6 +124,10 @@
     "p39": {
       "id": "photo-1615573678157-69c7fce87d54",
       "alt": "Woman in a yellow and red saree walking through a temple courtyard"
+    },
+    "p40": {
+      "id": "photo-1710440189404-e95fabead2a3",
+      "alt": "Shelves of folded silks in every colour"
     }
   },
   "products": {
@@ -131,30 +153,109 @@
     "wine-heritage-korvai-silk": ["p17", "p27"]
   },
   "editorial": {
-    "hero": { "photo": "p05", "width": 2400 },
-    "mood-heirloom": { "photo": "p01", "width": 900 },
-    "mood-festive": { "photo": "p13", "width": 900 },
-    "mood-regal": { "photo": "p02", "width": 900 },
-    "mood-garden": { "photo": "p15", "width": 900 },
-    "mood-contemporary": { "photo": "p06", "width": 900 },
-    "mood-evening": { "photo": "p26", "width": 900 },
-    "bridal": { "photo": "p17", "width": 1400 },
-    "edit-wedding": { "photo": "p25", "width": 1000 },
-    "edit-heritage": { "photo": "p02", "width": 1000 },
-    "edit-new-drape": { "photo": "p14", "width": 1000 },
-    "edit-atelier": { "photo": "p28", "width": 1000 },
-    "offer-1": { "photo": "p21", "width": 1000 },
-    "offer-2": { "photo": "p18", "width": 1000 },
-    "offer-3": { "photo": "p24", "width": 1600 },
-    "offer-4": { "photo": "p16", "width": 1000 },
-    "offer-5": { "photo": "p19", "width": 1000 },
-    "offer-6": { "photo": "p27", "width": 1000 },
-    "story": { "photo": "p22", "width": 2400 },
-    "temple-walk": { "photo": "p39", "width": 1400 },
-    "trends": { "photo": "p29", "width": 1600 },
-    "shop-window": { "photo": "p30", "width": 1600 },
-    "texture-zari": { "photo": "p07", "width": 2000 },
-    "texture-teal": { "photo": "p03", "width": 2000 },
-    "texture-hangers": { "photo": "p31", "width": 1600 }
+    "mood-heirloom": {
+      "photo": "p01",
+      "width": 900
+    },
+    "mood-festive": {
+      "photo": "p13",
+      "width": 900
+    },
+    "mood-regal": {
+      "photo": "p02",
+      "width": 900
+    },
+    "mood-garden": {
+      "photo": "p15",
+      "width": 900
+    },
+    "mood-contemporary": {
+      "photo": "p06",
+      "width": 900
+    },
+    "mood-evening": {
+      "photo": "p26",
+      "width": 900
+    },
+    "bridal": {
+      "photo": "p17",
+      "width": 1400
+    },
+    "edit-wedding": {
+      "photo": "p25",
+      "width": 1000
+    },
+    "edit-heritage": {
+      "photo": "p02",
+      "width": 1000
+    },
+    "edit-new-drape": {
+      "photo": "p14",
+      "width": 1000
+    },
+    "edit-atelier": {
+      "photo": "p28",
+      "width": 1000
+    },
+    "offer-1": {
+      "photo": "p21",
+      "width": 1000
+    },
+    "offer-2": {
+      "photo": "p18",
+      "width": 1000
+    },
+    "offer-3": {
+      "photo": "p24",
+      "width": 1600
+    },
+    "offer-4": {
+      "photo": "p16",
+      "width": 1000
+    },
+    "offer-5": {
+      "photo": "p19",
+      "width": 1000
+    },
+    "offer-6": {
+      "photo": "p27",
+      "width": 1000
+    },
+    "story": {
+      "photo": "p22",
+      "width": 2400
+    },
+    "temple-walk": {
+      "photo": "p39",
+      "width": 1400
+    },
+    "trends": {
+      "photo": "p29",
+      "width": 1600
+    },
+    "shop-window": {
+      "photo": "p30",
+      "width": 1600
+    },
+    "texture-zari": {
+      "photo": "p07",
+      "width": 2000
+    },
+    "texture-teal": {
+      "photo": "p03",
+      "width": 2000
+    },
+    "texture-hangers": {
+      "photo": "p31",
+      "width": 1600
+    },
+    "hero-silk-shelves": {
+      "photo": "p40",
+      "width": 2400
+    },
+    "hero-temple": {
+      "photo": "p05",
+      "width": 2400
+    }
   }
 }

@@ -7,6 +7,7 @@ import { MoodArches } from '@/features/home/components/MoodArches';
 import { OccasionEdits } from '@/features/home/components/OccasionEdits';
 import { ProductRail } from '@/features/home/components/ProductRail';
 import { ProductSpotlight } from '@/features/home/components/ProductSpotlight';
+import { SilkIntro } from '@/features/home/components/SilkIntro';
 import { PromiseMarquee } from '@/features/home/components/PromiseMarquee';
 import { RememberedCarousel } from '@/features/home/components/RememberedCarousel';
 import { SeasonEdit } from '@/features/home/components/SeasonEdit';
@@ -32,7 +33,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroCinematic />
+      <div className="intro-scope">
+        <SilkIntro />
+        <HeroCinematic />
+      </div>
       <PromiseMarquee />
       <MoodArches />
       <RememberedCarousel products={carousel} />

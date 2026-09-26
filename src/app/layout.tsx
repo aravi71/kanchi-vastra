@@ -112,6 +112,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en-IN"
+      // The silk intro marks <html data-intro-seen> before hydration.
+      suppressHydrationWarning
       className={`${cormorant.variable} ${inter.variable} ${anton.variable} ${greatVibes.variable}`}
     >
       <body className="min-h-screen antialiased">
