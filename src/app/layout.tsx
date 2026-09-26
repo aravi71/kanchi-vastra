@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Inter } from 'next/font/google';
+import { Anton, Cormorant_Garamond, Great_Vibes, Inter } from 'next/font/google';
 import { site } from '@/config/site';
 import '@/styles/globals.css';
 
@@ -16,6 +16,22 @@ const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500'],
   variable: '--font-inter',
+  display: 'swap',
+});
+
+/* Condensed display face for the loud headlines ("SIX MOODS."). */
+const anton = Anton({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-anton',
+  display: 'swap',
+});
+
+/* Script accent, used for one or two words per section at most. */
+const greatVibes = Great_Vibes({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-great-vibes',
   display: 'swap',
 });
 
@@ -94,7 +110,10 @@ const organizationLd = {
 /** Document shell only. The storefront frame lives in (store)/layout.tsx. */
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-IN" className={`${cormorant.variable} ${inter.variable}`}>
+    <html
+      lang="en-IN"
+      className={`${cormorant.variable} ${inter.variable} ${anton.variable} ${greatVibes.variable}`}
+    >
       <body className="min-h-screen antialiased">
         <script
           type="application/ld+json"

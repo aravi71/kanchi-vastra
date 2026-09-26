@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { AtSign, Mail, MessageCircle } from 'lucide-react';
+import { editorialPhoto } from '@/config/media';
 import { contact, footerNav, site } from '@/config/site';
 import { Logo } from '@/components/ui/Logo';
 import { TempleBorder } from '@/components/motifs/Motifs';
@@ -14,6 +16,26 @@ const columns = [
 export function Footer() {
   return (
     <footer className="relative mt-px bg-wine-950 text-ivory-200">
+      {/* --- signature band: the brand name over silk ------------------ */}
+      <div className="relative isolate overflow-hidden">
+        <Image
+          src={editorialPhoto('texture-zari')}
+          alt=""
+          fill
+          sizes="100vw"
+          className="-z-20 object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-crimson-900/70 via-crimson-900/55 to-wine-950" />
+        <div className="container-editorial py-20 text-center md:py-28">
+          <p className="font-display text-[clamp(3.25rem,11vw,9.5rem)] leading-none font-light text-ivory-50 italic">
+            Kanchi Vastra
+          </p>
+          <p className="script-accent mt-4 text-[clamp(1.75rem,3.5vw,2.75rem)] text-marigold-300">
+            silks woven for the days you remember
+          </p>
+        </div>
+      </div>
+
       <TempleBorder className="text-gold-600/35" height={12} />
 
       <div className="container-editorial">

@@ -49,7 +49,18 @@
   --color-terracotta-500: #b4543a;
   --color-terracotta-600: #9a4028;
 
+  /* --- Crimson + marigold: festive accents (2026-09 redesign) ---------- */
+  --color-crimson-500: #a3183a;
+  --color-crimson-600: #8a1230;
+  --color-crimson-700: #6f0e26;
+  --color-crimson-900: #2a0610;
+  --color-marigold-300: #f3d27a;
+  --color-marigold-400: #e9b949;
+  --color-marigold-500: #d9a42e;
+
   /* --- Typography ------------------------------------------------------ */
+  --font-condensed: var(--font-anton), 'Anton', 'Oswald', Impact, sans-serif;
+  --font-script: var(--font-great-vibes), 'Great Vibes', cursive;
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
@@ -119,6 +130,24 @@
    ========================================================================== */
 
 @layer utilities {
+  /* Tall condensed headline — "SIX MOODS.", "LATEST TRENDS". */
+  .display-condensed {
+    font-family: var(--font-condensed);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    line-height: 0.92;
+  }
+
+  /* Flowing script accent, set in marigold beside a serif line. */
+  .script-accent {
+    font-family: var(--font-script);
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1;
+    color: var(--color-marigold-500);
+  }
+
   /* Small letterspaced label — the brand's connective tissue. */
   .eyebrow {
     font-family: var(--font-sans);
@@ -287,6 +316,100 @@
 }
 .animate-marquee {
   animation: kv-marquee 46s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ==========================================================================
+   COMPONENT: "Worth your attention" expanding strips (home)
+   ========================================================================== */
+
+.attention-strips {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.attention-strips > li {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+}
+.attention-strips a {
+  display: block;
+  height: 100%;
+}
+.attention-strips img {
+  transition:
+    filter 0.7s var(--ease-silk),
+    transform 0.7s var(--ease-silk);
+}
+
+@media (min-width: 768px) {
+  .attention-strips {
+    display: flex;
+    height: 34rem;
+  }
+  .attention-strips > li {
+    aspect-ratio: auto;
+    flex: 1 1 0%;
+    transition: flex-grow 0.7s var(--ease-silk);
+  }
+  .attention-strips img {
+    filter: grayscale(1);
+  }
+  /* Closed strips: label runs down from the top. Open strip: along the foot. */
+  .attention-strips .strip-label {
+    writing-mode: vertical-rl;
+    top: 3rem;
+    bottom: auto;
+    white-space: nowrap;
+  }
+  .attention-strips > li:first-child .strip-label,
+  .attention-strips > li:hover .strip-label,
+  .attention-strips > li:focus-within .strip-label {
+    writing-mode: horizontal-tb;
+    top: auto;
+    bottom: 1.25rem;
+  }
+  .attention-strips:hover > li:first-child:not(:hover) .strip-label {
+    writing-mode: vertical-rl;
+    top: 3rem;
+    bottom: auto;
+  }
+
+  /* The open strip: the first by default, then whichever is pointed at. */
+  .attention-strips > li:first-child,
+  .attention-strips > li:hover,
+  .attention-strips > li:focus-within {
+    flex-grow: 4;
+  }
+  .attention-strips:hover > li:first-child:not(:hover) {
+    flex-grow: 1;
+  }
+  .attention-strips > li:first-child img,
+  .attention-strips > li:hover img,
+  .attention-strips > li:focus-within img {
+    filter: none;
+    transform: scale(1.04);
+  }
+  .attention-strips:hover > li:first-child:not(:hover) img {
+    filter: grayscale(1);
+    transform: none;
+  }
+}
+
+/* Slow push-in on cinematic photographs. */
+@keyframes kv-kenburns {
+  from {
+    transform: scale(1.12);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.animate-kenburns {
+  animation: kv-kenburns 18s var(--ease-silk) both;
 }
 
 /* Respect the user's stated preference. Nothing here is load-bearing. */

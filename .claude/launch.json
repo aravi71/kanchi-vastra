@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "sri-kanchi-silks",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "name": "kanchi-vastra",
+      "runtimeExecutable": "C:\\Users\\aravi\\AppData\\Local\\Temp\\claude\\nodedl\\node-v24.21.0-win-x64\\node.exe",
+      "runtimeArgs": ["node_modules/next/dist/bin/next", "start", "-p", "3000"],
       "port": 3000
     }
   ]

@@ -13,6 +13,12 @@ import { z } from 'zod';
 
 const schema = z.object({
   siteUrl: z.url().default('http://localhost:3000'),
+  /** Public address of the photo storage, e.g. https://site/media. Optional:
+   *  without it editorial photos fall back to a local placeholder. */
+  mediaBaseUrl: z
+    .url()
+    .transform((url) => url.replace(/\/+$/, ''))
+    .optional(),
   sanity: z.object({
     /** Empty until the CMS is connected; the shop then serves src/content. */
     projectId: z
@@ -31,6 +37,7 @@ const blankToUndefined = (value: string | undefined) => (value?.trim() ? value.t
 
 export const publicEnv = schema.parse({
   siteUrl: blankToUndefined(process.env.NEXT_PUBLIC_SITE_URL),
+  mediaBaseUrl: blankToUndefined(process.env.NEXT_PUBLIC_MEDIA_BASE_URL),
   sanity: {
     projectId: blankToUndefined(process.env.NEXT_PUBLIC_SANITY_PROJECT_ID),
     dataset: blankToUndefined(process.env.NEXT_PUBLIC_SANITY_DATASET),
