@@ -1,46 +1,64 @@
 # Kanchi Vastra — the whole server in one file.
 #
-# Runs on the DEV server from /srv/kanchi-vastra/stack (deploy.sh copies this
-# folder there). Server-only values — passwords, the app image tag, the site
-# hostname — come from /srv/kanchi-vastra/stack/.env, which is never committed.
-# See infra/docker/README.md.
+# Runs from /srv/kanchi-vastra/stack (deploy.sh copies this folder there).
+# Server-only values — passwords, the app image tag, the site hostname — come
+# from /srv/kanchi-vastra/stack/.env and shared/app.env, never committed.
 #
-# Security shape:
-#   - Only Caddy (80/443) and the mail server (25/465/587/993) face the
-#     internet. Everything else has no published port, or one bound to
-#     127.0.0.1 for backups and maintenance from the server itself.
-#   - The database sits on the `internal` network only: Caddy cannot reach it.
+# Security shape (see docs/SECURITY.md):
+#   - Only Caddy (80/443) faces the internet (and the mail server, once on).
+#     Nothing else publishes a port, except Garage's S3 API on 127.0.0.1 for
+#     the server's own backup job.
+#   - PostgreSQL and Mailpit sit on the `internal` network only, which has no
+#     route to the internet and which Caddy is not attached to.
+#   - Every container: no privilege escalation, every Linux capability
+#     dropped unless named, memory and process limits; read-only root
+#     filesystems where the software allows it.
 
 name: kanchi
 
+x-locked: &locked
+  restart: unless-stopped
+  security_opt: ['no-new-privileges:true']
+  cap_drop: [ALL]
+
 services:
   caddy:
+    <<: *locked
     image: caddy:2.11.4-alpine
-    restart: unless-stopped
+    cap_add: [NET_BIND_SERVICE]
     ports:
       - '80:80'
       - '443:443'
       - '443:443/udp'
     environment:
       SITE_HOST: ${SITE_HOST:?set SITE_HOST in .env}
-      MAILPIT_AUTH_HASH: ${MAILPIT_AUTH_HASH:?set MAILPIT_AUTH_HASH in .env}
     volumes:
       - ./caddy:/etc/caddy:ro
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/caddy:/data
     networks: [edge]
     depends_on: [app]
+    mem_limit: 256m
+    pids_limit: 200
 
   app:
+    <<: *locked
     image: kanchi-vastra:${APP_TAG:?set APP_TAG in .env}
-    restart: unless-stopped
     env_file: ${SHARED_DIR:-/srv/kanchi-vastra/shared}/app.env
     environment:
       NODE_ENV: production
+    # The image runs as the unprivileged `node` user. Its files cannot be
+    # changed at run time; only the page cache and /tmp are writable.
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m
+      - /app/.next/cache:size=256m,uid=1000,gid=1000
     networks: [edge, internal]
     depends_on:
       postgres: { condition: service_healthy }
       garage: { condition: service_started }
       mailpit: { condition: service_started }
+    mem_limit: 1g
+    pids_limit: 256
 
   # One-off maintenance jobs (migrations, seeding); never serves traffic.
   #   docker compose run --rm tools                      -> prisma migrate deploy
@@ -48,14 +66,18 @@ services:
   tools:
     image: kanchi-vastra-tools:${APP_TAG:?set APP_TAG in .env}
     profiles: [tools]
+    security_opt: ['no-new-privileges:true']
     env_file: ${SHARED_DIR:-/srv/kanchi-vastra/shared}/app.env
     networks: [edge, internal]
     depends_on:
       postgres: { condition: service_healthy }
 
   postgres:
+    <<: *locked
     image: postgres:16-alpine
-    restart: unless-stopped
+    # The entrypoint prepares the data folder as root, then drops to the
+    # postgres user; these are exactly the capabilities that needs.
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
     shm_size: 128mb
     environment:
       POSTGRES_USER: kanchi
@@ -70,11 +92,14 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    mem_limit: 1g
+    pids_limit: 300
 
   garage:
+    <<: *locked
     image: dxflrs/garage:v2.4.1
-    restart: unless-stopped
     user: '10001:10001'
+    read_only: true
     environment:
       RUST_LOG: garage=warn
     volumes:
@@ -84,29 +109,36 @@ services:
       # server-only: the nightly backup copies the bucket through this
       - '127.0.0.1:3900:3900'
     networks: [edge, internal]
+    mem_limit: 512m
+    pids_limit: 200
 
-  # DEV test inbox: catches every email the shop sends, delivers none.
+  # Test inbox: catches every email the shop sends, delivers none. Not
+  # published anywhere; view it through an SSH tunnel (infra/server/README.md).
   mailpit:
+    <<: *locked
     image: axllent/mailpit:v1.31.2
-    restart: unless-stopped
+    read_only: true
+    tmpfs: ['/tmp:size=16m']
     environment:
       MP_SMTP_BIND_ADDR: 0.0.0.0:1025
       MP_UI_BIND_ADDR: 0.0.0.0:8025
-      MP_WEBROOT: /mailpit/
       MP_DATABASE: /data/mailpit.db
       MP_MAX_MESSAGES: 2000
     volumes:
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/mailpit:/data
-    networks: [edge, internal]
+    networks: [internal]
+    mem_limit: 128m
+    pids_limit: 100
 
   # Real mail server: sends and receives for your domain.
   # Starts only with COMPOSE_PROFILES=mail in .env, once the domain and DNS
-  # are ready. Configured with stalwart-cli (see infra/docker/README.md);
-  # config.json in the etc folder skips the browser setup wizard.
+  # are ready. Configured with stalwart-cli; config.json in the etc folder
+  # skips the browser setup wizard.
   stalwart:
     image: stalwartlabs/stalwart:v0.16.23
     restart: unless-stopped
     profiles: [mail]
+    security_opt: ['no-new-privileges:true']
     environment:
       # admin login for stalwart-cli; the value lives only in the server's .env
       # (plain ${VAR} rather than ${VAR:?}: compose checks required values
@@ -125,6 +157,7 @@ services:
       # Caddy's certificates, so mail uses the same trusted certificate
       - ${DATA_DIR:-/srv/kanchi-vastra/data}/caddy/caddy/certificates:/certs:ro
     networks: [edge, internal]
+    mem_limit: 512m
 
 networks:
   edge: {}

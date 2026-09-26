@@ -218,7 +218,7 @@ model ProductImage {
   // Provider-side id (Sanity asset id, Cloudinary public_id, S3 key) so the
   // original can be deleted or re-transformed later.
   providerId String?
-  provider   String  @default("sanity")
+  provider   String  @default("storage")
   alt        String?
   sortOrder  Int     @default(0)
   width      Int?

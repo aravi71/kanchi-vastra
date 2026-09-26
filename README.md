@@ -269,7 +269,7 @@ The same seam works for Stripe or Cashfree — only the SDK calls differ.
 
 `src/content/products.ts` exports plain functions (`getProductBySlug`, `productsInCollection`,
 `featuredProducts`, …). Swap their bodies for queries against Supabase, Shopify, Medusa,
-Sanity or your own API, keep the `Product` shape from `src/types/catalog.ts`, and make the page
+your own API, keep the `Product` shape from `src/types/catalog.ts`, and make the page
 components `async`. No component needs to change. Add `export const revalidate = 60` to the
 catalogue routes for ISR.
 
@@ -282,7 +282,7 @@ catalogue routes for ISR.
 | WhatsApp | Set `contact.whatsapp` and `isPlaceholder: false` in `src/config/site.ts` — the `wa.me` link activates automatically |
 | Instagram | Set `contact.social.instagram`; the footer link and social CTA activate automatically |
 | Analytics | `@vercel/analytics`, or GA4 via `next/script`. Add a consent banner and update the privacy policy |
-| Admin panel | Use a headless CMS (Sanity, Contentful) rather than building one — it is the smaller job and non-developers can use it |
+| Admin panel | Being built at `/admin` on the same database and photo storage |
 
 ---
 

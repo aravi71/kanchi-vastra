@@ -39,12 +39,6 @@ const groups = {
     SMTP_PASSWORD: optional,
     MAIL_FROM: required,
   }),
-  cms: z.object({
-    /** Shared with the Sanity webhook; at least 32 characters. */
-    SANITY_REVALIDATE_SECRET: z.string().min(32).optional(),
-    /** Server-only write token, used by scripts. */
-    SANITY_API_TOKEN: optional,
-  }),
 } as const;
 
 type Group = keyof typeof groups;

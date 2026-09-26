@@ -20,14 +20,13 @@
 # ---------------------------------------------------------------------------
 set -euo pipefail
 
-HOST="${DEPLOY_HOST:-root@72.61.146.146}"
-KEY="${DEPLOY_KEY:-$HOME/.ssh/kanchi_vastra_vps}"
 BASE=/srv/kanchi-vastra
 SITE=https://srv1396079.hstgr.cloud
 
-ssh_run() { ssh -i "$KEY" -o BatchMode=yes "$HOST" "$@"; }
 
 cd "$(dirname "$0")/.."
+# shellcheck source=lib/remote.sh
+source scripts/lib/remote.sh
 
 # Runs on the server: wait for the app container to report healthy.
 WAIT_HEALTHY='
@@ -42,7 +41,7 @@ wait_healthy() {
 '
 
 if [[ "${1:-}" == "--rollback" ]]; then
-  ssh_run "
+  remote "
     set -e
     cd $BASE/stack
     current=\$(sed -n 's/^APP_TAG=//p' .env)
@@ -65,7 +64,7 @@ fi
 REL="$(git rev-parse --short HEAD)"
 echo "Deploying $REL to $SITE"
 
-git archive --format=tar HEAD | ssh_run "
+git archive --format=tar HEAD | remote "
   set -e
   STAGE=$BASE/releases/$REL
   rm -rf \$STAGE && mkdir -p \$STAGE

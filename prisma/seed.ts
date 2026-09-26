@@ -4,9 +4,8 @@
  *   npx prisma db seed                       create what is missing (safe to re-run)
  *   npx prisma db seed -- --overwrite        also overwrite existing sarees from the source
  *
- * Source: the legacy Sanity dataset when NEXT_PUBLIC_SANITY_PROJECT_ID is set
- * and reachable (used once, to import the live catalogue), otherwise the demo
- * catalogue in src/content/products.ts.
+ * Source: the demo catalogue in src/content/products.ts. (The live catalogue
+ * was imported from the retired Sanity CMS on 2026-09-26.)
  *
  * Photos: when NEXT_PUBLIC_MEDIA_BASE_URL is set, each saree points at its
  * demo photos in the photo storage (products/<slug>-<n>.jpg, uploaded by
@@ -19,7 +18,6 @@
 import 'dotenv/config';
 import { PrismaClient, ProductStatus } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { createClient } from '@sanity/client';
 import { products as localProducts } from '../src/content/products';
 import { collections as localCollections } from '../src/content/collections';
 import demoPhotos from '../src/content/demo-photos.json';
@@ -52,38 +50,8 @@ interface SeedProduct {
   fallbackImages: string[];
 }
 
-/** The live Sanity catalogue if it is still configured, else the demo data. */
+/** The demo catalogue in src/content/products.ts. */
 async function loadSource(): Promise<{ source: string; items: SeedProduct[] }> {
-  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-  if (projectId) {
-    try {
-      const sanity = createClient({
-        projectId,
-        dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
-        apiVersion: '2024-10-01',
-        useCdn: false,
-        perspective: 'published',
-      });
-      const docs = await sanity.fetch<Omit<SeedProduct, 'fallbackImages'>[]>(
-        `*[_type == "product" && defined(slug.current)] | order(coalesce(order, 9999) asc) {
-           "slug": slug.current, name, price, compareAtPrice, sku, "stock": coalesce(stock, 0),
-           category, "collections": coalesce(collections, []), color, colorHex, colorFamily,
-           fabric, "description": coalesce(description, ""), "story": coalesce(story, ""),
-           "specs": coalesce(specs, {}), "featured": coalesce(featured, false),
-           "newArrival": coalesce(newArrival, false)
-         }`,
-      );
-      if (docs.length > 0) {
-        return {
-          source: `Sanity (${docs.length} sarees)`,
-          items: docs.map((d) => ({ ...d, fallbackImages: [] })),
-        };
-      }
-    } catch (error) {
-      console.warn('  Sanity not reachable, using the demo catalogue:', (error as Error).message);
-    }
-  }
-
   return {
     source: `src/content/products.ts (${localProducts.length} sarees)`,
     items: localProducts.map((p) => ({

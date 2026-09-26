@@ -16,10 +16,10 @@
 # ---------------------------------------------------------------------------
 set -euo pipefail
 
-HOST="${DEPLOY_HOST:-root@72.61.146.146}"
-KEY="${DEPLOY_KEY:-$HOME/.ssh/kanchi_vastra_vps}"
 FORCE="${1:-}"
 cd "$(dirname "$0")/.."
+# shellcheck source=lib/remote.sh
+source scripts/lib/remote.sh
 
 # "<folder>/<file-stem> <unsplash-id> <max-width>", one per line
 LIST=$(node -e '
@@ -30,7 +30,8 @@ LIST=$(node -e '
     keys.forEach((k, i) => console.log(`products/${slug}-${i + 1}`, m.photos[k].id, 1600));
 ')
 
-printf '%s\n' "$LIST" | ssh -i "$KEY" -o BatchMode=yes "$HOST" "FORCE='$FORCE' bash -c '
+printf '%s\n' "$LIST" | remote "
+  FORCE='$FORCE'
   set -euo pipefail
   set -a; . /srv/kanchi-vastra/shared/app.env; set +a
   export RCLONE_CONFIG_G_TYPE=s3 RCLONE_CONFIG_G_PROVIDER=Other \
@@ -52,4 +53,4 @@ printf '%s\n' "$LIST" | ssh -i "$KEY" -o BatchMode=yes "$HOST" "FORCE='$FORCE' b
     new=\$((new+1))
   done
   echo \"  uploaded \$new photos; storage now holds \$(rclone -q lsf G:\"\$S3_BUCKET\"/editorial/ | wc -l) editorial and \$(rclone -q lsf G:\"\$S3_BUCKET\"/products/ | wc -l) product files\"
-'"
+"

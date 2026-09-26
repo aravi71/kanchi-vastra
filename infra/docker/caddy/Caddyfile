@@ -1,38 +1,58 @@
 # Caddy — HTTPS and routing for the Kanchi Vastra containers.
-# {$SITE_HOST} and {$MAILPIT_AUTH_HASH} come from the server's stack/.env.
+# {$SITE_HOST} comes from the server's stack/.env.
+
+{
+	servers {
+		# Slow-connection ("slowloris") protection: a client that trickles
+		# headers or a body is cut off instead of holding a connection open.
+		timeouts {
+			read_header 10s
+			read_body 30s
+			write 60s
+			idle 2m
+		}
+		max_header_size 16KB
+	}
+}
 
 {$SITE_HOST} {
 	encode zstd gzip
 
 	header {
-		# DEV server: keep search engines out, so demo content never competes
-		# with the real shop once production goes live.
+		# Keep search engines out until the real launch (real photos and the
+		# kanchivastra.in domain); remove this line then.
 		X-Robots-Tag "noindex, nofollow"
 		# Browsers remember to use HTTPS only (one year).
 		Strict-Transport-Security "max-age=31536000"
 		-Server
 	}
 
-	# Shop photos, served from Garage. Public, read-only.
+	# Largest request anyone may send (photo uploads in the admin included).
+	request_body {
+		max_size 12MB
+	}
+
+	# Scanners probe for secrets and source control; nothing like that is
+	# ever served, and they get a plain 404 without reaching the app.
+	@probes path /.env* /.git* /.aws* /wp-admin* /wp-login* /phpmyadmin* /*.php
+	respond @probes 404
+
+	# Shop photos, served from Garage. Public and read-only.
+	@media_write {
+		path /media/*
+		not method GET HEAD
+	}
+	respond @media_write 405
 	handle_path /media/* {
 		header {
-			# Uploaded SVGs cannot run scripts or load anything.
+			# Files cannot run scripts or load anything.
 			Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; sandbox"
 			X-Content-Type-Options nosniff
-			Cache-Control "public, max-age=86400"
+			Cache-Control "public, max-age=604800"
 		}
 		reverse_proxy garage:3902 {
 			header_up Host kanchi-media.web.garage.localhost
 		}
-	}
-
-	# DEV test inbox - password protected.
-	redir /mailpit /mailpit/
-	handle /mailpit/* {
-		basic_auth {
-			admin {$MAILPIT_AUTH_HASH}
-		}
-		reverse_proxy mailpit:8025
 	}
 
 	# Everything else: the website.

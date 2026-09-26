@@ -6,8 +6,8 @@ const nextConfig: NextConfig = {
   // of shipping the whole node_modules folder.
   output: 'standalone',
   images: {
-    // Every image is resized by the service that stores it (Sanity CDN,
-    // pre-rendered renditions in our storage) — see src/lib/image-loader.ts.
+    // Every image is pre-sized in the photo storage (WebP
+    // renditions) — see src/lib/image-loader.ts.
     // The app itself never fetches or processes images.
     loader: 'custom',
     loaderFile: './src/lib/image-loader.ts',
@@ -21,8 +21,7 @@ const nextConfig: NextConfig = {
 
   /**
    * Security headers for every response. HSTS is set by Caddy, which owns
-   * HTTPS. A full script CSP needs per-request nonces (and the Sanity Studio
-   * loads its own scripts), so this policy covers the directives that are
+   * HTTPS. A full script CSP needs per-request nonces, so this policy covers the directives that are
    * safe everywhere: no plugins, no <base> hijacking, no framing by other
    * sites, forms post only to this site.
    */

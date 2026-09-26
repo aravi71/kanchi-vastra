@@ -14,12 +14,11 @@ src/
     (store)/                Storefront route group; its layout adds the frame
       layout.tsx            → components/layout/StoreShell
       page.tsx, shop/, product/[slug]/, collections/, cart/, checkout/, …
-    studio/[[...tool]]/     Sanity admin — outside (store), so no shop frame
     api/revalidate/         CMS publish webhook
   features/                 Business capabilities, each self-contained
     catalog/                Product list, filters, search, product page parts
       server/catalogue.ts   The ONE place products are read (server-only)
-    cart/  wishlist/  checkout/  home/  studio/
+    cart/  wishlist/  checkout/  home/
   components/               Shared, feature-agnostic UI
     ui/                     Primitives: Button, Field, Overlay, Reveal, Logo
     layout/                 Header, Footer, StoreShell, navigation overlays
@@ -31,7 +30,7 @@ src/
   content/                  Static content: demo catalogue, collections, legal
   lib/                      Infrastructure adapters
     db/prisma.ts            PostgreSQL client (server-only, lazy)
-    cms/sanity/             Sanity client, schemas, Studio config
+    image-loader.ts         Picks the right pre-sized photo from storage
     utils.ts
   styles/globals.css        Design tokens (Tailwind v4 @theme) and base styles
   types/                    Shared TypeScript types
@@ -86,21 +85,19 @@ request (`.github/workflows/ci.yml`).
 
 ## Data flow today
 
-The storefront reads products from Sanity (`features/catalog/server/catalogue.ts`),
-falling back to `src/content/products.ts` if the CMS is unreachable. PostgreSQL
-(Prisma schema in `prisma/`) holds a mirror of the catalogue and is ready for
-accounts, carts and orders. The planned next step moves the catalogue to
-PostgreSQL and replaces Sanity with an admin at `/admin`.
+The storefront reads products from PostgreSQL (`features/catalog/server/catalogue.ts`),
+cached for five minutes under the `products` tag. Photos live in the photo
+storage (Garage) with pre-sized WebP renditions; the app never resizes images.
+Sanity was retired on 2026-09-26 (its export is in the pre-redesign backup); the
+admin panel at `/admin` becomes the way to edit the catalogue.
 
 ### Reviewed dependency findings (2026-09-26)
 
-`npm audit --omit=dev` reports 7 high-severity advisories. All are in
-build-time tooling pulled in transitively — the Prisma CLI (`mysql2`,
-`deepmerge-ts`, `@prisma/config`) and the Sanity CLI (`adm-zip`, `js-yaml`,
-`smol-toml`). None of these packages is present in the runtime Docker image
-(verified: the image's traced `node_modules` holds 11 packages, none of
-them). npm's only offered fix downgrades Sanity by a major version.
+`npm audit --omit=dev` reports 4 high-severity advisories, all in the Prisma
+CLI (`prisma`, `mysql2`, `deepmerge-ts`, `@prisma/config`), which
+`@prisma/client` lists as a dependency but the running site never loads. None
+is present in the runtime Docker image (its traced `node_modules` holds only
+what the server imports). Removing Sanity cleared the other 15.
 
-Decision: accept for now; CI fails on **critical** findings. The Sanity
-findings disappear when Sanity is replaced by the `/admin` panel. Re-review
-on every Dependabot batch.
+Decision: accept; CI fails on **critical** findings. Re-review on every
+Dependabot batch.

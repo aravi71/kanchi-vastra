@@ -9,7 +9,7 @@ import type { Product } from '@/types/catalog';
  * Cart, wishlist and search all need to look a saree up by id in the browser.
  * Before the CMS existed they imported `data/products.ts` directly, which only
  * worked because the catalogue was a static file. Now that it may come from
- * Sanity, the server fetches it once in the root layout and hands it down
+ * the database, the server fetches it once in the root layout and hands it down
  * through this context — so there is exactly one fetch per page, and the
  * client never talks to the CMS.
  */

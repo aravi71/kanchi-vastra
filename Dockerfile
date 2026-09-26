@@ -41,6 +41,9 @@ RUN --mount=type=secret,id=appenv,target=/app/.env.local,required=true \
 # through the compose "tools" service; never serves traffic.
 FROM build AS tools
 ENV NODE_ENV=production
+# The Prisma CLI's schema engine needs OpenSSL, which the slim image omits.
+RUN apt-get update -qq && apt-get install -y -qq --no-install-recommends openssl >/dev/null \
+    && rm -rf /var/lib/apt/lists/*
 CMD ["npx", "prisma", "migrate", "deploy"]
 
 # --- 3. runtime ------------------------------------------------------------
