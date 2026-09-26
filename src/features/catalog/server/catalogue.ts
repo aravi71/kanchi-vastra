@@ -1,112 +1,91 @@
 import 'server-only';
-import { groq } from 'next-sanity';
-import { client, urlForImage } from '@/lib/cms/sanity/client';
-import { sanityEnabled } from '@/lib/cms/sanity/env';
-import { products as localProducts } from '@/content/products';
-import type { Product } from '@/types/catalog';
+import { unstable_cache } from 'next/cache';
+import { connection } from 'next/server';
+import { db } from '@/lib/db/prisma';
+import type { CategoryId, ColorFamily, Fabric, Product, ProductSpecs } from '@/types/catalog';
 
 /* ===========================================================================
-   THE CATALOGUE — one place the whole site asks for sarees.
+   THE CATALOGUE — the one place the site reads sarees from.
    ---------------------------------------------------------------------------
-   Two sources, one shape:
-     - Sanity CMS, once NEXT_PUBLIC_SANITY_PROJECT_ID is set
-     - data/products.ts otherwise
+   Source of truth: PostgreSQL (Prisma). Only ACTIVE products are shown.
 
-   Every page calls these functions and neither knows nor cares which is in
-   use. That is what lets the shop be handed over to a CMS without touching a
-   single component.
+   Results are cached under the 'products' tag for up to five minutes; the
+   admin panel invalidates the tag on every save, so a price change shows
+   immediately. `connection()` keeps these pages out of the build: the Docker
+   build has no database, and product pages render on request instead.
    =========================================================================== */
 
-const PRODUCT_FIELDS = groq`
-  "id": _id,
-  "slug": slug.current,
-  name,
-  price,
-  compareAtPrice,
-  category,
-  "collections": coalesce(collections, []),
-  color,
-  colorFamily,
-  colorHex,
-  fabric,
-  description,
-  "story": coalesce(story, ""),
-  specs,
-  sku,
-  stock,
-  "imageRefs": images[]{ ..., "alt": alt },
-  featured,
-  newArrival,
-  order
-`;
+export const PRODUCTS_TAG = 'products';
 
-interface SanityProduct extends Omit<Product, 'images'> {
-  imageRefs?: { alt?: string }[];
-  order?: number;
-}
+const EMPTY_SPECS: ProductSpecs = {
+  length: '',
+  width: '',
+  blouse: '',
+  zari: '',
+  weight: '',
+  weave: '',
+  care: '',
+};
 
-/** Sanity documents -> the Product shape the UI expects. */
-function normalise(docs: SanityProduct[]): Product[] {
-  return docs.map((doc) => {
-    const refs = doc.imageRefs ?? [];
-    // As many photos as the owner uploaded (at least one placeholder), never
-    // padded with repeats — the gallery and "change look" strip adapt.
-    const urls = refs.map((ref) => urlForImage(ref as never, 1000, 1333)).filter(Boolean);
-    const images = urls.length > 0 ? urls : ['/images/placeholder.svg'];
+const loadActiveProducts = unstable_cache(
+  async (): Promise<Product[]> => {
+    const rows = await db().product.findMany({
+      where: { status: 'ACTIVE' },
+      orderBy: [{ sortOrder: 'asc' }, { name: 'asc' }],
+      include: {
+        category: { select: { slug: true } },
+        collections: { select: { slug: true } },
+        images: { orderBy: { sortOrder: 'asc' }, select: { url: true } },
+        variants: {
+          where: { isActive: true },
+          select: { inventory: { select: { quantity: true, reserved: true } } },
+        },
+      },
+    });
 
-    return {
-      id: doc.id,
-      slug: doc.slug,
-      name: doc.name,
-      price: doc.price,
-      compareAtPrice: doc.compareAtPrice,
-      category: doc.category,
-      collections: doc.collections ?? [],
-      color: doc.color,
-      colorFamily: doc.colorFamily,
-      colorHex: doc.colorHex,
-      fabric: doc.fabric,
-      description: doc.description,
-      story: doc.story,
-      specs: doc.specs,
-      sku: doc.sku,
-      stock: doc.stock ?? 0,
-      images: images.slice(0, 8),
-      featured: Boolean(doc.featured),
-      newArrival: Boolean(doc.newArrival),
-    };
-  });
-}
+    return rows.map((row) => {
+      const stock = row.variants.reduce(
+        (sum, v) => sum + Math.max(0, (v.inventory?.quantity ?? 0) - (v.inventory?.reserved ?? 0)),
+        0,
+      );
+      const collections = row.collections.map((c) => c.slug);
+      if (row.isNewArrival) collections.push('new-arrivals');
 
-/**
- * Every saree, ordered the way the shop owner arranged them.
- *
- * Tagged for on-demand revalidation: publishing in the admin fires a webhook
- * that invalidates this tag, so the site updates within seconds instead of
- * waiting for a timed rebuild.
- */
+      return {
+        id: row.id,
+        slug: row.slug,
+        name: row.name,
+        price: Number(row.price),
+        compareAtPrice: row.compareAtPrice ? Number(row.compareAtPrice) : undefined,
+        category: (row.category?.slug ?? 'everyday') as CategoryId,
+        collections,
+        color: row.colorName ?? '',
+        colorFamily: (row.colorFamily ?? 'neutral') as ColorFamily,
+        colorHex: row.colorHex ?? '#d9c6a5',
+        fabric: (row.fabric ?? 'Pure Mulberry Silk') as Fabric,
+        description: row.shortDescription ?? '',
+        story: row.description ?? '',
+        specs: { ...EMPTY_SPECS, ...((row.specs as Partial<ProductSpecs> | null) ?? {}) },
+        sku: row.sku,
+        stock,
+        images: row.images.length > 0 ? row.images.map((i) => i.url) : ['/images/placeholder.svg'],
+        featured: row.isFeatured,
+        newArrival: row.isNewArrival,
+      } satisfies Product;
+    });
+  },
+  ['catalogue:active-products'],
+  { tags: [PRODUCTS_TAG], revalidate: 300 },
+);
+
+/** Every saree on sale, in the order the shop arranged them. */
 export async function getProducts(): Promise<Product[]> {
-  if (!sanityEnabled || !client) return localProducts;
-
-  try {
-    const docs = await client.fetch<SanityProduct[]>(
-      groq`*[_type == "product" && defined(slug.current)]
-             | order(coalesce(order, 9999) asc, name asc) { ${PRODUCT_FIELDS} }`,
-      {},
-      { next: { tags: ['product'], revalidate: 60 } },
-    );
-    // An empty CMS should not produce an empty shop while it is being filled.
-    return docs.length > 0 ? normalise(docs) : localProducts;
-  } catch (error) {
-    // A CMS outage must never take the storefront down.
-    console.error('[catalogue] Sanity fetch failed, serving local catalogue:', error);
-    return localProducts;
-  }
+  await connection();
+  return loadActiveProducts();
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | undefined> {
-  const all = await getProducts();
-  return all.find((p) => p.slug === slug);
+  return (await getProducts()).find((p) => p.slug === slug);
 }
 
 export async function getFeaturedProducts(): Promise<Product[]> {

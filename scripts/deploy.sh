@@ -75,6 +75,9 @@ git archive --format=tar HEAD | ssh_run "
   docker build --secret id=appenv,src=$BASE/shared/app.env -t kanchi-vastra:$REL \$STAGE \
       > \$STAGE/.deploy-build.log 2>&1 \
     || { echo '  build FAILED — live site untouched. See' \$STAGE/.deploy-build.log; exit 1; }
+  docker build --secret id=appenv,src=$BASE/shared/app.env --target tools -t kanchi-vastra-tools:$REL \$STAGE \
+      >> \$STAGE/.deploy-build.log 2>&1 \
+    || { echo '  tools build FAILED — live site untouched. See' \$STAGE/.deploy-build.log; exit 1; }
 
   # server layout and the backup job travel with the code
   mkdir -p $BASE/stack/caddy
@@ -83,7 +86,15 @@ git archive --format=tar HEAD | ssh_run "
   install -m 700 \$STAGE/infra/docker/backup.sh /usr/local/sbin/kanchi-backup
 
   cd $BASE/stack
+  PREV=\$(sed -n 's/^APP_TAG=//p' .env)
   sed -i 's/^APP_TAG=.*/APP_TAG=$REL/' .env
+
+  # Database changes first. Migrations are written to be backward compatible
+  # (add, then remove in a later release), so the running site keeps working.
+  echo '  applying database migrations...'
+  docker compose run --rm -T tools > \$STAGE/.deploy-migrate.log 2>&1 \
+    || { sed -i \"s/^APP_TAG=.*/APP_TAG=\$PREV/\" .env; echo '  migration FAILED — live site untouched. See' \$STAGE/.deploy-migrate.log; exit 1; }
+
   docker compose up -d
   docker compose exec -T caddy caddy reload --config /etc/caddy/Caddyfile >/dev/null
   $WAIT_HEALTHY
@@ -92,7 +103,9 @@ git archive --format=tar HEAD | ssh_run "
 
   # keep the three most recent releases and images
   cd $BASE/releases && ls -1t | tail -n +4 | xargs -r rm -rf
-  docker image ls kanchi-vastra --format '{{.Tag}}' | tail -n +4 | sed 's/^/kanchi-vastra:/' | xargs -r docker image rm >/dev/null
+  for repo in kanchi-vastra kanchi-vastra-tools; do
+    docker image ls \$repo --format '{{.Tag}}' | tail -n +4 | sed \"s/^/\$repo:/\" | xargs -r docker image rm >/dev/null
+  done
   docker builder prune -f --filter until=168h >/dev/null
 "
 

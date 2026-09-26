@@ -1,15 +1,19 @@
 /**
- * Seeds PostgreSQL from the existing catalogue.
+ * Seeds PostgreSQL with the catalogue.
  *
- * Source of truth for the seed is the live Sanity data when it is reachable,
- * falling back to data/products.ts. That way the database starts out matching
- * whatever the shop is actually serving today, including any price or stock
- * edits made in the Studio since the demo data was written.
+ *   npx prisma db seed                       create what is missing (safe to re-run)
+ *   npx prisma db seed -- --overwrite        also overwrite existing sarees from the source
  *
- * Idempotent: every write is an upsert keyed on slug/sku, so running it twice
- * changes nothing. Safe to re-run after a schema change.
+ * Source: the legacy Sanity dataset when NEXT_PUBLIC_SANITY_PROJECT_ID is set
+ * and reachable (used once, to import the live catalogue), otherwise the demo
+ * catalogue in src/content/products.ts.
  *
- *   npx prisma db seed
+ * Photos: when NEXT_PUBLIC_MEDIA_BASE_URL is set, each saree points at its
+ * demo photos in the photo storage (products/<slug>-<n>.jpg, uploaded by
+ * scripts/media-demo-photos.sh); otherwise at the SVG artwork in /public.
+ *
+ * Without --overwrite nothing that already exists is changed, so admin-panel
+ * edits are never clobbered by a re-run.
  */
 
 import 'dotenv/config';
@@ -18,6 +22,10 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { createClient } from '@sanity/client';
 import { products as localProducts } from '../src/content/products';
 import { collections as localCollections } from '../src/content/collections';
+import demoPhotos from '../src/content/demo-photos.json';
+
+const overwrite = process.argv.includes('--overwrite');
+const mediaBase = process.env.NEXT_PUBLIC_MEDIA_BASE_URL?.replace(/\/+$/, '');
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL! }),
@@ -39,15 +47,14 @@ interface SeedProduct {
   description: string;
   story: string;
   specs: Record<string, string>;
-  images: { url: string; alt: string }[];
   featured: boolean;
   newArrival: boolean;
+  fallbackImages: string[];
 }
 
-/** Prefer the live CMS so the database matches what customers see today. */
-async function loadProducts(): Promise<{ source: string; items: SeedProduct[] }> {
+/** The live Sanity catalogue if it is still configured, else the demo data. */
+async function loadSource(): Promise<{ source: string; items: SeedProduct[] }> {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
-
   if (projectId) {
     try {
       const sanity = createClient({
@@ -55,28 +62,30 @@ async function loadProducts(): Promise<{ source: string; items: SeedProduct[] }>
         dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? 'production',
         apiVersion: '2024-10-01',
         useCdn: false,
+        perspective: 'published',
       });
-      const docs = await sanity.fetch<Record<string, unknown>[]>(
+      const docs = await sanity.fetch<Omit<SeedProduct, 'fallbackImages'>[]>(
         `*[_type == "product" && defined(slug.current)] | order(coalesce(order, 9999) asc) {
-           "slug": slug.current, name, price, compareAtPrice, sku, stock, category,
-           "collections": coalesce(collections, []), color, colorHex, colorFamily,
-           fabric, description, "story": coalesce(story, ""), specs, featured, newArrival,
-           "images": images[]{ "url": asset->url, "alt": coalesce(alt, "") }
+           "slug": slug.current, name, price, compareAtPrice, sku, "stock": coalesce(stock, 0),
+           category, "collections": coalesce(collections, []), color, colorHex, colorFamily,
+           fabric, "description": coalesce(description, ""), "story": coalesce(story, ""),
+           "specs": coalesce(specs, {}), "featured": coalesce(featured, false),
+           "newArrival": coalesce(newArrival, false)
          }`,
       );
       if (docs.length > 0) {
         return {
           source: `Sanity (${docs.length} sarees)`,
-          items: docs as unknown as SeedProduct[],
+          items: docs.map((d) => ({ ...d, fallbackImages: [] })),
         };
       }
-    } catch {
-      /* fall through to the local catalogue */
+    } catch (error) {
+      console.warn('  Sanity not reachable, using the demo catalogue:', (error as Error).message);
     }
   }
 
   return {
-    source: `data/products.ts (${localProducts.length} sarees)`,
+    source: `src/content/products.ts (${localProducts.length} sarees)`,
     items: localProducts.map((p) => ({
       slug: p.slug,
       name: p.name,
@@ -93,27 +102,41 @@ async function loadProducts(): Promise<{ source: string; items: SeedProduct[] }>
       description: p.description,
       story: p.story,
       specs: p.specs as unknown as Record<string, string>,
-      images: p.images.map((url, i) => ({
-        url,
-        alt: i === 0 ? p.name : `${p.name} — detail ${i}`,
-      })),
       featured: Boolean(p.featured),
       newArrival: Boolean(p.newArrival),
+      fallbackImages: p.images,
     })),
   };
 }
 
+/** Storage photos for a saree, or its bundled artwork. */
+function imagesFor(p: SeedProduct): { url: string; alt: string; provider: string }[] {
+  const keys = (demoPhotos.products as Record<string, string[]>)[p.slug];
+  const photos = demoPhotos.photos as Record<string, { alt: string }>;
+  if (mediaBase && keys?.length) {
+    return keys.map((key, i) => ({
+      url: `${mediaBase}/products/${p.slug}-${i + 1}.jpg`,
+      alt: `${photos[key]?.alt ?? p.name} (demo photo)`,
+      provider: 'storage',
+    }));
+  }
+  return p.fallbackImages.map((url, i) => ({
+    url,
+    alt: i === 0 ? p.name : `${p.name} — detail ${i}`,
+    provider: 'local',
+  }));
+}
+
 async function main() {
-  console.log('\n  Seeding PostgreSQL\n');
+  console.log(`\n  Seeding PostgreSQL${overwrite ? ' (overwrite)' : ''}\n`);
 
   /* --- categories ------------------------------------------------------ */
   // "new-arrivals" is a merchandising flag on the product, not a category.
   const realCategories = localCollections.filter((c) => c.slug !== 'new-arrivals');
-
   for (const [i, c] of realCategories.entries()) {
     await prisma.category.upsert({
       where: { slug: c.slug },
-      update: { name: c.title, description: c.description, sortOrder: i },
+      update: {},
       create: {
         slug: c.slug,
         name: c.title,
@@ -126,85 +149,78 @@ async function main() {
       },
     });
   }
-  console.log(`  categories: ${realCategories.length}`);
+  const categoryId = new Map(
+    (await prisma.category.findMany({ select: { id: true, slug: true } })).map((c) => [
+      c.slug,
+      c.id,
+    ]),
+  );
 
   /* --- products -------------------------------------------------------- */
-  const { source, items } = await loadProducts();
-  console.log(`  source:     ${source}\n`);
+  const { source, items } = await loadSource();
+  console.log(`  source: ${source}\n`);
 
+  let created = 0;
+  let updated = 0;
   for (const [i, p] of items.entries()) {
-    const category = await prisma.category.findUnique({ where: { slug: p.category } });
+    const existing = await prisma.product.findUnique({
+      where: { slug: p.slug },
+      select: { id: true },
+    });
+    if (existing && !overwrite) continue;
+
+    const fields = {
+      name: p.name,
+      description: p.story,
+      shortDescription: p.description,
+      price: p.price,
+      compareAtPrice: p.compareAtPrice ?? null,
+      sku: p.sku,
+      status: ProductStatus.ACTIVE,
+      categoryId: categoryId.get(p.category) ?? null,
+      isFeatured: p.featured,
+      isNewArrival: p.newArrival,
+      sortOrder: i,
+      specs: p.specs ?? {},
+      colorName: p.color,
+      colorHex: p.colorHex,
+      colorFamily: p.colorFamily,
+      fabric: p.fabric,
+      metaTitle: `${p.name} | Kanchi Vastra`,
+      metaDescription: p.description,
+    };
+    const collectionIds = p.collections
+      .map((slug) => categoryId.get(slug))
+      .filter((id): id is string => Boolean(id))
+      .map((id) => ({ id }));
 
     const product = await prisma.product.upsert({
       where: { slug: p.slug },
-      update: {
-        name: p.name,
-        price: p.price,
-        compareAtPrice: p.compareAtPrice ?? null,
-        sku: p.sku,
-        status: ProductStatus.ACTIVE,
-        categoryId: category?.id ?? null,
-        isFeatured: p.featured,
-        isNewArrival: p.newArrival,
-        sortOrder: i,
-      },
-      create: {
-        slug: p.slug,
-        name: p.name,
-        description: p.story,
-        shortDescription: p.description,
-        price: p.price,
-        compareAtPrice: p.compareAtPrice ?? null,
-        sku: p.sku,
-        status: ProductStatus.ACTIVE,
-        categoryId: category?.id ?? null,
-        isFeatured: p.featured,
-        isNewArrival: p.newArrival,
-        sortOrder: i,
-        specs: p.specs ?? {},
-        colorName: p.color,
-        colorHex: p.colorHex,
-        colorFamily: p.colorFamily,
-        fabric: p.fabric,
-        metaTitle: `${p.name} | Kanchi Vastra`,
-        metaDescription: p.description,
-      },
+      update: { ...fields, collections: { set: collectionIds } },
+      create: { slug: p.slug, ...fields, collections: { connect: collectionIds } },
     });
 
-    // Images: replace wholesale so a re-run reflects the current photo set.
     await prisma.productImage.deleteMany({ where: { productId: product.id } });
     await prisma.productImage.createMany({
-      data: (p.images ?? []).map((img, n) => ({
-        productId: product.id,
-        url: img.url,
-        alt: img.alt || p.name,
-        provider: img.url.includes('sanity') ? 'sanity' : 'local',
-        sortOrder: n,
-      })),
+      data: imagesFor(p).map((img, n) => ({ productId: product.id, ...img, sortOrder: n })),
     });
 
-    // Every product gets one default variant, so the cart and order tables
-    // always point at a variant and never need a "product without variant"
-    // special case. Real variants can be added in the admin later.
+    // Every product has one default variant, so carts and orders always
+    // point at a variant; stock lives on its inventory row.
     const variant = await prisma.productVariant.upsert({
       where: { sku: `${p.sku}-DEFAULT` },
-      update: { name: 'Default', price: null, isActive: true },
-      create: {
-        productId: product.id,
-        name: 'Default',
-        sku: `${p.sku}-DEFAULT`,
-        isActive: true,
-        sortOrder: 0,
-      },
+      update: { isActive: true },
+      create: { productId: product.id, name: 'Default', sku: `${p.sku}-DEFAULT`, isActive: true },
     });
-
     await prisma.inventory.upsert({
       where: { variantId: variant.id },
       update: { quantity: p.stock },
       create: { variantId: variant.id, quantity: p.stock, reserved: 0 },
     });
 
-    process.stdout.write(`  ${String(i + 1).padStart(2)}. ${p.name}\n`);
+    if (existing) updated += 1;
+    else created += 1;
+    process.stdout.write(`  ${existing ? 'updated' : 'created'}  ${p.name}\n`);
   }
 
   /* --- shop settings --------------------------------------------------- */
@@ -218,13 +234,16 @@ async function main() {
   });
 
   const counts = {
-    categories: await prisma.category.count(),
+    created,
+    updated,
     products: await prisma.product.count(),
     images: await prisma.productImage.count(),
-    variants: await prisma.productVariant.count(),
-    inStock: await prisma.inventory.count({ where: { quantity: { gt: 0 } } }),
+    storagePhotos: await prisma.productImage.count({ where: { provider: 'storage' } }),
+    collectionLinks: (
+      await prisma.product.findMany({ select: { _count: { select: { collections: true } } } })
+    ).reduce((n, p) => n + p._count.collections, 0),
   };
-  console.log(`\n  done:`, counts, '\n');
+  console.log('\n  done:', counts, '\n');
 }
 
 main()

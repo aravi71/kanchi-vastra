@@ -35,6 +35,14 @@ COPY . .
 RUN --mount=type=secret,id=appenv,target=/app/.env.local,required=true \
     npm run build
 
+# --- tools: one-off maintenance jobs ----------------------------------------
+# Database migrations and seeding need the Prisma CLI and tsx, which the
+# runtime image deliberately leaves out. Built with --target tools and run
+# through the compose "tools" service; never serves traffic.
+FROM build AS tools
+ENV NODE_ENV=production
+CMD ["npx", "prisma", "migrate", "deploy"]
+
 # --- 3. runtime ------------------------------------------------------------
 FROM ${NODE_IMAGE} AS runtime
 WORKDIR /app

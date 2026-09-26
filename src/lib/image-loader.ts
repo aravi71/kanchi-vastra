@@ -10,11 +10,13 @@ import { publicEnv } from '@/config/env.public';
  *
  * - Sanity CDN (product photos): width/quality/format as URL parameters,
  *   keeping any crop's aspect ratio.
- * - Our storage (homepage photos, editorial/<name>.jpg): pre-rendered WebP
+ * - Our storage (editorial/<name>.jpg, products/<slug>-<n>.jpg): pre-rendered WebP
  *   renditions <name>-<width>.webp; see scripts/media-demo-photos.sh.
  * - Files in /public (logo, SVG artwork): served as they are.
  */
 const EDITORIAL_WIDTHS = [640, 1080, 1600, 2400] as const;
+/** Storage folders whose .jpg photos have WebP renditions alongside. */
+const RENDITION_FOLDERS = ['editorial', 'products'] as const;
 
 export default function imageLoader({ src, width, quality }: ImageLoaderProps): string {
   if (src.startsWith('https://cdn.sanity.io/')) {
@@ -29,7 +31,11 @@ export default function imageLoader({ src, width, quality }: ImageLoaderProps): 
   }
 
   const media = publicEnv.mediaBaseUrl;
-  if (media && src.startsWith(`${media}/editorial/`) && src.endsWith('.jpg')) {
+  if (
+    media &&
+    RENDITION_FOLDERS.some((f) => src.startsWith(`${media}/${f}/`)) &&
+    src.endsWith('.jpg')
+  ) {
     const rendition = EDITORIAL_WIDTHS.find((w) => w >= width) ?? EDITORIAL_WIDTHS.at(-1);
     return `${src.slice(0, -'.jpg'.length)}-${rendition}.webp`;
   }

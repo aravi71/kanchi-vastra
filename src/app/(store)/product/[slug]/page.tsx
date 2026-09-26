@@ -1,11 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import {
-  getProductBySlug,
-  getProducts,
-  getRelatedProducts,
-} from '@/features/catalog/server/catalogue';
+import { getProductBySlug, getRelatedProducts } from '@/features/catalog/server/catalogue';
 import { getCollection } from '@/content/collections';
 import { site } from '@/config/site';
 import { PageHeader } from '@/components/layout/PageHeader';
@@ -15,12 +11,6 @@ import { StickyBuyBar } from '@/features/catalog/components/StickyBuyBar';
 import { FeaturedRail } from '@/features/home/components/FeaturedRail';
 import { Accordion } from '@/components/ui/Accordion';
 import { formatPrice } from '@/lib/utils';
-
-/** Pre-render every product page at build time. */
-export async function generateStaticParams() {
-  const products = await getProducts();
-  return products.map((p) => ({ slug: p.slug }));
-}
 
 export async function generateMetadata({
   params,
@@ -69,7 +59,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     name: product.name,
     description: product.description,
     sku: product.sku,
-    image: product.images.map((i) => `${site.url}${i}`),
+    image: product.images.map((i) => new URL(i, site.url).toString()),
     brand: { '@type': 'Brand', name: site.name },
     color: product.color,
     material: product.fabric,
