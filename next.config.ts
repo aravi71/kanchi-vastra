@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
   expireTime: 180,
   poweredByHeader: false,
 
+  experimental: {
+    // Admin photo uploads (up to 8 photos per request, 10 MB each, checked
+    // again in lib/storage/objects.ts). Caddy caps any request at 12 MB.
+    serverActions: { bodySizeLimit: '12mb' },
+  },
+
   /**
    * Security headers for every response. HSTS is set by Caddy, which owns
    * HTTPS. A full script CSP needs per-request nonces, so this policy covers the directives that are

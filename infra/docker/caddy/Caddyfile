@@ -55,6 +55,14 @@
 		}
 	}
 
+	# Admin and account pages hold personal data: never cached by browsers
+	# or anything in between, never indexed, never framed.
+	@private path /admin* /account*
+	header @private {
+		Cache-Control "no-store"
+		X-Robots-Tag "noindex, nofollow"
+	}
+
 	# Everything else: the website.
 	handle {
 		reverse_proxy app:3000

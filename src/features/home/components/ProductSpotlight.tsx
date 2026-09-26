@@ -25,7 +25,7 @@ export function ProductSpotlight({ product }: { product: Product }) {
         {/* change look */}
         {looks.length > 1 && (
           <div className="order-2 flex gap-3 lg:order-none lg:flex-col">
-            <p className="script-accent -rotate-6 text-3xl text-ink-700 max-lg:hidden">
+            <p className="script-accent text-3xl text-ink-700 max-lg:hidden">
               {spotlight.changeLook}
             </p>
             {looks.map((src, i) => (
@@ -63,12 +63,12 @@ export function ProductSpotlight({ product }: { product: Product }) {
               )}
             />
           ))}
-          <span className="script-accent absolute bottom-5 left-5 -rotate-3 text-4xl drop-shadow">
+          <span className="script-accent absolute bottom-5 left-5 text-4xl drop-shadow">
             {spotlight.label}
           </span>
         </Link>
 
-        <div>
+        <div className="min-w-0">
           <p className="eyebrow text-ink-400">{product.fabric}</p>
           <h2 className="display-lg mt-3 font-light tracking-wide text-ink-900 uppercase">
             {product.name}
@@ -85,7 +85,7 @@ export function ProductSpotlight({ product }: { product: Product }) {
             {product.description}
           </p>
 
-          <dl className="mt-7 grid max-w-md grid-cols-2 gap-4 border-y border-ivory-300 py-5 text-xs">
+          <dl className="mt-7 grid max-w-md grid-cols-1 gap-4 border-y border-ivory-300 py-5 text-xs break-words sm:grid-cols-2">
             <div>
               <dt className="eyebrow-sm text-ink-400">Colour</dt>
               <dd className="mt-1.5 flex items-center gap-2 text-ink-800">
@@ -110,10 +110,10 @@ export function ProductSpotlight({ product }: { product: Product }) {
             </div>
           </dl>
 
-          <div className="mt-8 flex items-center gap-5">
+          <div className="mt-8 flex flex-wrap items-center gap-5">
             <AddToCartButton
               product={product}
-              className="eyebrow group inline-flex h-14 -rotate-3 items-center gap-3 rounded-full bg-crimson-700 pr-2 pl-8 text-ivory-50 shadow-[0_18px_40px_-18px_rgba(111,14,38,0.8)] transition-[transform,background-color] duration-500 hover:rotate-0 hover:bg-crimson-600"
+              className="eyebrow group inline-flex h-14 items-center gap-3 rounded-full bg-crimson-700 pr-2 pl-8 text-ivory-50 shadow-[0_18px_40px_-18px_rgba(111,14,38,0.8)] transition-colors duration-500 hover:bg-crimson-600"
             >
               Add to cart
               <span className="grid size-10 place-items-center rounded-full bg-ivory-50 text-crimson-700">

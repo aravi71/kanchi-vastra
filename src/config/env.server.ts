@@ -31,6 +31,10 @@ const groups = {
     S3_SECRET_ACCESS_KEY: required,
     MEDIA_PUBLIC_BASE_URL: z.url(),
   }),
+  auth: z.object({
+    /** 32 random bytes, base64 (openssl rand -base64 32). Encrypts 2FA secrets. */
+    APP_ENCRYPTION_KEY: z.string().min(40),
+  }),
   mail: z.object({
     SMTP_HOST: required,
     SMTP_PORT: z.coerce.number().int().min(1).max(65535),
