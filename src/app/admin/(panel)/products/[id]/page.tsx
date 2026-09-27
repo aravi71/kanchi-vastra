@@ -24,6 +24,7 @@ export default async function EditProductPage({
   const photoCount = Number(photos ?? 0);
   const data = await productFormValues(id);
   if (!data) notFound();
+  const withPhotos = photoCount ? ` with ${photoCount} photo${photoCount === 1 ? '' : 's'}` : '';
 
   return (
     <>
@@ -34,7 +35,9 @@ export default async function EditProductPage({
         title={data.name}
         description={
           created
-            ? `Created as a draft${photoCount ? ` with ${photoCount} photo${photoCount === 1 ? '' : 's'}` : ''}. Check it, then set Status to “On sale” and save.`
+            ? data.values.status === 'ACTIVE'
+              ? `Created and on sale${withPhotos}. It is in the shop now.`
+              : `Created as a draft${withPhotos}. Check it, then set Status to “On sale” and save.`
             : undefined
         }
         actions={

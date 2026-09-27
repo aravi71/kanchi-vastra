@@ -4,7 +4,13 @@ import { startTransition, useActionState, type FormEvent, type ReactNode } from 
 import { Field, TextInput } from '@/components/ui/Field';
 import { cn } from '@/lib/utils';
 
-export type FormState = { error?: string; ok?: string; fieldErrors?: Record<string, string> };
+export type FormState = {
+  error?: string;
+  ok?: string;
+  fieldErrors?: Record<string, string>;
+  /** Set when an action created a record (e.g. a new saree). */
+  createdId?: string;
+};
 
 export interface FieldSpec {
   name: string;

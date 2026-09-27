@@ -136,17 +136,23 @@ export async function requestPasswordReset(_: FormState, form: FormData): Promis
   return generic;
 }
 
+const RESET_LINK_INVALID = 'This reset link has expired or was already used. Ask for a new one.';
 const resetSchema = z.object({ token: z.string().min(20).max(100), password: v.password });
 
 export async function resetPassword(_: FormState, form: FormData): Promise<FormState> {
   const parsed = resetSchema.safeParse(Object.fromEntries(form));
-  if (!parsed.success) return { fieldErrors: v.fieldErrors(parsed.error) };
+  if (!parsed.success) {
+    const errors = v.fieldErrors(parsed.error);
+    // The token is a hidden field: a cut-off link must still get a visible answer.
+    if (errors.token) return { error: RESET_LINK_INVALID };
+    return { fieldErrors: errors };
+  }
 
   const row = await db().verificationToken.findUnique({
     where: { token: sha256(parsed.data.token) },
   });
   if (!row || !row.identifier.startsWith(RESET_PREFIX) || row.expires < new Date()) {
-    return { error: 'This reset link has expired or was already used. Ask for a new one.' };
+    return { error: RESET_LINK_INVALID };
   }
   const email = row.identifier.slice(RESET_PREFIX.length);
 

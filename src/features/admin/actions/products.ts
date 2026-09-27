@@ -1,7 +1,6 @@
 'use server';
 
 import { updateTag } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { Prisma, ProductStatus } from '@prisma/client';
 import { z } from 'zod';
 import { categories, colorFamilies, fabrics } from '@/content/collections';
@@ -208,13 +207,8 @@ export async function saveProduct(
   });
   updateTag(PRODUCTS_TAG);
 
-  if (!productId) {
-    const files = chosenFiles(form);
-    const result = files.length ? await addPhotos(session, savedId, files) : { added: 0 };
-    const query = new URLSearchParams({ created: '1', photos: String(result.added) });
-    if (result.error) query.set('photoError', result.error.slice(0, 200));
-    redirect(`/admin/products/${savedId}?${query}`);
-  }
+  // A new saree: the form now sends its photos one by one (uploadPhotos), then opens it.
+  if (!productId) return { ok: 'Created.', createdId: savedId };
   return { ok: 'Saved. The shop already shows the change.' };
 }
 

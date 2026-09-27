@@ -1,10 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { useActionState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, type FormEvent } from 'react';
 import { ArrowDown, ArrowUp, ImagePlus, Trash2 } from 'lucide-react';
 import type { FormState } from '@/components/ui/ActionForm';
 import { movePhoto, removePhoto } from '@/features/admin/actions/products';
+import { chosenPhotos, MAX_PHOTOS_AT_ONCE, uploadOneByOne } from './photo-upload';
 
 export interface PhotoItem {
   id: string;
@@ -19,7 +21,25 @@ export function PhotoManager({
   photos: PhotoItem[];
   upload: (state: FormState, form: FormData) => Promise<FormState>;
 }) {
-  const [state, formAction, pending] = useActionState(upload, {} as FormState);
+  const router = useRouter();
+  const [state, setState] = useState<FormState>({});
+  const [progress, setProgress] = useState<string | null>(null);
+
+  async function onUpload(ev: FormEvent<HTMLFormElement>) {
+    ev.preventDefault();
+    const form = ev.currentTarget;
+    const files = chosenPhotos(form.querySelector('input[type=file]'));
+    if (files.length === 0) return setState({ error: 'Choose one or more photos first.' });
+    if (files.length > MAX_PHOTOS_AT_ONCE)
+      return setState({ error: `Upload at most ${MAX_PHOTOS_AT_ONCE} photos at a time.` });
+    setState({});
+    const { added, error } = await uploadOneByOne(files, upload, setProgress);
+    setProgress(null);
+    const saved = `${added} photo${added === 1 ? '' : 's'} added.`;
+    setState(error ? { error: added ? `${error} (${saved})` : error } : { ok: saved });
+    if (!error) form.reset();
+    if (added) router.refresh();
+  }
 
   return (
     <section className="rounded-lg border border-ivory-300 bg-white p-5 md:p-6">
@@ -91,7 +111,7 @@ export function PhotoManager({
       )}
 
       <form
-        action={formAction}
+        onSubmit={onUpload}
         className="mt-6 flex flex-wrap items-center gap-3 rounded-md border border-dashed border-ivory-400 bg-ivory-50 p-4"
       >
         <ImagePlus className="size-5 text-ink-400" />
@@ -108,10 +128,10 @@ export function PhotoManager({
         </label>
         <button
           type="submit"
-          disabled={pending}
+          disabled={progress !== null}
           className="h-9 rounded-md bg-wine-800 px-4 text-sm text-ivory-50 hover:bg-wine-950 disabled:opacity-60"
         >
-          {pending ? 'Uploading… (sizing for phones and computers)' : 'Upload photos'}
+          {progress ?? 'Upload photos'}
         </button>
         <p className="w-full text-xs text-ink-400">
           JPG, PNG or WebP · up to 10 MB each · location data is removed automatically.

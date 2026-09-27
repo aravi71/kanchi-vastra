@@ -1,10 +1,13 @@
 'use client';
 
-import { useActionState, type ReactNode } from 'react';
+import { useActionState, useRef, useState, type ReactNode } from 'react';
+import { useRouter } from 'next/navigation';
 import { ImagePlus } from 'lucide-react';
 import { categories, colorFamilies, fabrics } from '@/content/collections';
 import { keepValues, type FormState } from '@/components/ui/ActionForm';
 import { cn } from '@/lib/utils';
+import { uploadPhotos } from '@/features/admin/actions/products';
+import { chosenPhotos, MAX_PHOTOS_AT_ONCE, uploadOneByOne } from './photo-upload';
 
 export interface ProductFormValues {
   name: string;
@@ -78,7 +81,33 @@ export function ProductForm({
   values: ProductFormValues;
   isNew: boolean;
 }) {
-  const [state, formAction, pending] = useActionState(action, {} as FormState);
+  const router = useRouter();
+  const photoInput = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState<string | null>(null);
+
+  // A new saree is created first; its photos then go up one by one, so a
+  // handful of large phone photos never exceeds the upload limit.
+  const [state, formAction, pending] = useActionState(
+    async (prev: FormState, form: FormData): Promise<FormState> => {
+      const photos = chosenPhotos(photoInput.current);
+      form.delete('photos');
+      if (photos.length > MAX_PHOTOS_AT_ONCE)
+        return { error: `Choose at most ${MAX_PHOTOS_AT_ONCE} photos now; add more after creating it.` };
+      const result = await action(prev, form);
+      if (!isNew || !result.createdId) return result;
+
+      const { added, error } = await uploadOneByOne(
+        photos,
+        uploadPhotos.bind(null, result.createdId),
+        setProgress,
+      );
+      const query = new URLSearchParams({ created: '1', photos: String(added) });
+      if (error) query.set('photoError', error.slice(0, 200));
+      router.push(`/admin/products/${result.createdId}?${query}`);
+      return { ok: 'Created. Opening it…' };
+    },
+    {} as FormState,
+  );
   const e = state.fieldErrors ?? {};
 
   return (
@@ -94,6 +123,7 @@ export function ProductForm({
             <ImagePlus className="size-5 text-ink-400" />
             <span className="sr-only">Choose photos</span>
             <input
+              ref={photoInput}
               type="file"
               name="photos"
               accept="image/jpeg,image/png,image/webp"
@@ -102,8 +132,8 @@ export function ProductForm({
             />
           </label>
           <p className="mt-2 text-xs text-ink-400">
-            JPG, PNG or WebP · up to 10 MB each (about 12 MB in total per save) · location data is
-            removed automatically.
+            JPG, PNG or WebP · up to 10 MB each · large photos are made smaller for you ·
+            location data is removed automatically.
           </p>
         </section>
       )}
@@ -153,7 +183,7 @@ export function ProductForm({
           <Row
             label="How many in stock"
             name="stock"
-            hint="0 shows “Sold out”. 1–2 shows “Only N left”."
+            hint="0 shows “Sold out”. A low number shows “Only N remaining”."
             error={e.stock}
           >
             <input
@@ -412,7 +442,7 @@ export function ProductForm({
         >
           {pending
             ? isNew
-              ? 'Creating… (uploading photos)'
+              ? (progress ?? 'Creating…')
               : 'Saving…'
             : isNew
               ? 'Create saree'
