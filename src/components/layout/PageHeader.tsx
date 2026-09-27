@@ -58,17 +58,27 @@ export function PageHeader({
       <div className={cn(centered && 'mx-auto max-w-2xl text-center')}>
         {eyebrow && (
           <Reveal>
-            <p className="eyebrow text-wine-700">{eyebrow}</p>
+            <p className="label-brass">{eyebrow}</p>
           </Reveal>
         )}
         <Reveal delay={60}>
-          <h1 className={cn('display-xl font-light text-balance', eyebrow && 'mt-5')}>{title}</h1>
+          <h1
+            className={cn(
+              'title-caps text-[clamp(2rem,4.6vw,3.5rem)] text-balance text-ink-900',
+              eyebrow && 'mt-5',
+            )}
+          >
+            {title}
+          </h1>
+          <div className={cn('divider-diamond mt-6 w-44', centered && 'mx-auto')}>
+            <i />
+          </div>
         </Reveal>
         {description && (
           <Reveal delay={120}>
             <p
               className={cn(
-                'mt-6 text-[0.9375rem] leading-[1.85] text-ink-600',
+                'italic-accent mt-6 text-[1.2rem] leading-[1.6] text-ink-700',
                 centered ? 'mx-auto max-w-xl' : 'max-w-2xl',
               )}
             >

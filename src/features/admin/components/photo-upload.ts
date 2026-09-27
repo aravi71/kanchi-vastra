@@ -54,14 +54,17 @@ export async function uploadOneByOne(
   for (const [i, original] of files.entries()) {
     onProgress(`Uploading photo ${i + 1} of ${files.length}…`);
     const file = await shrink(original);
-    if (file.size > MAX_BYTES) return { added, error: `${original.name}: Photos must be under 10 MB.` };
+    if (file.size > MAX_BYTES)
+      return { added, error: `${original.name}: Photos must be under 10 MB.` };
     const form = new FormData();
     form.append('photos', file);
     let result: FormState;
     try {
       result = await upload({}, form);
     } catch {
-      result = { error: `${original.name} could not be sent. Check the internet connection and try again.` };
+      result = {
+        error: `${original.name} could not be sent. Check the internet connection and try again.`,
+      };
     }
     if (result.error) return { added, error: result.error };
     added += 1;

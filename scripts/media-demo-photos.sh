@@ -21,13 +21,15 @@ cd "$(dirname "$0")/.."
 # shellcheck source=lib/remote.sh
 source scripts/lib/remote.sh
 
-# "<folder>/<file-stem> <unsplash-id> <max-width>", one per line
+# "<folder>/<file-stem> <source> <photo-id> <max-width>", one per line.
+# source: "unsplash" (default) or "pexels" (Pexels License, also free).
 LIST=$(node -e '
   const m = require("./src/content/demo-photos.json");
+  const src = (k) => m.photos[k].source ?? "unsplash";
   for (const [name, e] of Object.entries(m.editorial))
-    console.log(`editorial/${name}`, m.photos[e.photo].id, e.width);
+    console.log(`editorial/${name}`, src(e.photo), m.photos[e.photo].id, e.width);
   for (const [slug, keys] of Object.entries(m.products))
-    keys.forEach((k, i) => console.log(`products/${slug}-${i + 1}`, m.photos[k].id, 1600));
+    keys.forEach((k, i) => console.log(`products/${slug}-${i + 1}`, src(k), m.photos[k].id, 1600));
 ')
 
 printf '%s\n' "$LIST" | remote "
@@ -40,14 +42,19 @@ printf '%s\n' "$LIST" | remote "
          RCLONE_CONFIG_G_FORCE_PATH_STYLE=true
   have=\$( (rclone -q lsf G:\"\$S3_BUCKET\"/editorial/; rclone -q lsf G:\"\$S3_BUCKET\"/products/) 2>/dev/null || true)
   new=0
-  while read -r stem id width; do
+  while read -r stem source id width; do
     file=\${stem##*/}
     if [ -z \"\$FORCE\" ] && grep -qx \"\$file-2400.webp\" <<<\"\$have\"; then continue; fi
+    if [ \"\$source\" = pexels ]; then
+      src=\"https://images.pexels.com/photos/\$id/pexels-photo-\$id.jpeg?auto=compress\"
+    else
+      src=\"https://images.unsplash.com/\$id?q=80&fit=max\"
+    fi
     # The original (JPEG, for sharing previews) plus the WebP renditions.
-    curl -fsS \"https://images.unsplash.com/\$id?w=\$width&q=80&fm=jpg&fit=max\" \
+    curl -fsSL \"\$src&w=\$width&fm=jpg\" \
       | rclone -q rcat --header-upload \"Content-Type: image/jpeg\" G:\"\$S3_BUCKET\"/\$stem.jpg
     for w in 640 1080 1600 2400; do
-      curl -fsS \"https://images.unsplash.com/\$id?w=\$w&q=78&fm=webp&fit=max\" \
+      curl -fsSL \"\$src&w=\$w&fm=webp\" \
         | rclone -q rcat --header-upload \"Content-Type: image/webp\" G:\"\$S3_BUCKET\"/\$stem-\$w.webp
     done
     new=\$((new+1))

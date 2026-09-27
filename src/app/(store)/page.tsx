@@ -1,21 +1,18 @@
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
+import { SectionTitle } from '@/components/ui/SectionTitle';
 import { getProducts } from '@/features/catalog/server/catalogue';
-import { AttentionStrips } from '@/features/home/components/AttentionStrips';
-import { BridalCollection } from '@/features/home/components/BridalCollection';
-import { HeroCinematic } from '@/features/home/components/HeroCinematic';
-import { LatestTrends } from '@/features/home/components/LatestTrends';
-import { MoodArches } from '@/features/home/components/MoodArches';
-import { OccasionEdits } from '@/features/home/components/OccasionEdits';
-import { ProductRail } from '@/features/home/components/ProductRail';
-import { ProductSpotlight } from '@/features/home/components/ProductSpotlight';
-import { SilkIntro } from '@/features/home/components/SilkIntro';
-import { PromiseMarquee } from '@/features/home/components/PromiseMarquee';
-import { RememberedCarousel } from '@/features/home/components/RememberedCarousel';
-import { SeasonEdit } from '@/features/home/components/SeasonEdit';
-import { StoryCinematic } from '@/features/home/components/StoryCinematic';
-import { TrendLists } from '@/features/home/components/TrendLists';
+import { ArchCarousel } from '@/features/home/components/ArchCarousel';
+import { BridalFeature } from '@/features/home/components/BridalFeature';
+import { HeroEmerald } from '@/features/home/components/HeroEmerald';
+import { OccasionFrames } from '@/features/home/components/OccasionFrames';
+import { OurStory } from '@/features/home/components/OurStory';
+import { PromiseRow } from '@/features/home/components/PromiseRow';
+import { SignatureRail } from '@/features/home/components/SignatureRail';
+import { bridal, newArrivals, occasions, signatures } from '@/features/home/content';
 import type { Product } from '@/types/catalog';
 
-/** Products in the given category, featured first, capped. */
+/** Products passing the test, featured first, capped. */
 function pick(all: Product[], test: (p: Product) => boolean, limit: number) {
   return all
     .filter(test)
@@ -23,53 +20,106 @@ function pick(all: Product[], test: (p: Product) => boolean, limit: number) {
     .slice(0, limit);
 }
 
+/** Fill up to `limit` from `rest` when a section has too few of its own. */
+function atLeast(list: Product[], rest: Product[], limit: number) {
+  const seen = new Set(list.map((p) => p.id));
+  return [...list, ...rest.filter((p) => !seen.has(p.id))].slice(0, limit);
+}
+
+function MoreLink({ href, label }: { href: string; label: string }) {
+  return (
+    <div className="mt-12 flex justify-center">
+      <Link href={href} className="btn-line">
+        {label}
+        <ArrowRight className="size-4" strokeWidth={1.4} />
+      </Link>
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const all = await getProducts();
-
   const inStock = all.filter((p) => p.stock > 0);
-  const signatures = pick(all, (p) => Boolean(p.featured), 10);
-  const carousel = signatures.length >= 5 ? signatures : all.slice(0, 10);
-  const spotlight = inStock.find((p) => p.featured && p.images.length > 1) ?? inStock[0];
+
+  const arrivals = atLeast(
+    pick(all, (p) => Boolean(p.newArrival), 8),
+    inStock,
+    6,
+  );
+  const bridalPieces = atLeast(
+    pick(inStock, (p) => p.category === 'bridal', 3),
+    inStock,
+    3,
+  );
+  const signaturePieces = atLeast(
+    pick(inStock, (p) => Boolean(p.featured), 4),
+    inStock,
+    4,
+  );
 
   return (
     <>
-      <div className="intro-scope">
-        <SilkIntro />
-        <HeroCinematic />
+      <HeroEmerald />
+
+      <section className="forest-glow py-20 md:py-28">
+        <div className="container-editorial">
+          <SectionTitle
+            eyebrow={newArrivals.eyebrow}
+            title={newArrivals.title}
+            kicker={newArrivals.kicker}
+          />
+          <div className="mt-14">
+            <ArchCarousel products={arrivals} />
+          </div>
+          <MoreLink href={newArrivals.cta.href} label={newArrivals.cta.label} />
+        </div>
+      </section>
+
+      <section className="bg-forest-950 py-20 md:py-28">
+        <div className="container-editorial">
+          <SectionTitle
+            eyebrow={occasions.eyebrow}
+            title={occasions.title}
+            kicker={occasions.kicker}
+          />
+          <div className="mt-14">
+            <OccasionFrames />
+          </div>
+          <MoreLink href={occasions.cta.href} label={occasions.cta.label} />
+        </div>
+      </section>
+
+      {bridalPieces.length > 0 && (
+        <section className="forest-glow py-20 md:py-28">
+          <div className="container-editorial">
+            <SectionTitle eyebrow={bridal.eyebrow} title={bridal.title} kicker={bridal.kicker} />
+            <div className="mt-14">
+              <BridalFeature products={bridalPieces} />
+            </div>
+          </div>
+        </section>
+      )}
+
+      {signaturePieces.length > 0 && (
+        <section className="bg-forest-950 pt-20 md:pt-28">
+          <div className="container-editorial">
+            <SectionTitle
+              eyebrow={signatures.eyebrow}
+              title={signatures.title}
+              kicker={signatures.kicker}
+            />
+            <div className="mt-14">
+              <SignatureRail products={signaturePieces} />
+            </div>
+            <MoreLink href={signatures.cta.href} label={signatures.cta.label} />
+          </div>
+          <PromiseRow />
+        </section>
+      )}
+
+      <div className="forest-glow">
+        <OurStory />
       </div>
-      <PromiseMarquee />
-      <MoodArches />
-      <RememberedCarousel products={carousel} />
-      <ProductRail
-        eyebrow="Fresh from the loom"
-        title="New Arrivals"
-        href="/collections/new-arrivals"
-        hrefLabel="View all new arrivals"
-        products={pick(all, (p) => Boolean(p.newArrival), 10)}
-      />
-      <ProductRail
-        eyebrow="Heritage weaves"
-        title="From the Kanchipuram Looms"
-        href="/collections/kanchipuram"
-        hrefLabel="View Kanchipuram silks"
-        products={pick(all, (p) => p.category === 'kanchipuram', 10)}
-        tone="sand"
-      />
-      <BridalCollection products={pick(all, (p) => p.category === 'bridal', 8)} />
-      <TrendLists
-        lists={[
-          { title: 'Trend of the Day', products: pick(all, (p) => p.category === 'festive', 8) },
-          { title: 'Seasonal Special', products: pick(all, (p) => p.category === 'everyday', 8) },
-        ]}
-      />
-      <SeasonEdit />
-      {spotlight && <ProductSpotlight product={spotlight} />}
-      <OccasionEdits />
-      <AttentionStrips />
-      <StoryCinematic
-        products={pick(all, (p) => p.category === 'bridal' || p.category === 'festive', 4)}
-      />
-      <LatestTrends products={all} />
     </>
   );
 }

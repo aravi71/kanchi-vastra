@@ -99,7 +99,7 @@ export function Overlay({
         aria-label="Close"
         onClick={onClose}
         className={cn(
-          'absolute inset-0 h-full w-full cursor-default bg-wine-950/45 backdrop-blur-[2px] transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          'absolute inset-0 h-full w-full cursor-default bg-forest-950/70 backdrop-blur-[2px] transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]',
           open ? 'opacity-100' : 'pointer-events-none opacity-0',
         )}
       />

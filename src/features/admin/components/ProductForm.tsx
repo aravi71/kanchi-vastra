@@ -92,7 +92,9 @@ export function ProductForm({
       const photos = chosenPhotos(photoInput.current);
       form.delete('photos');
       if (photos.length > MAX_PHOTOS_AT_ONCE)
-        return { error: `Choose at most ${MAX_PHOTOS_AT_ONCE} photos now; add more after creating it.` };
+        return {
+          error: `Choose at most ${MAX_PHOTOS_AT_ONCE} photos now; add more after creating it.`,
+        };
       const result = await action(prev, form);
       if (!isNew || !result.createdId) return result;
 
@@ -132,8 +134,8 @@ export function ProductForm({
             />
           </label>
           <p className="mt-2 text-xs text-ink-400">
-            JPG, PNG or WebP · up to 10 MB each · large photos are made smaller for you ·
-            location data is removed automatically.
+            JPG, PNG or WebP · up to 10 MB each · large photos are made smaller for you · location
+            data is removed automatically.
           </p>
         </section>
       )}

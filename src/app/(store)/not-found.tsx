@@ -5,7 +5,7 @@ import { footerNav } from '@/config/site';
 
 export default function NotFound() {
   return (
-    <div className="relative flex min-h-[80svh] flex-col items-center justify-center overflow-hidden bg-wine-950 px-5 py-32 text-center text-ivory-200">
+    <div className="tone-dark forest-glow relative flex min-h-[80svh] flex-col items-center justify-center overflow-hidden px-5 py-32 text-center text-ivory-200">
       <TempleBorder className="absolute inset-x-0 top-0 rotate-180 text-gold-600/20" height={14} />
 
       <LotusMark className="text-gold-500/70" size={34} />

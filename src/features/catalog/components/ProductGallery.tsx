@@ -151,7 +151,7 @@ export function ProductGallery({ images, name }: { images: string[]; name: strin
           role="dialog"
           aria-modal="true"
           aria-label={`${name} — fullscreen image viewer`}
-          className="animate-fade fixed inset-0 z-[90] flex flex-col bg-wine-950/97"
+          className="animate-fade tone-dark fixed inset-0 z-[90] flex flex-col bg-forest-950/97"
         >
           <div className="flex items-center justify-between px-5 py-4 text-ivory-100">
             <p className="eyebrow-sm">

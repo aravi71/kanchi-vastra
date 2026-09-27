@@ -59,10 +59,27 @@
   --color-marigold-500: #d9a42e;
 
   /* --- Typography ------------------------------------------------------ */
-  --font-condensed: var(--font-anton), 'Anton', 'Oswald', Impact, sans-serif;
   --font-script: var(--font-great-vibes), 'Great Vibes', cursive;
   --font-display: var(--font-cormorant), 'Cormorant Garamond', Garamond, 'Times New Roman', serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* --- Forest + cream: the shop's fixed colours (2026-09 emerald design).
+     Unlike ivory/ink/wine below, these never change with the theme, so
+     text over photographs stays light. */
+  --color-forest-950: #09140e;
+  --color-forest-900: #0f1d15;
+  --color-forest-800: #152419;
+  --color-forest-700: #1d3024;
+  --color-forest-600: #2a4131;
+  --color-cream-50: #f8f0dc;
+  --color-cream-100: #efe4c8;
+  --color-cream-200: #e2d6b8;
+  --color-cream-300: #c8bc9b;
+  --color-brass-300: #ecd08c;
+  --color-brass-400: #dcb877;
+  --color-brass-500: #c9a35f;
+  --color-brass-600: #a9853f;
+  --font-italic: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
 
   /* --- Motion: slow, elegant, intentional ------------------------------ */
   --ease-silk: cubic-bezier(0.22, 1, 0.36, 1);
@@ -130,15 +147,6 @@
    ========================================================================== */
 
 @layer utilities {
-  /* Tall condensed headline — "SIX MOODS.", "LATEST TRENDS". */
-  .display-condensed {
-    font-family: var(--font-condensed);
-    font-weight: 400;
-    text-transform: uppercase;
-    letter-spacing: 0.005em;
-    line-height: 0.92;
-  }
-
   /* Flowing script accent, set in marigold beside a serif line. */
   .script-accent {
     font-family: var(--font-script);
@@ -267,6 +275,211 @@
 }
 
 /* ==========================================================================
+   THE SHOP THEME — deep forest green, antique brass, silk cream.
+   Applied by StoreShell (class .theme-emerald). It re-points the shared
+   colour names, so every shop page, the cart and the account pages follow
+   without per-component changes. The admin panel sits outside it and keeps
+   its light theme.
+   ========================================================================== */
+
+.theme-emerald {
+  /* page and panels (were light ivory) */
+  --color-ivory-50: #172a1e;
+  --color-ivory-100: #0f1d15;
+  --color-ivory-200: #1b2f22;
+  --color-ivory-300: #3b4a35;
+  --color-ivory-400: #5c6446;
+  /* reading text (was dark ink) */
+  --color-ink-300: #736f58;
+  --color-ink-400: #948e70;
+  --color-ink-500: #b3ab8a;
+  --color-ink-600: #c8bf9f;
+  --color-ink-700: #dcd2b4;
+  --color-ink-800: #e9dfc4;
+  --color-ink-900: #f4ebd4;
+  /* the accent (was wine): brass */
+  --color-wine-50: #1a2d20;
+  --color-wine-100: #213626;
+  --color-wine-200: #2c3f2c;
+  --color-wine-300: #ecd6a8;
+  --color-wine-400: #e5c992;
+  --color-wine-500: #dcbc7f;
+  --color-wine-600: #d4b070;
+  --color-wine-700: #d9b56c;
+  --color-wine-800: #c9a35f;
+  --color-wine-900: #b58e4c;
+  --color-wine-950: #dfbf7e;
+  /* gold reads on dark */
+  --color-gold-200: #f3e3bf;
+  --color-gold-300: #ecd39f;
+  --color-gold-400: #e3c686;
+  --color-gold-500: #c9a35f;
+  --color-gold-600: #d4b375;
+  --color-gold-700: #c9a35f;
+  --color-terracotta-400: #e3a58c;
+  --color-terracotta-500: #d98a6c;
+  --color-terracotta-600: #cf7a5c;
+  /* status colours readable on dark */
+  --color-emerald-700: #9fd8b1;
+  --color-emerald-800: #8fd1a5;
+  --color-red-600: #f2a0a0;
+  --color-red-700: #f19a9a;
+  --color-red-800: #f5b0b0;
+  --color-red-50: #3a1d1d;
+  --color-red-200: #6b3434;
+  --color-red-300: #7a3a3a;
+
+  --font-sans: var(--font-montserrat), 'Montserrat', 'Segoe UI', Arial, sans-serif;
+  --font-display: var(--font-playfair), 'Playfair Display', Georgia, serif;
+
+  background-color: var(--color-ivory-100);
+  color: var(--color-ink-800);
+  color-scheme: dark;
+}
+/* Inside the shop theme, a surface that was designed dark (photo banners,
+   the 404 page, the photo viewer): light text, deep green ground. */
+.theme-emerald .tone-dark {
+  --color-ivory-50: #f8f0dc;
+  --color-ivory-100: #efe4c8;
+  --color-ivory-200: #e2d6b8;
+  --color-ivory-300: #c8bc9b;
+  --color-ivory-400: #a89f80;
+  --color-wine-900: #0f1d15;
+  --color-wine-950: #09140e;
+}
+body:has(.theme-emerald) {
+  background-color: #0f1d15;
+}
+.theme-emerald h1,
+.theme-emerald h2,
+.theme-emerald h3,
+.theme-emerald h4 {
+  font-weight: 400;
+  letter-spacing: 0;
+}
+.theme-emerald ::selection {
+  background-color: #c9a35f;
+  color: #0f1d15;
+}
+.theme-emerald :focus-visible {
+  outline-color: #dcb877;
+}
+
+@layer utilities {
+  /* Section titles: serif capitals — "NEW ARRIVALS". */
+  .title-caps {
+    font-family: var(--font-display);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.08;
+  }
+  /* The soft italic line under a title — "A story in every drape." */
+  .italic-accent {
+    font-family: var(--font-italic);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0;
+  }
+  /* Letterspaced small capitals in brass. */
+  .label-brass {
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-brass-400);
+  }
+
+  /* Hairline with a small diamond in the middle. */
+  .divider-diamond {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: var(--color-brass-500);
+  }
+  .divider-diamond::before,
+  .divider-diamond::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.55;
+  }
+  .divider-diamond > i {
+    width: 7px;
+    height: 7px;
+    border: 1px solid currentColor;
+    transform: rotate(45deg);
+  }
+
+  /* Temple-arch top for portrait photos. */
+  .arch {
+    border-top-left-radius: 999px 62%;
+    border-top-right-radius: 999px 62%;
+  }
+  .arch-sm {
+    border-top-left-radius: 999px 38%;
+    border-top-right-radius: 999px 38%;
+  }
+
+  /* Thin brass frame. */
+  .frame-brass {
+    border: 1px solid color-mix(in oklab, var(--color-brass-500) 70%, transparent);
+  }
+
+  /* Buttons: filled brass, and outlined. */
+  .btn-brass,
+  .btn-line {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    min-height: 3.25rem;
+    padding: 0 1.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    transition:
+      background-color 0.5s var(--ease-silk),
+      color 0.5s var(--ease-silk),
+      border-color 0.5s var(--ease-silk);
+  }
+  .btn-brass {
+    background: linear-gradient(100deg, #c9a35f, #dcb877 55%, #c9a35f);
+    color: #0f1d15;
+  }
+  .btn-brass:hover {
+    background: #ecd08c;
+  }
+  .btn-line {
+    border: 1px solid color-mix(in oklab, var(--color-cream-100) 55%, transparent);
+    color: var(--color-cream-100);
+  }
+  .btn-line:hover {
+    border-color: var(--color-brass-400);
+    color: var(--color-brass-300);
+  }
+  .btn-brass svg,
+  .btn-line svg {
+    transition: transform 0.5s var(--ease-silk);
+  }
+  .btn-brass:hover svg,
+  .btn-line:hover svg {
+    transform: translateX(4px);
+  }
+
+  /* Soft green-black wash over dark sections, like lamplight. */
+  .forest-glow {
+    background:
+      radial-gradient(120% 70% at 20% 0%, rgba(42, 65, 49, 0.55), transparent 60%),
+      radial-gradient(90% 60% at 100% 100%, rgba(9, 20, 14, 0.9), transparent 70%), #0f1d15;
+  }
+}
+
+/* ==========================================================================
    MOTION
    ========================================================================== */
 
@@ -319,198 +532,6 @@
 }
 .animate-marquee:hover {
   animation-play-state: paused;
-}
-
-/* ==========================================================================
-   COMPONENT: "Worth your attention" expanding strips (home)
-   ========================================================================== */
-
-.attention-strips {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-}
-.attention-strips > li {
-  position: relative;
-  overflow: hidden;
-  aspect-ratio: 3 / 4;
-}
-.attention-strips a {
-  display: block;
-  height: 100%;
-}
-.attention-strips img {
-  transition:
-    filter 0.7s var(--ease-silk),
-    transform 0.7s var(--ease-silk);
-}
-
-@media (min-width: 768px) {
-  .attention-strips {
-    display: flex;
-    height: 34rem;
-  }
-  .attention-strips > li {
-    aspect-ratio: auto;
-    flex: 1 1 0%;
-    transition: flex-grow 0.7s var(--ease-silk);
-  }
-  .attention-strips img {
-    filter: grayscale(1);
-  }
-  /* Closed strips: label runs down from the top. Open strip: along the foot. */
-  .attention-strips .strip-label {
-    writing-mode: vertical-rl;
-    top: 3rem;
-    bottom: auto;
-    white-space: nowrap;
-  }
-  .attention-strips > li:first-child .strip-label,
-  .attention-strips > li:hover .strip-label,
-  .attention-strips > li:focus-within .strip-label {
-    writing-mode: horizontal-tb;
-    top: auto;
-    bottom: 1.25rem;
-  }
-  .attention-strips:hover > li:first-child:not(:hover) .strip-label {
-    writing-mode: vertical-rl;
-    top: 3rem;
-    bottom: auto;
-  }
-
-  /* The open strip: the first by default, then whichever is pointed at. */
-  .attention-strips > li:first-child,
-  .attention-strips > li:hover,
-  .attention-strips > li:focus-within {
-    flex-grow: 4;
-  }
-  .attention-strips:hover > li:first-child:not(:hover) {
-    flex-grow: 1;
-  }
-  .attention-strips > li:first-child img,
-  .attention-strips > li:hover img,
-  .attention-strips > li:focus-within img {
-    filter: none;
-    transform: scale(1.04);
-  }
-  .attention-strips:hover > li:first-child:not(:hover) img {
-    filter: grayscale(1);
-    transform: none;
-  }
-}
-
-/* ==========================================================================
-   COMPONENT: the silk intro (home) — see SilkIntro.tsx
-   Timeline: 0–1.5s the silk drifts; 1.5–2.6s it is drawn away along a
-   diagonal from the bottom-right corner; the hero content follows
-   (--intro-offset delays its entrance).
-   ========================================================================== */
-
-.intro-scope {
-  --intro-offset: 2.05s;
-}
-
-.silk-intro {
-  position: fixed;
-  inset: 0;
-  z-index: 90;
-  pointer-events: none;
-  /* The shadow follows the clipped edge: a zari-gold selvedge line, then a
-     soft shadow falling onto the shop being revealed. */
-  filter: drop-shadow(5px 5px 0 var(--color-marigold-400))
-    drop-shadow(22px 22px 30px rgba(20, 4, 8, 0.55));
-  animation: silk-done 0s linear 2.7s forwards;
-}
-.silk-intro__cloth {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  background: #c41c21;
-  animation: silk-draw-away 1.1s cubic-bezier(0.65, 0, 0.35, 1) 1.5s both;
-}
-.silk-intro__pattern {
-  position: absolute;
-  inset: -12%;
-  background: url('/images/intro/paisley-silk.svg') 0 0 / clamp(240px, 30vw, 440px) auto;
-  animation: silk-drift 2.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-/* Light across the folds of the cloth. */
-.silk-intro__sheen {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      112deg,
-      rgba(40, 4, 10, 0.4) 0%,
-      transparent 28%,
-      rgba(255, 214, 150, 0.22) 46%,
-      transparent 60%,
-      rgba(40, 4, 10, 0.42) 100%
-    ),
-    repeating-linear-gradient(
-      98deg,
-      transparent 0 140px,
-      rgba(40, 4, 10, 0.16) 190px,
-      rgba(255, 230, 190, 0.07) 240px,
-      transparent 300px
-    );
-  background-size:
-    220% 100%,
-    100% 100%;
-  animation: silk-sheen 2.6s ease-in-out both;
-}
-
-@keyframes silk-drift {
-  from {
-    transform: scale(1.14) translate(2%, 1.5%) rotate(-1.2deg);
-  }
-  to {
-    transform: none;
-  }
-}
-@keyframes silk-sheen {
-  from {
-    background-position:
-      100% 0,
-      0 0;
-  }
-  to {
-    background-position:
-      0 0,
-      -120px 0;
-  }
-}
-@keyframes silk-draw-away {
-  0% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%, 0 100%);
-  }
-  55% {
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%, 0 100%);
-  }
-  100% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0, 0 0);
-  }
-}
-@keyframes silk-done {
-  to {
-    visibility: hidden;
-  }
-}
-
-/* Seen this session, or the visitor prefers less motion: no silk, no wait. */
-html[data-intro-seen] .silk-intro {
-  display: none;
-}
-html[data-intro-seen] .intro-scope {
-  --intro-offset: 0s;
-}
-@media (prefers-reduced-motion: reduce) {
-  .silk-intro {
-    display: none;
-  }
-  .intro-scope {
-    --intro-offset: 0s;
-  }
 }
 
 /* Slow push-in on cinematic photographs. */

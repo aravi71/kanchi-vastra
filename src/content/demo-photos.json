@@ -1,5 +1,5 @@
 {
-  "$comment": "DEMO placeholder photography. Every photo is from Unsplash under the Unsplash License (free for commercial use, no permission or attribution required: https://unsplash.com/license). They show sarees that Kanchi Vastra does not sell, so replace each one with real product photography before launch. Used by scripts/cms-demo-photos.mjs (product photos -> Sanity) and scripts/media-demo-photos.sh (editorial photos -> Garage).",
+  "$comment": "DEMO placeholder photography. Photos are from Unsplash (Unsplash License: https://unsplash.com/license) or, where marked \"source\": \"pexels\", from Pexels (Pexels License: https://www.pexels.com/license/). Both are free for commercial use with no permission or attribution required. They show sarees that Kanchi Vastra does not sell, so replace each one with real product photography before launch. Used by scripts/cms-demo-photos.mjs (product photos -> Sanity) and scripts/media-demo-photos.sh (editorial photos -> Garage).",
   "photos": {
     "p01": {
       "id": "photo-1727430228383-aa1fb59db8bf",

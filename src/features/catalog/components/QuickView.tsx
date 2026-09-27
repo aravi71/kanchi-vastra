@@ -52,7 +52,7 @@ export function QuickView({ product, onClose }: { product: Product | null; onClo
         type="button"
         aria-label="Close quick view"
         onClick={onClose}
-        className="animate-fade absolute inset-0 h-full w-full cursor-default bg-wine-950/50 backdrop-blur-[2px]"
+        className="animate-fade absolute inset-0 h-full w-full cursor-default bg-forest-950/75 backdrop-blur-[2px]"
       />
 
       <div

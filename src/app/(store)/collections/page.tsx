@@ -35,7 +35,7 @@ export default async function CollectionsPage() {
               <Reveal as="li" key={collection.slug} delay={i * 60} y={26}>
                 <Link
                   href={`/collections/${collection.slug}`}
-                  className="group grid overflow-hidden bg-wine-950 md:grid-cols-2"
+                  className="group tone-dark frame-brass grid overflow-hidden bg-forest-800 md:grid-cols-2"
                 >
                   <div
                     className={`relative aspect-[4/3] md:aspect-[5/4] ${flip ? 'md:order-2' : ''}`}
@@ -51,7 +51,9 @@ export default async function CollectionsPage() {
 
                   <div className="flex flex-col justify-center p-8 md:p-12 lg:p-16">
                     <p className="eyebrow-sm text-gold-400/85">{collection.tagline}</p>
-                    <h2 className="display-lg mt-4 font-light text-ivory-50">{collection.title}</h2>
+                    <h2 className="title-caps mt-4 text-[clamp(1.75rem,3.4vw,2.6rem)] text-ivory-50">
+                      {collection.title}
+                    </h2>
                     <p className="mt-5 max-w-md text-[0.9375rem] leading-relaxed text-ivory-200/70">
                       {collection.description}
                     </p>

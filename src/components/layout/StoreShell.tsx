@@ -29,18 +29,21 @@ export async function StoreShell({ children }: { children: ReactNode }) {
       <UiProvider>
         <WishlistProvider>
           <CartProvider>
-            <a
-              href="#main"
-              className="focus:eyebrow sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-wine-800 focus:px-5 focus:py-3 focus:text-ivory-50"
-            >
-              Skip to content
-            </a>
-            <Header />
-            <main id="main">{children}</main>
-            <Footer />
-            <SearchOverlay />
-            <CartDrawer />
-            <MobileNav />
+            {/* The shop's forest-and-brass theme; the admin keeps its own. */}
+            <div className="theme-emerald min-h-screen font-sans">
+              <a
+                href="#main"
+                className="focus:eyebrow sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-wine-800 focus:px-5 focus:py-3 focus:text-ivory-50"
+              >
+                Skip to content
+              </a>
+              <Header />
+              <main id="main">{children}</main>
+              <Footer />
+              <SearchOverlay />
+              <CartDrawer />
+              <MobileNav />
+            </div>
           </CartProvider>
         </WishlistProvider>
       </UiProvider>

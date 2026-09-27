@@ -45,8 +45,8 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
   return (
     <>
       {/* --- collection banner ----------------------------------------- */}
-      {/* pt clears the fixed header (84px) plus its announcement rail (40px). */}
-      <section className="relative isolate flex min-h-[52svh] items-end overflow-hidden bg-wine-950 pt-36 md:min-h-[60svh] md:pt-44">
+      {/* pt clears the fixed header. */}
+      <section className="tone-dark relative isolate flex min-h-[52svh] items-end overflow-hidden bg-forest-950 pt-36 md:min-h-[60svh] md:pt-44">
         <Image
           src={collection.image}
           alt=""
@@ -56,7 +56,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
           className="-z-10 object-cover"
         />
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-t from-wine-950 via-wine-950/60 to-wine-950/25"
+          className="absolute inset-0 -z-10 bg-gradient-to-t from-forest-950 via-forest-950/60 to-forest-950/25"
           aria-hidden="true"
         />
 
@@ -83,7 +83,7 @@ export default async function CollectionPage({ params }: { params: Promise<{ slu
 
           <Reveal>
             <p className="eyebrow text-gold-400/90">{collection.tagline}</p>
-            <h1 className="display-xl mt-5 max-w-2xl font-light text-balance text-ivory-50">
+            <h1 className="title-caps mt-5 max-w-2xl text-[clamp(2.25rem,5vw,4rem)] text-balance text-ivory-50">
               {collection.title}
             </h1>
             <p className="mt-6 max-w-xl text-[0.9375rem] leading-relaxed text-ivory-200/80">

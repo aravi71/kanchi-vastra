@@ -1,10 +1,7 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import { AtSign, Mail, MessageCircle } from 'lucide-react';
-import { editorialPhoto } from '@/config/media';
+import { ArrowUp, AtSign, Mail, MessageCircle } from 'lucide-react';
 import { contact, footerNav, site } from '@/config/site';
-import { Logo } from '@/components/ui/Logo';
-import { TempleBorder } from '@/components/motifs/Motifs';
+import { Medallion } from '@/components/ui/Logo';
 import { NewsletterForm } from '@/components/layout/NewsletterForm';
 
 const columns = [
@@ -15,66 +12,47 @@ const columns = [
 
 export function Footer() {
   return (
-    <footer className="relative mt-px bg-wine-950 text-ivory-200">
-      {/* --- signature band: the brand name over silk ------------------ */}
-      <div className="relative isolate overflow-hidden">
-        <Image
-          src={editorialPhoto('texture-zari')}
-          alt=""
-          fill
-          sizes="100vw"
-          className="-z-20 object-cover"
-        />
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-crimson-900/70 via-crimson-900/55 to-wine-950" />
-        <div className="container-editorial py-20 text-center md:py-28">
-          <p className="font-display text-[clamp(3.25rem,11vw,9.5rem)] leading-none font-light text-ivory-50 italic">
-            Kanchi Vastra
-          </p>
-          <p className="script-accent mt-4 text-[clamp(1.75rem,3.5vw,2.75rem)] text-marigold-300">
-            silks woven for the days you remember
-          </p>
-        </div>
-      </div>
-
-      <TempleBorder className="text-gold-600/35" height={12} />
-
+    <footer className="relative border-t border-brass-500/25 bg-forest-950 text-cream-200">
       <div className="container-editorial">
-        {/* --- newsletter ------------------------------------------------- */}
-        <div className="grid gap-10 border-b border-ivory-100/10 py-16 md:grid-cols-2 md:items-end md:gap-16 lg:py-20">
+        {/* --- medallion + newsletter ------------------------------------- */}
+        <div className="grid gap-12 py-16 md:grid-cols-2 md:gap-16 lg:py-20">
           <div>
-            <p className="eyebrow text-gold-400/80">The Atelier Letter</p>
-            <h2 className="display-md mt-4 max-w-md font-light text-balance text-ivory-100">
-              New weaves, quietly announced
-            </h2>
-            <p className="mt-4 max-w-md text-sm leading-relaxed text-ivory-200/65">
-              Occasional notes on new arrivals and the craft behind them. No noise.
+            <Medallion size={64} className="items-start" />
+            <p className="mt-6 max-w-sm text-sm leading-relaxed text-cream-200/70">
+              {site.positioning}
+            </p>
+            <p className="mt-5 font-[family-name:var(--font-script)] text-[2.1rem] leading-none text-brass-300">
+              silks woven for the days you remember
             </p>
           </div>
-          <NewsletterForm />
+          <div>
+            <p className="label-brass">Stay in touch</p>
+            <i className="mt-3 block h-px w-10 bg-brass-500" />
+            <p className="mt-5 max-w-md text-sm leading-relaxed text-cream-200/75">
+              Occasional notes on new arrivals and the craft behind them. No noise.
+            </p>
+            <div className="mt-6 max-w-md">
+              <NewsletterForm />
+            </div>
+          </div>
+        </div>
+
+        <div className="divider-diamond">
+          <i />
         </div>
 
         {/* --- navigation ------------------------------------------------- */}
-        <div className="grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-5 lg:gap-8 lg:py-20">
-          <div className="lg:col-span-2">
-            <Logo
-              orientation="horizontal"
-              markClassName="text-gold-400"
-              className="text-ivory-100"
-            />
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-ivory-200/60">
-              {site.positioning}
-            </p>
-          </div>
-
+        <div className="grid grid-cols-2 gap-10 py-14 md:grid-cols-4 lg:py-16">
           {columns.map((col) => (
             <nav key={col.title} aria-label={col.title}>
-              <h3 className="eyebrow-sm text-gold-400/80">{col.title}</h3>
-              <ul className="mt-5 space-y-3">
+              <h3 className="label-brass">{col.title}</h3>
+              <i className="mt-3 block h-px w-8 bg-brass-500/70" />
+              <ul className="mt-5 space-y-3.5">
                 {col.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="link-underline text-sm text-ivory-200/75 transition-colors duration-500 hover:text-ivory-50"
+                      className="font-[family-name:var(--font-display)] text-[0.95rem] text-cream-200/85 transition-colors duration-500 hover:text-brass-300"
                     >
                       {link.label}
                     </Link>
@@ -85,8 +63,9 @@ export function Footer() {
           ))}
 
           <div>
-            <h3 className="eyebrow-sm text-gold-400/80">Connect</h3>
-            <ul className="mt-5 space-y-3 text-sm text-ivory-200/75">
+            <h3 className="label-brass">Connect</h3>
+            <i className="mt-3 block h-px w-8 bg-brass-500/70" />
+            <ul className="mt-5 flex flex-wrap gap-3">
               <li>
                 <ConnectLink
                   href={contact.social.instagram}
@@ -114,7 +93,7 @@ export function Footer() {
               </li>
             </ul>
             {contact.isPlaceholder && (
-              <p className="mt-4 max-w-[15rem] text-xs leading-relaxed text-ivory-200/40">
+              <p className="mt-4 max-w-[15rem] text-xs leading-relaxed text-cream-200/45">
                 Channels open at launch.
               </p>
             )}
@@ -122,24 +101,30 @@ export function Footer() {
         </div>
 
         {/* --- legal ------------------------------------------------------ */}
-        <div className="flex flex-col gap-5 border-t border-ivory-100/10 py-8 text-xs text-ivory-200/50 md:flex-row md:items-center md:justify-between">
+        <div className="flex flex-col gap-6 border-t border-brass-500/20 py-8 text-xs text-cream-200/55 md:flex-row md:items-center md:justify-between">
           <p>© {new Date().getFullYear()} Kanchi Vastra. All rights reserved.</p>
           <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
             {footerNav.legal.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="link-underline transition-colors hover:text-ivory-100"
-                >
+                <Link href={link.href} className="transition-colors hover:text-brass-300">
                   {link.label}
                 </Link>
               </li>
             ))}
           </ul>
+          <a
+            href="#main"
+            className="inline-flex items-center gap-3 tracking-[0.24em] uppercase transition-colors hover:text-brass-300"
+          >
+            <span className="grid size-10 place-items-center rounded-full border border-brass-500/50">
+              <ArrowUp className="size-4" strokeWidth={1.3} />
+            </span>
+            Back to top
+          </a>
         </div>
 
         {/* Honesty notice — remove once real catalogue data is in place. */}
-        <p className="border-t border-ivory-100/5 py-5 text-[11px] leading-relaxed text-ivory-200/35">
+        <p className="border-t border-brass-500/10 py-5 text-[11px] leading-relaxed text-cream-200/40">
           Demonstration build. Product photography, names, prices, stock figures and contact details
           shown on this site are placeholder content and do not represent actual Kanchi Vastra
           merchandise or business information.
@@ -150,8 +135,8 @@ export function Footer() {
 }
 
 /**
- * Renders a live link when a destination has been configured, and an
- * unmistakably inert label when it has not — so nothing on the page pretends
+ * A round icon link when a destination has been configured, and an
+ * unmistakably inert circle when it has not — so nothing on the page pretends
  * to work before the business details exist.
  */
 function ConnectLink({
@@ -165,10 +150,12 @@ function ConnectLink({
 }) {
   if (!href) {
     return (
-      <span className="inline-flex items-center gap-2.5 text-ivory-200/40">
+      <span
+        title={`${label} — opens at launch`}
+        className="grid size-11 place-items-center rounded-full border border-cream-200/20 text-cream-200/35"
+      >
         {icon}
-        {label}
-        <span className="text-[10px] tracking-[0.18em] uppercase">soon</span>
+        <span className="sr-only">{label} (opens at launch)</span>
       </span>
     );
   }
@@ -177,10 +164,10 @@ function ConnectLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      className="link-underline inline-flex items-center gap-2.5 transition-colors duration-500 hover:text-ivory-50"
+      aria-label={label}
+      className="grid size-11 place-items-center rounded-full border border-brass-500/50 text-cream-100 transition-colors duration-500 hover:bg-brass-500 hover:text-forest-900"
     >
       {icon}
-      {label}
     </a>
   );
 }

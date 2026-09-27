@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import { Anton, Cormorant_Garamond, Great_Vibes, Inter } from 'next/font/google';
+import {
+  Cormorant_Garamond,
+  Great_Vibes,
+  Inter,
+  Montserrat,
+  Playfair_Display,
+} from 'next/font/google';
 import { site } from '@/config/site';
 import '@/styles/globals.css';
 
@@ -8,6 +14,7 @@ import '@/styles/globals.css';
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
   variable: '--font-cormorant',
   display: 'swap',
 });
@@ -19,11 +26,20 @@ const inter = Inter({
   display: 'swap',
 });
 
-/* Condensed display face for the loud headlines ("SIX MOODS."). */
-const anton = Anton({
+/* Shop headings: a high-contrast serif for titles. */
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: '400',
-  variable: '--font-anton',
+  weight: ['400', '500'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+/* Shop labels and body text: a clean geometric sans. The admin keeps Inter. */
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-montserrat',
   display: 'swap',
 });
 
@@ -75,7 +91,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#faf6ee',
+  themeColor: '#0f1d15',
   width: 'device-width',
   initialScale: 1,
 };
@@ -112,9 +128,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en-IN"
-      // The silk intro marks <html data-intro-seen> before hydration.
-      suppressHydrationWarning
-      className={`${cormorant.variable} ${inter.variable} ${anton.variable} ${greatVibes.variable}`}
+      className={`${cormorant.variable} ${inter.variable} ${playfair.variable} ${montserrat.variable} ${greatVibes.variable}`}
     >
       <body className="min-h-screen antialiased">
         <script

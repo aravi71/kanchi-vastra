@@ -15,71 +15,25 @@ import { formatPrice } from '@/lib/utils';
 export const hero = {
   eyebrow: 'Tradition meets tomorrow',
   titleLines: ['Woven for', 'every forever'],
-  body: 'Kanchipuram silks and festive weaves, chosen for the weight of the silk and the gleam of the zari — for the days you will want to remember.',
+  kicker: 'Silks woven for the days you remember.',
   primary: { label: 'Explore collections', href: '/collections' },
-  secondary: { label: 'Our story', href: '/about' },
-  photo: 'hero-temple',
-  promises: [
-    'Handpicked silk sarees',
-    `Free shipping above ${formatPrice(shipping.freeAbove)}`,
-    'Quality checked before dispatch',
-  ],
+  secondary: { label: 'New arrivals', href: '/collections/new-arrivals' },
+  /** The shop's own photograph (scripts/media-editorial-upload.sh). */
+  photo: 'hero-own-v2',
+  photoAlt: 'Woman in a pink silk saree outside a stone temple',
 } as const;
 
-/** The scrolling band under the hero. */
-export const marquee = [
-  'Handpicked Kanchipuram silks',
-  `Free shipping on orders above ${formatPrice(shipping.freeAbove)}`,
-  'Quality checked, piece by piece',
-  'Pan-India delivery with tracking',
-  'Secure checkout',
-  'A care guide for every saree',
-] as const;
-
-export const moods = {
-  title: 'Six moods.',
-  kicker: 'Find the drape that fits the day',
-  items: [
-    { label: 'Heirloom', href: '/collections/kanchipuram', photo: 'mood-heirloom' },
-    { label: 'Festive', href: '/collections/festive', photo: 'mood-festive' },
-    { label: 'Regal', href: '/collections/bridal', photo: 'mood-regal' },
-    { label: 'Garden', href: '/collections/everyday', photo: 'mood-garden' },
-    { label: 'Contemporary', href: '/collections/new-arrivals', photo: 'mood-contemporary' },
-    { label: 'Evening', href: '/shop?color=green,blue,purple', photo: 'mood-evening' },
-  ],
-} as const;
-
-export const remembered = {
-  eyebrow: 'The signature pieces',
-  title: 'Woven to be',
-  accent: 'Remembered',
-  cta: { label: 'Shop signatures', href: '/shop' },
-} as const;
-
-export const bridal = {
-  eyebrow: 'For the wedding',
-  title: 'The Bridal Collection',
-  body: 'Heavy silks, broad temple borders and pallus worked edge to edge in zari.',
-  cta: { label: 'View the collection', href: '/collections/bridal' },
-  photo: 'bridal',
-} as const;
-
-export const season = {
-  eyebrow: 'Season edit',
-  titleLines: ['Festive', 'Season 2026'],
-  body: 'Deep reds, temple gold and the first cool evenings — the sarees we reach for from Navratri to the wedding season.',
-  cta: { label: 'Explore the edit', href: '/collections/festive' },
-  photos: ['mood-regal', 'temple-walk', 'edit-atelier'],
-} as const;
-
-export const spotlight = {
-  label: 'New drop 2026',
-  changeLook: 'Change look',
+export const newArrivals = {
+  eyebrow: 'Fresh from the loom',
+  title: 'New Arrivals',
+  kicker: 'Kanchipuram silks and festive weaves, chosen for the weight of the silk.',
+  cta: { label: 'View all new arrivals', href: '/collections/new-arrivals' },
 } as const;
 
 export const occasions = {
-  title: 'Edits for',
-  accent: 'every occasion',
+  eyebrow: 'Discover',
+  title: 'Edits for every occasion',
+  kicker: 'Find the drape that fits the day.',
   cta: { label: 'All collections', href: '/collections' },
   items: [
     {
@@ -109,33 +63,41 @@ export const occasions = {
   ],
 } as const;
 
-export const attention = {
-  eyebrow: 'Curated for you',
-  title: 'Worth your attention',
-  items: [
-    { label: 'Bridal reds', href: '/shop?color=red,maroon&category=bridal', photo: 'offer-1' },
-    { label: 'Veils & drapes', href: '/collections/bridal', photo: 'offer-2' },
-    { label: 'The celebration edit', href: '/collections/festive', photo: 'offer-3' },
-    { label: 'Evening silks', href: '/shop?color=maroon,purple', photo: 'offer-4' },
-    { label: 'Heirloom zari', href: '/collections/kanchipuram', photo: 'offer-5' },
-    { label: 'Under ₹10,000', href: '/shop?price=under-10k', photo: 'offer-6' },
-  ],
+export const bridal = {
+  eyebrow: 'For the wedding',
+  title: 'The Bridal Collection',
+  kicker: 'Heavy silks, broad temple borders and pallus worked edge to edge in zari.',
+  photoLine: ['Red silk,', 'temple gold,', 'forever.'],
+  cta: { label: 'View the collection', href: '/collections/bridal' },
+  photo: 'bridal',
 } as const;
+
+export const signatures = {
+  eyebrow: 'The signature pieces',
+  title: 'Woven to be Remembered',
+  kicker: 'The sarees we would choose first.',
+  cta: { label: 'Shop signatures', href: '/shop' },
+} as const;
+
+/** Four promises, each one the business can keep. */
+export const promises = [
+  { label: 'Handpicked Kanchipuram silks', icon: 'sparkles' },
+  { label: 'Quality checked, piece by piece', icon: 'shield' },
+  { label: `Free shipping above ${formatPrice(shipping.freeAbove)}`, icon: 'truck' },
+  { label: 'Secure checkout', icon: 'lock' },
+] as const;
 
 export const story = {
   eyebrow: 'The ceremony story',
-  titleLines: ['First', 'Light'],
+  title: 'First',
+  accent: 'Light.',
   body: 'Morning prayers, marigold and the rustle of new silk. The sarees made for the first hour of the celebration.',
+  note: 'Every border carries a motif — temple towers, mango buttas, rudraksha beads — each with a story older than the loom it was woven on.',
   cta: { label: 'Read our story', href: '/about' },
   photo: 'story',
 } as const;
 
-export const trends = {
-  titleLines: ['Latest', 'Trends'],
-  cta: { label: 'Discover now', href: '/collections/new-arrivals' },
-  photo: 'trends',
-  storyTitle: 'Stories behind the drape',
-  storyBody:
-    'Every border carries a motif — temple towers, mango buttas, rudraksha beads — each with a story older than the loom it was woven on.',
-  rangeTitle: 'Explore the range',
+export const closing = {
+  lines: ['Silk that remembers', 'every celebration'],
+  body: 'Where South Indian heritage meets contemporary elegance.',
 } as const;

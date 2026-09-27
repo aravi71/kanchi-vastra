@@ -203,7 +203,7 @@ export function ShopBrowser({
           tabIndex={sheetOpen ? 0 : -1}
           onClick={() => setSheetOpen(false)}
           className={cn(
-            'absolute inset-0 h-full w-full cursor-default bg-wine-950/45 backdrop-blur-[2px] transition-opacity duration-500',
+            'absolute inset-0 h-full w-full cursor-default bg-forest-950/70 backdrop-blur-[2px] transition-opacity duration-500',
             sheetOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
           )}
         />
