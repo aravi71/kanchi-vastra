@@ -208,38 +208,56 @@ export async function saveProduct(
   });
   updateTag(PRODUCTS_TAG);
 
-  if (!productId) redirect(`/admin/products/${savedId}?created=1`);
+  if (!productId) {
+    const files = chosenFiles(form);
+    const result = files.length ? await addPhotos(session, savedId, files) : { added: 0 };
+    const query = new URLSearchParams({ created: '1', photos: String(result.added) });
+    if (result.error) query.set('photoError', result.error.slice(0, 200));
+    redirect(`/admin/products/${savedId}?${query}`);
+  }
   return { ok: 'Saved. The shop already shows the change.' };
 }
 
 /* --- photos ---------------------------------------------------------------- */
 
-export async function uploadPhotos(
+const MAX_PER_UPLOAD = 8;
+const MAX_PER_SAREE = 12;
+
+function chosenFiles(form: FormData): File[] {
+  return form.getAll('photos').filter((f): f is File => f instanceof File && f.size > 0);
+}
+
+/**
+ * Stores photos for a saree and records them. Never throws: a rejected file
+ * or a storage problem comes back as a message, and photos saved before the
+ * problem are kept. (Not exported: only the actions below may call it.)
+ */
+async function addPhotos(
+  session: Awaited<ReturnType<typeof requireAdmin>>,
   productId: string,
-  _: FormState,
-  form: FormData,
-): Promise<FormState> {
-  const session = await requireAdmin();
+  files: File[],
+): Promise<{ added: number; error?: string }> {
   const product = await db().product.findUnique({
     where: { id: productId },
     select: { slug: true, name: true, _count: { select: { images: true } } },
   });
-  if (!product) return { error: 'This saree no longer exists.' };
-
-  const files = form.getAll('photos').filter((f): f is File => f instanceof File && f.size > 0);
-  if (files.length === 0) return { error: 'Choose one or more photos first.' };
-  if (files.length > 8) return { error: 'Upload at most 8 photos at a time.' };
-  if (product._count.images + files.length > 12)
-    return { error: 'A saree can have at most 12 photos.' };
+  if (!product) return { added: 0, error: 'This saree no longer exists.' };
+  if (files.length > MAX_PER_UPLOAD)
+    return { added: 0, error: `Upload at most ${MAX_PER_UPLOAD} photos at a time.` };
+  if (product._count.images + files.length > MAX_PER_SAREE) {
+    return { added: 0, error: `A saree can have at most ${MAX_PER_SAREE} photos.` };
+  }
 
   const last = await db().productImage.aggregate({
     where: { productId },
     _max: { sortOrder: true },
   });
   let order = (last._max.sortOrder ?? -1) + 1;
-  const stored: string[] = [];
-  try {
-    for (const file of files) {
+  let added = 0;
+  let error: string | undefined;
+
+  for (const file of files) {
+    try {
       const photo = await storePhoto(
         `products/${product.slug}-${randomToken(6).toLowerCase()}`,
         file,
@@ -255,25 +273,40 @@ export async function uploadPhotos(
           sortOrder: order++,
         },
       });
-      stored.push(photo.url);
-    }
-  } catch (error) {
-    if (error instanceof UploadRejected) {
-      return {
-        error: `${error.message}${stored.length ? ` (${stored.length} photo(s) before it were saved.)` : ''}`,
-      };
-    }
-    throw error;
-  } finally {
-    if (stored.length) {
-      await audit(session, 'photo.upload', 'Product', productId, {
-        name: product.name,
-        count: stored.length,
-      });
-      updateTag(PRODUCTS_TAG);
+      added += 1;
+    } catch (e) {
+      error =
+        e instanceof UploadRejected
+          ? `${file.name}: ${e.message}`
+          : `${file.name} could not be saved right now. Please try it again.`;
+      if (!(e instanceof UploadRejected))
+        console.error('[admin] photo upload:', (e as Error).message);
+      break;
     }
   }
-  return { ok: `${stored.length} photo${stored.length === 1 ? '' : 's'} added.` };
+
+  if (added) {
+    await audit(session, 'photo.upload', 'Product', productId, {
+      name: product.name,
+      count: added,
+    });
+    updateTag(PRODUCTS_TAG);
+  }
+  return { added, error };
+}
+
+export async function uploadPhotos(
+  productId: string,
+  _: FormState,
+  form: FormData,
+): Promise<FormState> {
+  const session = await requireAdmin();
+  const files = chosenFiles(form);
+  if (files.length === 0) return { error: 'Choose one or more photos first.' };
+
+  const { added, error } = await addPhotos(session, productId, files);
+  if (error) return { error: added ? `${error} (${added} photo(s) before it were saved.)` : error };
+  return { ok: `${added} photo${added === 1 ? '' : 's'} added.` };
 }
 
 const imageId = z.string().min(10).max(40);

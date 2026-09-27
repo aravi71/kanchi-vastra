@@ -1,6 +1,7 @@
 'use client';
 
 import { useActionState, type ReactNode } from 'react';
+import { ImagePlus } from 'lucide-react';
 import { categories, colorFamilies, fabrics } from '@/content/collections';
 import { keepValues, type FormState } from '@/components/ui/ActionForm';
 import { cn } from '@/lib/utils';
@@ -82,6 +83,30 @@ export function ProductForm({
 
   return (
     <form onSubmit={keepValues(formAction)} className="space-y-6" noValidate>
+      {isNew && (
+        <section className="rounded-lg border border-ivory-300 bg-white p-5 md:p-6">
+          <h2 className="eyebrow-sm mb-1 text-ink-500">Photos</h2>
+          <p className="mb-4 text-xs text-ink-400">
+            Choose up to 8 photos now — the first one becomes the main photo. You can add, reorder
+            or delete photos later too.
+          </p>
+          <label className="flex flex-wrap items-center gap-3 rounded-md border border-dashed border-ivory-400 bg-ivory-50 p-4">
+            <ImagePlus className="size-5 text-ink-400" />
+            <span className="sr-only">Choose photos</span>
+            <input
+              type="file"
+              name="photos"
+              accept="image/jpeg,image/png,image/webp"
+              multiple
+              className="text-sm file:mr-3 file:rounded-md file:border-0 file:bg-ink-900 file:px-3 file:py-2 file:text-sm file:text-ivory-50"
+            />
+          </label>
+          <p className="mt-2 text-xs text-ink-400">
+            JPG, PNG or WebP · up to 10 MB each (about 12 MB in total per save) · location data is
+            removed automatically.
+          </p>
+        </section>
+      )}
       <section className="rounded-lg border border-ivory-300 bg-white p-5 md:p-6">
         <h2 className="eyebrow-sm mb-5 text-ink-500">Price &amp; stock</h2>
         <div className="grid gap-5 md:grid-cols-2">
@@ -385,7 +410,13 @@ export function ProductForm({
           disabled={pending}
           className="h-11 rounded-md bg-wine-800 px-6 text-sm font-medium text-ivory-50 hover:bg-wine-950 disabled:opacity-60"
         >
-          {pending ? 'Saving…' : isNew ? 'Create saree' : 'Save changes'}
+          {pending
+            ? isNew
+              ? 'Creating… (uploading photos)'
+              : 'Saving…'
+            : isNew
+              ? 'Create saree'
+              : 'Save changes'}
         </button>
         {state.ok && (
           <p role="status" className="text-sm text-emerald-800">

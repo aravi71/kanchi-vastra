@@ -18,7 +18,7 @@ export default async function NewProductPage() {
       </Link>
       <PageTitle
         title="Add a saree"
-        description="Fill in the details and create it as a Draft. Add photos on the next screen, then set it On sale."
+        description="Choose the photos, fill in the details and press Create. It starts as a Draft (hidden); set it On sale when you are happy."
       />
       <ProductForm action={saveProduct.bind(null, null)} values={data!.values} isNew />
     </>

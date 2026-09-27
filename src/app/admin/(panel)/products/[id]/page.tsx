@@ -16,11 +16,12 @@ export default async function EditProductPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ created?: string }>;
+  searchParams: Promise<{ created?: string; photos?: string; photoError?: string }>;
 }) {
   await requireAdmin();
   const { id } = await params;
-  const { created } = await searchParams;
+  const { created, photos, photoError } = await searchParams;
+  const photoCount = Number(photos ?? 0);
   const data = await productFormValues(id);
   if (!data) notFound();
 
@@ -33,7 +34,7 @@ export default async function EditProductPage({
         title={data.name}
         description={
           created
-            ? 'Created as a draft. Add photos, then set Status to “On sale” and save.'
+            ? `Created as a draft${photoCount ? ` with ${photoCount} photo${photoCount === 1 ? '' : 's'}` : ''}. Check it, then set Status to “On sale” and save.`
             : undefined
         }
         actions={
@@ -51,6 +52,14 @@ export default async function EditProductPage({
           </div>
         }
       />
+      {photoError && (
+        <p
+          role="alert"
+          className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+        >
+          {photoError} Add it again in Photos below.
+        </p>
+      )}
       <div className="space-y-6">
         <PhotoManager photos={data.photos} upload={uploadPhotos.bind(null, id)} />
         <ProductForm action={saveProduct.bind(null, id)} values={data.values} isNew={false} />
