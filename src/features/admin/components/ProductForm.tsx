@@ -183,7 +183,7 @@ export function ProductForm({
           <Row
             label="How many in stock"
             name="stock"
-            hint="0 shows “Sold out”. A low number shows “Only N remaining”."
+            hint="0 shows “Sold out”. 1–3 shows “Only N remaining”."
             error={e.stock}
           >
             <input
